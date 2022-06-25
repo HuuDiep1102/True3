@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import styled from 'styled-components/native';
 import {AVATAR1} from '../../assets';
@@ -7,7 +7,19 @@ import {HeaderCustomerContact} from './components/HeaderCustomeContact';
 import {AvatarPicker} from './components/AvatarPicker';
 
 export const CreateContactScreen = () => {
-  // const [searchQuery, setSearchQuery] = React.useState('');
+
+  const [param, setParam] = useState<{
+    phoneNumber: string[],
+    mail: string[],
+    address: string[],
+    birthday: string[],
+  }>({
+    phoneNumber: [],
+    mail: [],
+    address: [],
+    birthday: [],
+  });
+
   return (
     <Container>
       <HeaderCustomerContact label1={'Huỷ'} label2={'Xong'} />
@@ -24,7 +36,7 @@ export const CreateContactScreen = () => {
             <InputInfo placeholder="Công ty" />
           </InputInfoContainer>
         </InputContainer>
-        <CustomButtonList label={'thêm số điện thoại'} onPress={() => {}} />
+        <CustomButtonList label={'thêm số điện thoại'} />
         <CustomButtonList label={'thêm email'} />
         <CustomButtonList label={'thêm địa chỉ'} />
         <CustomButtonList label={'thêm ngày sinh'} />
