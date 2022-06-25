@@ -8,11 +8,12 @@ interface CustomButtonListProps {
 export const CustomButtonList = (props: CustomButtonListProps) => {
   const {label} = props;
   const [array, setArray] = useState<string[]>([]);
-  const [text, onChangeText] = useState('');
+  const [inputText, setInputText] = useState('');
 
   const addNewValue = useCallback(() => {
     //setArray([...array, `${array.length + 1}`]);
-    setArray([...array, `${array.length + 1}`]);
+    setArray([...array, '']);
+    console.log(array);
   }, [array]);
 
   const onRemove = useCallback(
@@ -23,14 +24,20 @@ export const CustomButtonList = (props: CustomButtonListProps) => {
     [array],
   );
 
+  const onChangeValue = useCallback(
+    (value: string) => {
+      setInputText(value);
+    },
+    [inputText],
+  );
+
   console.log(array);
 
   return (
     <Container>
       {array.map((item, index) => {
-        console.log('stt', index);
         return (
-          <InputContainerView key={index}>
+          <InputContainerView>
             <InputContainer
               onPress={() => {
                 onRemove(index);
@@ -38,9 +45,9 @@ export const CustomButtonList = (props: CustomButtonListProps) => {
               <PlusIcon source={REMOVE_ICON} />
             </InputContainer>
             <InputContact
-              value={item}
+              value={inputText}
               placeholder={'Mời nhập'}
-              onChangeText={onChangeText}
+              onChangeText={onChangeValue}
             />
           </InputContainerView>
         );
