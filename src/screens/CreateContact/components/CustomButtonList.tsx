@@ -5,10 +5,37 @@ import styled from 'styled-components/native';
 interface CustomButtonListProps {
   label: string;
 }
+
+const Cell = ({onRemove,index}: {onRemove: Function; index: number}) => {
+  const [inputText, setInputText] = useState('');
+
+  const onChangeValue = useCallback(
+    (value: string) => {
+      setInputText(value);
+    },
+    [inputText],
+  );
+
+  return (
+    <InputContainerView>
+            <InputContainer
+              onPress={() => {
+                onRemove(index);
+              }}>
+              <PlusIcon source={REMOVE_ICON} />
+            </InputContainer>
+            <InputContact
+              value={inputText}
+              placeholder={'Mời nhập'}
+              onChangeText={onChangeValue}
+            />
+          </InputContainerView>
+  )
+}
+
 export const CustomButtonList = (props: CustomButtonListProps) => {
   const {label} = props;
   const [array, setArray] = useState<string[]>([]);
-  const [inputText, setInputText] = useState('');
 
   const addNewValue = useCallback(() => {
     //setArray([...array, `${array.length + 1}`]);
@@ -24,32 +51,13 @@ export const CustomButtonList = (props: CustomButtonListProps) => {
     [array],
   );
 
-  const onChangeValue = useCallback(
-    (value: string) => {
-      setInputText(value);
-    },
-    [inputText],
-  );
-
   console.log(array);
 
   return (
     <Container>
       {array.map((item, index) => {
         return (
-          <InputContainerView>
-            <InputContainer
-              onPress={() => {
-                onRemove(index);
-              }}>
-              <PlusIcon source={REMOVE_ICON} />
-            </InputContainer>
-            <InputContact
-              value={inputText}
-              placeholder={'Mời nhập'}
-              onChangeText={onChangeValue}
-            />
-          </InputContainerView>
+          <Cell key={index} onRemove={onRemove} index={index}/>
         );
       })}
       <ButtonContactContainer onPress={addNewValue}>
