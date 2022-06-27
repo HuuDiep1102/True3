@@ -1,7 +1,8 @@
 import React from 'react';
 
 import styled from 'styled-components/native';
-import {CustomButtonList} from './components/CustomButtonList';
+import {CustomerButtonList} from './components/CustomerButtonList';
+import {CustomerButtonDateTime} from './components/CustomerButtonDateTime';
 import {HeaderCustomerContact} from './components/HeaderCustomeContact';
 import {AvatarPicker} from './components/AvatarPicker';
 
@@ -34,10 +35,10 @@ export const CreateContactScreen = () => {
             <InputInfo placeholder="Công ty" />
           </InputInfoContainer>
         </InputContainer>
-        <CustomButtonList label={'thêm số điện thoại'} />
-        <CustomButtonList label={'thêm email'} />
-        <CustomButtonList label={'thêm địa chỉ'} />
-        <CustomButtonList label={'thêm ngày sinh'} />
+        <CustomerButtonList label={'thêm số điện thoại'} />
+        <CustomerButtonList label={'thêm email'} />
+        <CustomerButtonList label={'thêm địa chỉ'} />
+        <CustomerButtonDateTime label={'thêm ngày sinh'} />
       </FormContainer>
     </Container>
   );

@@ -2,7 +2,7 @@ import {PLUS_ICON, REMOVE_ICON} from '../../../assets';
 import React, {useState, useCallback} from 'react';
 import styled from 'styled-components/native';
 
-interface CustomButtonListProps {
+interface CustomerButtonListProps {
   label: string;
 }
 
@@ -28,12 +28,13 @@ const Cell = ({onRemove, index}: {onRemove: Function; index: number}) => {
         value={inputText}
         placeholder={'Mời nhập'}
         onChangeText={onChangeValue}
+        autoFocus={true}
       />
     </InputContainerView>
   );
 };
 
-export const CustomButtonList = (props: CustomButtonListProps) => {
+export const CustomerButtonList = (props: CustomerButtonListProps) => {
   const {label} = props;
   const [array, setArray] = useState<string[]>([]);
 
@@ -64,7 +65,6 @@ export const CustomButtonList = (props: CustomButtonListProps) => {
 };
 
 const Container = styled.View`
-  width: 100%;
   background-color: white;
   align-items: center;
   flex-direction: column;
@@ -81,7 +81,7 @@ const ButtonContactText = styled.Text`
   font-size: 15px;
   font-weight: 400;
   color: #333333;
-  padding-left: 42px;
+  padding-left: 17px;
 `;
 
 const ButtonContactContainer = styled.TouchableOpacity`
@@ -109,7 +109,7 @@ const InputContainerView = styled.View`
 
 const InputContact = styled.TextInput`
   width: 93%;
-  padding-left: 47px;
+  padding-left: 17px;
   color: #2f80ed;
   font-weight: 400;
   font-size: 15px;

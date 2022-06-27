@@ -24,7 +24,7 @@ const Item = ({title, phoneNumber}) => (
 );
 
 export const HistoryScreen = () => {
-  const isIos = Platform.OS === 'ios';
+  //const isIos = Platform.OS === 'ios';
   const renderItem = ({item}) => {
     return <Item title={item.title} phoneNumber={item.phoneNumber} />;
   };

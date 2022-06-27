@@ -1,5 +1,4 @@
 import React from 'react';
-import {Platform, View} from 'react-native';
 import styled from 'styled-components/native';
 import {
   AVATAR2,
@@ -7,15 +6,11 @@ import {
   MESSAGE_ICON,
   FACETIME_ICON,
   MAIL_ICON,
-  BACKGROUND_IMAGE,
 } from '../../assets';
-import {AvatarPicker} from '../CreateContact/components/AvatarPicker';
 
 import {HeaderCustomerInfo} from './components/HeaderCustomerInfo';
-import {opacity} from 'react-native-reanimated/lib/types/lib/reanimated2';
 
 export const ContactDetailScreen = () => {
-  const isIos = Platform.OS === 'ios';
   return (
     <Container>
       <HeaderContainer>
@@ -50,7 +45,7 @@ export const ContactDetailScreen = () => {
             <ContactActiveText>Facetime</ContactActiveText>
           </ContactItem>
           <ContactItem>
-            <ContactIconInactive>
+            <ContactIconInactive disabled={true}>
               <ContactIcon source={MAIL_ICON} />
             </ContactIconInactive>
             <ContactInactiveText>Gửi mail</ContactInactiveText>
@@ -143,6 +138,8 @@ const ContactIconInactive = styled.TouchableOpacity`
   height: 40px;
   width: 40px;
   border-radius: 20px;
+  border-width: 0.5px;
+  border-color: #bdbdbd;
   background-color: #ffffff;
   justify-content: center;
   align-items: center;
@@ -169,8 +166,7 @@ const ContactInactiveText = styled.Text`
   color: #bdbdbd;
 `;
 
-const InfoContainer = styled.View<{isIos: boolean}>`
-  //height: ${p => (p.isIos ? 50 : 30)};
+const InfoContainer = styled.View`
   margin-top: 20px;
   height: 50px;
   justify-content: space-evenly;
@@ -187,7 +183,6 @@ const InfoJob = styled.TextInput`
   font-weight: 400;
   font-size: 13px;
   opacity: 0.5;
-  //padding-bottom: 10px;
 `;
 
 const ContactContainer = styled.View``;

@@ -15,7 +15,7 @@ import {IC_BANNER_LOGO, LOADING_LOGO, LOGO} from '../../assets';
 import {useNavigation} from '@react-navigation/native';
 
 export const LoginScreen = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
 
   return (
     <Container>

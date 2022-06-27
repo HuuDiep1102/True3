@@ -6,10 +6,9 @@ import {ASSIGNMENT_ICON, AVATAR2, ADD_ICON, DROP_ICON} from '../assets';
 
 import styled from 'styled-components/native';
 import {useNavigation} from '@react-navigation/native';
-import {CustomButtonList} from '../screens/CreateContact/components/CustomButtonList';
+import {CustomerButtonList} from '../screens/CreateContact/components/CustomerButtonList';
 
 const CustomDrawer = props => {
-
   const [isShow, setShow] = useState(false);
 
   const showEdit = () => {
@@ -77,7 +76,6 @@ export const CustomerItem = (props: CustomerItemProps) => {
 
 const DrawerContainer = styled.View`
   flex: 1;
-  margin-top: -30px;
 `;
 
 const BannerContainer = styled.View`

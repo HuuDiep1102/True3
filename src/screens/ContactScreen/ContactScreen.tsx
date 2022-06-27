@@ -18,7 +18,7 @@ import {useNavigation} from '@react-navigation/native';
 import {HeaderCustomer} from '../../components/HeaderCustomer';
 import {Platform} from 'react-native';
 
-const CustomItem = (item: any) => {
+const CustomItem = item => {
   const isIos = Platform.OS === 'ios';
   const navigation = useNavigation<any>();
   return (
