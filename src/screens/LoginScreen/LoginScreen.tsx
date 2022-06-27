@@ -9,19 +9,16 @@
  */
 
 import React from 'react';
-// @ts-ignore
 import styled from 'styled-components/native';
 import {Platform} from 'react-native';
 import {IC_BANNER_LOGO, LOADING_LOGO, LOGO} from '../../assets';
 import {useNavigation} from '@react-navigation/native';
 
 export const LoginScreen = () => {
-  const isIos = Platform.OS === 'ios';
-  console.log(isIos);
   const navigation = useNavigation();
 
   return (
-    <Container isIos={isIos}>
+    <Container>
       <Section1>
         <Logo source={LOGO} />
         <BannerImage resizeMode={'contain'} source={IC_BANNER_LOGO} />
@@ -50,12 +47,11 @@ export const LoginScreen = () => {
   );
 };
 
-const Container = styled.SafeAreaView<{isIos: boolean}>`
+const Container = styled.View`
   flex: 1;
-  background-color: ${p => (p.isIos ? 'white' : 'blue')};
+  margin-bottom: 40px;
 `;
 
-// @ts-ignore
 const Section1 = styled.View`
   flex: 2;
   justify-content: flex-end;

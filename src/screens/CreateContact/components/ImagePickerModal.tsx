@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import Modal from 'react-native-modal';
 
-import {CAMERA_INPUT_ICON} from '../../../assets';
+import {CAMERA_ICON} from '../../../assets';
 import styled from 'styled-components/native';
 
 export function ImagePickerModal({
@@ -19,7 +19,8 @@ export function ImagePickerModal({
       style={styles.modal}>
       <Buttons>
         <Button onPress={onImageLibraryPress}>
-          <ButtonIcon source={CAMERA_INPUT_ICON} />
+          <ButtonIcon source={CAMERA_ICON} />
+
           <ButtonText>Library</ButtonText>
         </Button>
         {/*  <Button onPress={onCameraPress}>*/}

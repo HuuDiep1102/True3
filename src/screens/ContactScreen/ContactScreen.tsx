@@ -16,9 +16,11 @@ import {SEARCH_ICON} from '../../assets';
 import {useNavigation} from '@react-navigation/native';
 
 import {HeaderCustomer} from '../../components/HeaderCustomer';
+import {Platform} from 'react-native';
 
 const CustomItem = (item: any) => {
-  const navigation = useNavigation();
+  const isIos = Platform.OS === 'ios';
+  const navigation = useNavigation<any>();
   return (
     <ListItemContainer
       onPress={() => navigation.navigate('ContactDetailScreen')}>
@@ -26,7 +28,7 @@ const CustomItem = (item: any) => {
         <Avatar source={AVATAR1} />
       </AvatarContainer>
       <ContactContainer>
-        <ListItemNameLabel>{item.value}</ListItemNameLabel>
+        <ListItemNameLabel isIos>{item.value}</ListItemNameLabel>
         <ListItemPhoneLabel>{item.phoneNumber}</ListItemPhoneLabel>
       </ContactContainer>
     </ListItemContainer>
@@ -43,9 +45,7 @@ const CustomSectionHeader = (section: any) => {
 };
 
 export const ContactScreen = () => {
-  // const [searchQuery, setSearchQuery] = React.useState('');
-  //
-  // const onChangeSearch = query => setSearchQuery(query);
+  const isIos = Platform.OS === 'ios';
 
   return (
     <Container>
@@ -66,6 +66,7 @@ export const ContactScreen = () => {
         }}
         indexContainerStyle={{
           marginRight: 10,
+          paddingTop: 10,
         }}
         index={customIndex}
         renderCustomItem={CustomItem}
@@ -109,8 +110,8 @@ const Background = styled.View`
   left: 0;
 `;
 
-const ListItemNameLabel = styled.Text`
-  font-weight: 500;
+const ListItemNameLabel = styled.Text<{isIos: boolean}>`
+  font-weight: ${p => (p.isIos ? 500 : 'bold')};
   font-size: 16px;
   color: #333333;
   font-style: normal;
@@ -154,7 +155,6 @@ const SearchbarContainer = styled.View`
   margin-bottom: 9px;
   flex-direction: row;
   border-radius: 6px;
-  //opacity: 0.5;
   padding-left: 34px;
   align-items: center;
 `;
@@ -185,7 +185,7 @@ const data = [
     key: '3',
   },
   {
-    value: 'Vũ Mạnh Đạt',
+    value: 'Bui Mạnh Đạt',
     phoneNumber: '090788623',
     key: '4',
   },
@@ -210,37 +210,37 @@ const data = [
     key: '8',
   },
   {
-    value: 'Vũ Mạnh Linh',
+    value: 'Ong Mạnh Linh',
     phoneNumber: '0907812123',
     key: '9',
   },
   {
-    value: 'Trần Thái Hà',
+    value: 'Pham Thái Hà',
     phoneNumber: '0907812123',
     key: '10',
   },
   {
-    value: 'Vũ Mạnh Đạt',
+    value: 'Sun Mạnh Đạt',
     phoneNumber: '090788623',
     key: '11',
   },
   {
-    value: 'An Phan',
+    value: 'Luu Phan',
     phoneNumber: '0907812123',
     key: '12',
   },
   {
-    value: 'Binh Vu',
+    value: 'Zurich Vu',
     phoneNumber: '0907812123',
     key: '13',
   },
   {
-    value: 'Uyen Nguyen',
+    value: 'Yen Nguyen',
     phoneNumber: '0907812123',
     key: '14',
   },
   {
-    value: 'Minh Anh',
+    value: 'Ung Anh',
     phoneNumber: '090788623',
     key: '15',
   },
@@ -255,6 +255,8 @@ const customIndex = [
   'đ',
   'e',
   'ê',
+  'f',
+  'j',
   'g',
   'h',
   'i',
@@ -274,5 +276,7 @@ const customIndex = [
   'ư',
   'v',
   'x',
+  'w',
   'y',
+  'z',
 ];

@@ -1,5 +1,5 @@
 import React from 'react';
-import {View} from 'react-native';
+import {Platform, View} from 'react-native';
 import styled from 'styled-components/native';
 import {
   AVATAR2,
@@ -15,6 +15,7 @@ import {HeaderCustomerInfo} from './components/HeaderCustomerInfo';
 import {opacity} from 'react-native-reanimated/lib/types/lib/reanimated2';
 
 export const ContactDetailScreen = () => {
+  const isIos = Platform.OS === 'ios';
   return (
     <Container>
       <HeaderContainer>
@@ -24,7 +25,7 @@ export const ContactDetailScreen = () => {
           <LogIcon source={AVATAR2} />
         </AvatarContainer>
 
-        <InfoContainer>
+        <InfoContainer isIos>
           <InfoName>Nguyễn Tiến Nam</InfoName>
           <InfoJob>UI/UX Design</InfoJob>
         </InfoContainer>
@@ -73,7 +74,7 @@ export const ContactDetailScreen = () => {
           </InputContactContainer>
         </WrapInput>
 
-        <WrapButton>
+        <WrapButton isIos>
           <Btn>
             <BtnMessageText>Gửi tin nhắn</BtnMessageText>
           </Btn>
@@ -89,6 +90,7 @@ export const ContactDetailScreen = () => {
 const Container = styled.SafeAreaView`
   flex: 1;
   background-color: white;
+  padding-top: 40px;
 `;
 
 const HeaderContainer = styled.View``;
@@ -167,7 +169,8 @@ const ContactInactiveText = styled.Text`
   color: #bdbdbd;
 `;
 
-const InfoContainer = styled.View`
+const InfoContainer = styled.View<{isIos: boolean}>`
+  //height: ${p => (p.isIos ? 50 : 30)};
   margin-top: 20px;
   height: 50px;
   justify-content: space-evenly;
@@ -184,6 +187,7 @@ const InfoJob = styled.TextInput`
   font-weight: 400;
   font-size: 13px;
   opacity: 0.5;
+  //padding-bottom: 10px;
 `;
 
 const ContactContainer = styled.View``;
@@ -211,8 +215,8 @@ const WrapInput = styled.View`
   align-items: center;
 `;
 
-const WrapButton = styled.View`
-  margin-top: 60px;
+const WrapButton = styled.View<{isIos: boolean}>`
+  margin-top: ${p => (p.isIos ? 60 : 80)};
   width: 100%;
   justify-content: center;
   align-items: center;
@@ -230,6 +234,7 @@ const InputTitleText = styled.Text`
   justify-content: center;
   align-self: flex-start;
   padding-left: 20px;
+  color: black;
 `;
 
 const Btn = styled.TouchableOpacity`

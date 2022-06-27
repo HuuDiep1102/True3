@@ -6,7 +6,7 @@ interface CustomButtonListProps {
   label: string;
 }
 
-const Cell = ({onRemove,index}: {onRemove: Function; index: number}) => {
+const Cell = ({onRemove, index}: {onRemove: Function; index: number}) => {
   const [inputText, setInputText] = useState('');
 
   const onChangeValue = useCallback(
@@ -18,27 +18,26 @@ const Cell = ({onRemove,index}: {onRemove: Function; index: number}) => {
 
   return (
     <InputContainerView>
-            <InputContainer
-              onPress={() => {
-                onRemove(index);
-              }}>
-              <PlusIcon source={REMOVE_ICON} />
-            </InputContainer>
-            <InputContact
-              value={inputText}
-              placeholder={'Mời nhập'}
-              onChangeText={onChangeValue}
-            />
-          </InputContainerView>
-  )
-}
+      <InputContainer
+        onPress={() => {
+          onRemove(index);
+        }}>
+        <PlusIcon source={REMOVE_ICON} />
+      </InputContainer>
+      <InputContact
+        value={inputText}
+        placeholder={'Mời nhập'}
+        onChangeText={onChangeValue}
+      />
+    </InputContainerView>
+  );
+};
 
 export const CustomButtonList = (props: CustomButtonListProps) => {
   const {label} = props;
   const [array, setArray] = useState<string[]>([]);
 
   const addNewValue = useCallback(() => {
-    //setArray([...array, `${array.length + 1}`]);
     setArray([...array, '']);
     console.log(array);
   }, [array]);
@@ -51,81 +50,18 @@ export const CustomButtonList = (props: CustomButtonListProps) => {
     [array],
   );
 
-  console.log(array);
-
   return (
     <Container>
       {array.map((item, index) => {
-        return (
-          <Cell key={index} onRemove={onRemove} index={index}/>
-        );
+        return <Cell key={index} onRemove={onRemove} index={index} />;
       })}
       <ButtonContactContainer onPress={addNewValue}>
         <PlusIcon source={PLUS_ICON} />
         <ButtonContactText>{label}</ButtonContactText>
       </ButtonContactContainer>
     </Container>
-
-    // <Container>
-    //   {array.map(item => {
-    //     return (
-    //       // onRemove && onRemove(index)
-    //       <InputField />
-    //     );
-    //   })}
-    //   <ButtonContactContainer onPress={addNewValue}>
-    //     <PlusIcon source={PLUS_ICON} />
-    //     <ButtonContactText>{label}</ButtonContactText>
-    //   </ButtonContactContainer>
-    // </Container>
   );
 };
-
-// export const CustomButtonList = (props: CustomButtonListProps) => {
-//
-//   const {label,data,setData} = props;
-//
-//   // const [array, setArray] = useState<string[]>([]);
-//
-//
-//
-//   const addNewValue = () => {
-//     setData && setData(array => array.concat([{id: random, phone:...}]))
-//   };
-//
-//   const onRemove = (id) => {
-//
-//     // muon xoa can phai biet vi tri can xoa
-//
-//     setData && setData(array => array.filter(item => item.id !== id));
-//
-//     //
-//
-//     // setArray(array => array.filter(pitem => pitem. != index));
-//
-//   };
-//
-//   return (
-//     <Container>
-//       {data && data.length > 0 && data.map(item => {
-//         const onPress = () => {
-//           onRemove(item.id)
-//         }
-//         return (
-//           // onRemove && onRemove(index)
-//           <InputContainer onPress={onPress}>
-//             <PlusIcon source={REMOVE_ICON} />
-//             <InputContact placeholder={'Mời nhập'} />
-//           </InputContainer>
-//         );
-//       })}
-//       <ButtonContactContainer onPress={addNewValue}>
-//         <PlusIcon source={PLUS_ICON} />
-//         <ButtonContactText>{label}</ButtonContactText>
-//       </ButtonContactContainer>
-//     </Container>
-//   );
-// };
 
 const Container = styled.View`
   width: 100%;

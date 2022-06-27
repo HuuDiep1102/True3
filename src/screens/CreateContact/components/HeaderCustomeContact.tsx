@@ -8,7 +8,7 @@ interface HeaderCustomerContactProps {
 }
 export const HeaderCustomerContact = (props: HeaderCustomerContactProps) => {
   const {label1, label2} = props;
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
 
   return (
     <HeaderContainer>
@@ -35,7 +35,7 @@ const HeaderText1 = styled.Text`
 `;
 
 const HeaderText2 = styled.Text`
-  //font-family: 'Roboto';
+  font-family: 'Roboto-Regular';
   font-size: 18px;
   font-weight: 400;
   color: #828282;

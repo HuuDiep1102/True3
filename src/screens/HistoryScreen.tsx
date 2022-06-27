@@ -1,11 +1,10 @@
 import React from 'react';
-
-// @ts-ignore
 import styled from 'styled-components/native';
 import {WARNING_LOGO} from '../assets';
 import {COMMUNICATE_ICON} from '../assets';
 
 import {HeaderCustomer} from '../components/HeaderCustomer';
+import {Platform} from 'react-native';
 
 const Item = ({title, phoneNumber}) => (
   <ItemStyle>
@@ -15,7 +14,7 @@ const Item = ({title, phoneNumber}) => (
 
     <LogContainer>
       <ContactContainer>
-        <Title>{title}</Title>
+        <Title isIos>{title}</Title>
         <PhoneNumber>{phoneNumber}</PhoneNumber>
       </ContactContainer>
       <Time>Hôm nay</Time>
@@ -25,6 +24,7 @@ const Item = ({title, phoneNumber}) => (
 );
 
 export const HistoryScreen = () => {
+  const isIos = Platform.OS === 'ios';
   const renderItem = ({item}) => {
     return <Item title={item.title} phoneNumber={item.phoneNumber} />;
   };
@@ -44,6 +44,7 @@ export const HistoryScreen = () => {
 const Container = styled.SafeAreaView`
   flex: 1;
   background-color: #ffffff;
+  padding-top: 40px;
 `;
 
 const FlatListStyled = styled.FlatList``;
@@ -80,8 +81,8 @@ const ContactContainer = styled.View`
   justify-content: space-evenly;
 `;
 
-const Title = styled.Text`
-  font-weight: 500;
+const Title = styled.Text<{isIos: boolean}>`
+  font-weight: ${p => (p.isIos ? 500 : 'bold')};
   font-size: 16px;
   color: #333333;
   font-family: Roboto-Regular;
@@ -116,51 +117,51 @@ const data = [
   {
     title: 'Nguyễn Tiến Nam',
     phoneNumber: '0907812123',
-    key: 1,
+    key: '1',
   },
   {
     title: 'Vũ Mạnh Linh',
     phoneNumber: '0907812123',
-    key: 2,
+    key: '2',
   },
   {
     title: 'Trần Thái Hà',
     phoneNumber: '0907812123',
-    key: 3,
+    key: '3',
   },
   {
     title: 'Hoàng Ngọc Đức',
     phoneNumber: '0907809123',
-    key: 4,
+    key: '4',
   },
   {
     title: 'Đỗ Minh Hiếu',
     phoneNumber: '090232123',
-    key: 5,
+    key: '5',
   },
   {
     title: 'Nguyễn Tiến Nam',
     phoneNumber: '0907812123',
-    key: 6,
+    key: '6',
   },
   {
-    title: 'Vũ Mạnh Linh',
+    title: 'Phũ Mạnh Linh',
     phoneNumber: '0907812123',
-    key: 7,
+    key: '7',
   },
   {
-    title: 'Trần Thái Hà',
+    title: 'Trần Thái Hào',
     phoneNumber: '0907812123',
-    key: 8,
+    key: '8',
   },
   {
-    title: 'Hoàng Ngọc Đức',
+    title: 'Hoàng Ngọc D',
     phoneNumber: '0907809123',
-    key: 9,
+    key: '9',
   },
   {
-    title: 'Đỗ Minh Hiếu',
+    title: 'Đỗ Minh Hoang',
     phoneNumber: '090232123',
-    key: 10,
+    key: '10',
   },
 ];

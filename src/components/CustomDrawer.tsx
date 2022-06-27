@@ -1,29 +1,15 @@
 import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  ImageBackground,
-  Image,
-  TouchableOpacity,
-} from 'react-native';
-import {
-  DrawerContentScrollView,
-  DrawerItemList,
-} from '@react-navigation/drawer';
+import {Platform} from 'react-native';
+import {DrawerContentScrollView} from '@react-navigation/drawer';
 
-import {
-  ASSIGNMENT_ICON,
-  AVATAR2,
-  ADD_ICON,
-  DROP_ICON,
-  PLUS_ICON,
-} from '../assets';
+import {ASSIGNMENT_ICON, AVATAR2, ADD_ICON, DROP_ICON} from '../assets';
 
 import styled from 'styled-components/native';
 import {useNavigation} from '@react-navigation/native';
 import {CustomButtonList} from '../screens/CreateContact/components/CustomButtonList';
 
 const CustomDrawer = props => {
+
   const [isShow, setShow] = useState(false);
 
   const showEdit = () => {
@@ -91,6 +77,7 @@ export const CustomerItem = (props: CustomerItemProps) => {
 
 const DrawerContainer = styled.View`
   flex: 1;
+  margin-top: -30px;
 `;
 
 const BannerContainer = styled.View`
@@ -142,6 +129,7 @@ const NewCollectionButton = styled.TouchableOpacity`
 const NewCollectionButtonText = styled.Text`
   font-size: 15px;
   margin-left: 17px;
+  color: black;
 `;
 
 const CollectionContainer = styled.View`
@@ -166,6 +154,7 @@ const CollectionButtonText = styled.Text`
   margin-left: 16px;
   font-weight: 700;
   font-style: normal;
+  color: black;
 `;
 
 const EditButton = styled.TouchableOpacity`
@@ -202,6 +191,7 @@ const CustomerItemButton = styled.TouchableOpacity`
 const CustomerItemButtonText = styled.Text`
   font-size: 15px;
   margin-left: 17px;
+  color: black;
 `;
 
 const LogIcon = styled.Image`

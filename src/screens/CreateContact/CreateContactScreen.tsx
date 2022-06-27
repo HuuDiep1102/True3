@@ -1,24 +1,22 @@
-import React, {useState} from 'react';
+import React from 'react';
 
 import styled from 'styled-components/native';
-import {AVATAR1} from '../../assets';
 import {CustomButtonList} from './components/CustomButtonList';
 import {HeaderCustomerContact} from './components/HeaderCustomeContact';
 import {AvatarPicker} from './components/AvatarPicker';
 
 export const CreateContactScreen = () => {
-
-  const [param, setParam] = useState<{
-    phoneNumber: string[],
-    mail: string[],
-    address: string[],
-    birthday: string[],
-  }>({
-    phoneNumber: [],
-    mail: [],
-    address: [],
-    birthday: [],
-  });
+  // const [param, setParam] = useState<{
+  //   phoneNumber: string[];
+  //   mail: string[];
+  //   address: string[];
+  //   birthday: string[];
+  // }>({
+  //   phoneNumber: [],
+  //   mail: [],
+  //   address: [],
+  //   birthday: [],
+  // });
 
   return (
     <Container>
@@ -49,6 +47,7 @@ const Container = styled.SafeAreaView`
   background-color: white;
   height: 100%;
   justify-content: center;
+  padding-top: 40px;
 `;
 const InputContainer = styled.View`
   justify-content: center;
@@ -56,10 +55,6 @@ const InputContainer = styled.View`
 `;
 
 const FormContainer = styled.ScrollView``;
-const LogIcon = styled.Image`
-  height: 100px;
-  width: 100px;
-`;
 
 const InputInfoContainer = styled.View`
   height: 44px;

@@ -10,7 +10,7 @@ import {useNavigation} from '@react-navigation/native';
 export const HeaderCustomerInfo = (props: HeaderCustomerInfoProps) => {
   const {label} = props;
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
 
   return (
     <HeaderContainer>

@@ -9,7 +9,7 @@ interface HeaderCustomerProps {
   label: string;
 }
 export const HeaderCustomer = (props: HeaderCustomerProps) => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const {label} = props;
 
   return (
