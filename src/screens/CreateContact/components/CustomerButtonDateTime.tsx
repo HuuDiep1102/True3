@@ -1,8 +1,9 @@
 import {PLUS_ICON, REMOVE_ICON} from '../../../assets';
 import React, {useState, useCallback} from 'react';
 import styled from 'styled-components/native';
-import {Text, Platform, StyleSheet} from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import {Text, Button, View, Platform, StyleSheet} from 'react-native';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import moment from 'moment';
 
 interface CustomerButtonDateTimeProps {
   label: string;
@@ -12,18 +13,20 @@ export const CustomerButtonDateTime = (props: CustomerButtonDateTimeProps) => {
   const {label} = props;
   const [array, setArray] = useState<string[]>([]);
 
-  const [isPickerShow, setIsPickerShow] = useState(false);
-  const [date, setDate] = useState(new Date(Date.now()));
+  const [selectedDate, setSelectedDate] = useState();
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
-  const onChange = (event, value) => {
-    setDate(value);
-    if (Platform.OS === 'android') {
-      setIsPickerShow(false);
-    }
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
   };
 
-  const showPicker = () => {
-    setIsPickerShow(true);
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = date => {
+    setSelectedDate(date);
+    hideDatePicker();
   };
 
   const onRemove = useCallback(
@@ -43,20 +46,22 @@ export const CustomerButtonDateTime = (props: CustomerButtonDateTimeProps) => {
           }}>
           <PlusIcon source={REMOVE_ICON} />
         </InputContainer>
-        {/*<DateText>{date.toUTCString()}</DateText>*/}
-        {isPickerShow && (
-          <DateTimePicker
-            value={date}
-            mode={'date'}
-            display={Platform.OS === 'ios' ? 'default' : 'default'}
-            //is24Hour={true}
-            onChange={onChange}
-            style={styles.datePicker}
+        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+          <Text>{`Date:  ${
+            selectedDate
+              ? moment(selectedDate).format('MM/DD/YYYY')
+              : 'Please select date'
+          }`}</Text>
+          <DateTimePickerModal
+            isVisible={isDatePickerVisible}
+            mode="date"
+            onConfirm={handleConfirm}
+            onCancel={hideDatePicker}
           />
-        )}
+        </View>
       </InputContainerView>
 
-      <ButtonContactContainer onPress={showPicker}>
+      <ButtonContactContainer onPress={showDatePicker}>
         <PlusIcon source={PLUS_ICON} />
         <ButtonContactText>{label}</ButtonContactText>
       </ButtonContactContainer>
