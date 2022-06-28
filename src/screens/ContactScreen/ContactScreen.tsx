@@ -8,7 +8,7 @@
  * @format
  */
 import React from 'react';
-import styled from 'styled-components/native';
+import styled, {css} from 'styled-components/native';
 
 import {AlphabetList} from 'react-native-section-alphabet-list';
 import {AVATAR1} from '../../assets';
@@ -19,7 +19,6 @@ import {HeaderCustomer} from '../../components/HeaderCustomer';
 import {Platform} from 'react-native';
 
 const CustomItem = item => {
-  const isIos = Platform.OS === 'ios';
   const navigation = useNavigation<any>();
   return (
     <ListItemContainer
@@ -45,8 +44,6 @@ const CustomSectionHeader = (section: any) => {
 };
 
 export const ContactScreen = () => {
-  const isIos = Platform.OS === 'ios';
-
   return (
     <Container>
       <HeaderCustomer label={'Liên hệ'} />
@@ -110,8 +107,15 @@ const Background = styled.View`
   left: 0;
 `;
 
-const ListItemNameLabel = styled.Text<{isIos: boolean}>`
-  font-weight: ${p => (p.isIos ? 500 : 'bold')};
+const ListItemNameLabel = styled.Text`
+  ${Platform.select({
+    ios: css`
+      font-weight: 500;
+    `,
+    android: css`
+      font-weight: 700;
+    `,
+  })};
   font-size: 16px;
   color: #333333;
   font-style: normal;

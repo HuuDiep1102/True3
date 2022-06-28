@@ -5,18 +5,19 @@ import {useNavigation} from '@react-navigation/native';
 interface HeaderCustomerContactProps {
   label1: string;
   label2: string;
+  isActive: boolean;
 }
 export const HeaderCustomerContact = (props: HeaderCustomerContactProps) => {
-  const {label1, label2} = props;
+  const {label1, label2, isActive} = props;
   const navigation = useNavigation<any>();
 
   return (
     <HeaderContainer>
       <DrawButton onPress={navigation.goBack}>
-        <HeaderText1>{label1}</HeaderText1>
+        <HeaderText1 isActive={isActive}>{label1}</HeaderText1>
       </DrawButton>
-      <CreateContactButton onPress={() => navigation.openDrawer()}>
-        <HeaderText2>{label2}</HeaderText2>
+      <CreateContactButton onPress={() => navigation.goBack}>
+        <HeaderText2 isActive={isActive}>{label2}</HeaderText2>
       </CreateContactButton>
     </HeaderContainer>
   );
@@ -28,17 +29,17 @@ const HeaderContainer = styled.View`
   margin-bottom: 20px;
 `;
 
-const HeaderText1 = styled.Text`
+const HeaderText1 = styled.Text<{isActive: boolean}>`
   font-size: 18px;
   font-weight: 400;
-  color: #f2a54a;
+  color: ${p => (p.isActive ? '#828282' : '#f2a54a')};
 `;
 
-const HeaderText2 = styled.Text`
+const HeaderText2 = styled.Text<{isActive: boolean}>`
   font-family: 'Roboto-Regular';
   font-size: 18px;
   font-weight: 400;
-  color: #828282;
+  color: ${p => (p.isActive ? '#f2a54a' : '#828282')};
 `;
 
 const DrawButton = styled.TouchableOpacity`

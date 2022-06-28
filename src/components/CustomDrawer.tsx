@@ -4,7 +4,7 @@ import {DrawerContentScrollView} from '@react-navigation/drawer';
 
 import {ASSIGNMENT_ICON, AVATAR2, ADD_ICON, DROP_ICON} from '../assets';
 
-import styled from 'styled-components/native';
+import styled, {css} from 'styled-components/native';
 import {useNavigation} from '@react-navigation/native';
 import {CustomerButtonList} from '../screens/CreateContact/components/CustomerButtonList';
 
@@ -76,6 +76,15 @@ export const CustomerItem = (props: CustomerItemProps) => {
 
 const DrawerContainer = styled.View`
   flex: 1;
+
+  ${Platform.select({
+    ios: css`
+      margin-top: 0;
+    `,
+    android: css`
+      margin-top: -30;
+    `,
+  })};
 `;
 
 const BannerContainer = styled.View`

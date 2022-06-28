@@ -69,7 +69,7 @@ export const ContactDetailScreen = () => {
           </InputContactContainer>
         </WrapInput>
 
-        <WrapButton isIos>
+        <WrapButton>
           <Btn>
             <BtnMessageText>Gửi tin nhắn</BtnMessageText>
           </Btn>
@@ -210,8 +210,8 @@ const WrapInput = styled.View`
   align-items: center;
 `;
 
-const WrapButton = styled.View<{isIos: boolean}>`
-  margin-top: ${p => (p.isIos ? 60 : 80)};
+const WrapButton = styled.View`
+  margin-top: 80px;
   width: 100%;
   justify-content: center;
   align-items: center;
@@ -229,6 +229,7 @@ const InputTitleText = styled.Text`
   justify-content: center;
   align-self: flex-start;
   padding-left: 20px;
+  padding-top: 10px;
   color: black;
 `;
 

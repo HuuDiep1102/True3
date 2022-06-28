@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, Image, StyleSheet} from 'react-native';
+import {Platform} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {HistoryScreen} from '../screens/HistoryScreen';
 import {ContactScreen} from '../screens/ContactScreen/ContactScreen';
@@ -32,7 +32,13 @@ export const TabNavigation = () => {
         },
         tabBarActiveTintColor: '#ffffff',
         tabBarInactiveTintColor: '#FFDAAE',
-        tabBarStyle: {backgroundColor: '#F2A54A'},
+        tabBarStyle: {
+          backgroundColor: '#F2A54A',
+          height: Platform.OS === 'ios' ? 80 : 60,
+        },
+        tabBarLabelStyle: {
+          marginBottom: Platform.OS === 'ios' ? 0 : 8,
+        },
         headerShown: false,
       })}>
       <Tab.Screen name="Danh bạ" component={ContactScreen} />

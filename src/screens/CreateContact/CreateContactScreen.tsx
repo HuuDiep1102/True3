@@ -1,46 +1,81 @@
-import React from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 
 import styled from 'styled-components/native';
 import {CustomerButtonList} from './components/CustomerButtonList';
 import {CustomerButtonDateTime} from './components/CustomerButtonDateTime';
 import {HeaderCustomerContact} from './components/HeaderCustomeContact';
 import {AvatarPicker} from './components/AvatarPicker';
+import {KeyboardAvoidingView, Platform} from 'react-native';
 
 export const CreateContactScreen = () => {
-  // const [param, setParam] = useState<{
-  //   phoneNumber: string[];
-  //   mail: string[];
-  //   address: string[];
-  //   birthday: string[];
-  // }>({
-  //   phoneNumber: [],
-  //   mail: [],
-  //   address: [],
-  //   birthday: [],
-  // });
+  const [isActive, setActive] = useState(false);
+
+  const [param, setParam] = useState<{
+    firstName: string[];
+    lastName: string[];
+    company: string[];
+    phoneNumber: string[];
+    mail: string[];
+    address: string[];
+    birthday: string[];
+  }>({
+    firstName: [],
+    lastName: [],
+    company: [],
+    phoneNumber: [],
+    mail: [],
+    address: [],
+    birthday: [],
+  });
+  const [firstName, setFirstName] = useState('');
+
+  useEffect(() => {
+    if (firstName) setActive(true);
+    else setActive(false);
+  }, [firstName]);
+
+  const onChangeValue = useCallback(
+    (value: string) => {
+      setFirstName(value);
+    },
+    [firstName],
+  );
+  console.log('test', isActive);
 
   return (
-    <Container>
-      <HeaderCustomerContact label1={'Huỷ'} label2={'Xong'} />
-      <FormContainer>
-        <AvatarPicker />
-        <InputContainer>
-          <InputInfoContainer>
-            <InputInfo placeholder="Họ" />
-          </InputInfoContainer>
-          <InputInfoContainer>
-            <InputInfo placeholder="Tên" />
-          </InputInfoContainer>
-          <InputInfoContainer>
-            <InputInfo placeholder="Công ty" />
-          </InputInfoContainer>
-        </InputContainer>
-        <CustomerButtonList label={'thêm số điện thoại'} />
-        <CustomerButtonList label={'thêm email'} />
-        <CustomerButtonList label={'thêm địa chỉ'} />
-        <CustomerButtonDateTime label={'thêm ngày sinh'} />
-      </FormContainer>
-    </Container>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <Container>
+        <HeaderCustomerContact
+          label1={'Huỷ'}
+          label2={'Xong'}
+          isActive={isActive}
+        />
+        <FormContainer>
+          <AvatarPicker />
+          <InputContainer>
+            <InputInfoContainer>
+              <InputInfo
+                placeholder="Họ"
+                value={firstName}
+                onChangeText={onChangeValue}
+                autoFocus={true}
+              />
+            </InputInfoContainer>
+            <InputInfoContainer>
+              <InputInfo placeholder="Tên" />
+            </InputInfoContainer>
+            <InputInfoContainer>
+              <InputInfo placeholder="Công ty" />
+            </InputInfoContainer>
+          </InputContainer>
+          <CustomerButtonList label={'thêm số điện thoại'} />
+          <CustomerButtonList label={'thêm email'} />
+          <CustomerButtonList label={'thêm địa chỉ'} />
+          <CustomerButtonDateTime label={'thêm ngày sinh'} />
+        </FormContainer>
+      </Container>
+    </KeyboardAvoidingView>
   );
 };
 

@@ -36,7 +36,7 @@ export const AvatarPicker = () => {
         isVisible={visible}
         onClose={() => setVisible(false)}
         onImageLibraryPress={onImageLibraryPress}
-        //onCameraPress={onCameraPress}
+        onCameraPress={onCameraPress}
       />
     </Screen>
   );

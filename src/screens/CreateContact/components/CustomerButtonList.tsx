@@ -40,7 +40,6 @@ export const CustomerButtonList = (props: CustomerButtonListProps) => {
 
   const addNewValue = useCallback(() => {
     setArray([...array, '']);
-    console.log(array);
   }, [array]);
 
   const onRemove = useCallback(
@@ -104,7 +103,6 @@ const InputContainerView = styled.View`
   align-items: center;
   border-bottom-width: 0.5px;
   border-bottom-color: #e0e0e0;
-  justify-content: center;
 `;
 
 const InputContact = styled.TextInput`

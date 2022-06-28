@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components/native';
+import styled, {css} from 'styled-components/native';
 import {WARNING_LOGO} from '../assets';
 import {COMMUNICATE_ICON} from '../assets';
 
@@ -14,7 +14,7 @@ const Item = ({title, phoneNumber}) => (
 
     <LogContainer>
       <ContactContainer>
-        <Title isIos>{title}</Title>
+        <Title>{title}</Title>
         <PhoneNumber>{phoneNumber}</PhoneNumber>
       </ContactContainer>
       <Time>Hôm nay</Time>
@@ -24,7 +24,6 @@ const Item = ({title, phoneNumber}) => (
 );
 
 export const HistoryScreen = () => {
-  //const isIos = Platform.OS === 'ios';
   const renderItem = ({item}) => {
     return <Item title={item.title} phoneNumber={item.phoneNumber} />;
   };
@@ -81,8 +80,15 @@ const ContactContainer = styled.View`
   justify-content: space-evenly;
 `;
 
-const Title = styled.Text<{isIos: boolean}>`
-  font-weight: ${p => (p.isIos ? 500 : 'bold')};
+const Title = styled.Text`
+  ${Platform.select({
+    ios: css`
+      font-weight: 500;
+    `,
+    android: css`
+      font-weight: 700;
+    `,
+  })};
   font-size: 16px;
   color: #333333;
   font-family: Roboto-Regular;

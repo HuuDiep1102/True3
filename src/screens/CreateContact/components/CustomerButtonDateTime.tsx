@@ -16,9 +16,10 @@ export const CustomerButtonDateTime = (props: CustomerButtonDateTimeProps) => {
   const [selectedDate, setSelectedDate] = useState();
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
-  const showDatePicker = () => {
+  const addNewValue = useCallback(() => {
+    setArray([...array, '']);
     setDatePickerVisibility(true);
-  };
+  }, [array]);
 
   const hideDatePicker = () => {
     setDatePickerVisibility(false);
@@ -39,29 +40,30 @@ export const CustomerButtonDateTime = (props: CustomerButtonDateTimeProps) => {
 
   return (
     <Container>
-      <InputContainerView>
-        <InputContainer
-          onPress={() => {
-            onRemove(0);
-          }}>
-          <PlusIcon source={REMOVE_ICON} />
-        </InputContainer>
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text>{`Date:  ${
-            selectedDate
-              ? moment(selectedDate).format('MM/DD/YYYY')
-              : 'Please select date'
-          }`}</Text>
-          <DateTimePickerModal
-            isVisible={isDatePickerVisible}
-            mode="date"
-            onConfirm={handleConfirm}
-            onCancel={hideDatePicker}
-          />
-        </View>
-      </InputContainerView>
-
-      <ButtonContactContainer onPress={showDatePicker}>
+      {array.map((item, index) => {
+        return (
+          <InputContainerView>
+            <InputContainer
+              onPress={() => {
+                onRemove(0);
+              }}>
+              <PlusIcon source={REMOVE_ICON} />
+            </InputContainer>
+            <DateTimeView>
+              <DateTimeText>{`${
+                selectedDate ? moment(selectedDate).format('DD/MM/YYYY') : ''
+              }`}</DateTimeText>
+              <DateTimePickerModal
+                isVisible={isDatePickerVisible}
+                mode="date"
+                onConfirm={handleConfirm}
+                onCancel={hideDatePicker}
+              />
+            </DateTimeView>
+          </InputContainerView>
+        );
+      })}
+      <ButtonContactContainer onPress={addNewValue}>
         <PlusIcon source={PLUS_ICON} />
         <ButtonContactText>{label}</ButtonContactText>
       </ButtonContactContainer>
@@ -73,12 +75,23 @@ const Container = styled.View`
   background-color: white;
   align-items: center;
   flex-direction: column;
-  margin-top: 40px;
+  margin-top: 24px;
 `;
 
 const PlusIcon = styled.Image`
   height: 24px;
   width: 24px;
+`;
+
+const DateTimeView = styled.View`
+  flex: 1;
+  justify-content: center;
+`;
+
+const DateTimeText = styled.Text`
+  padding-left: 17px;
+  color: #2f80ed;
+  font-size: 15px;
 `;
 
 const ButtonContactText = styled.Text`
@@ -118,27 +131,3 @@ const InputContainerView = styled.View`
   border-bottom-color: #e0e0e0;
   justify-content: center;
 `;
-
-const styles = StyleSheet.create({
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    flex: 1,
-    justifyContent: 'center',
-    padding: 50,
-  },
-  pickedDateContainer: {
-    padding: 20,
-    backgroundColor: '#eee',
-    borderRadius: 10,
-  },
-  btnContainer: {
-    padding: 30,
-  },
-  // This only works on iOS
-  datePicker: {
-    width: 200,
-    height: 200,
-  },
-});
