@@ -10,7 +10,9 @@ import {KeyboardAvoidingView, Platform} from 'react-native';
 export const CreateContactScreen = () => {
   const [isActive, setActive] = useState(false);
 
-  const [param, setParam] = useState<{
+  const [params, setParams] = useState<{
+    id: string;
+    avatar: string[];
     firstName: string[];
     lastName: string[];
     company: string[];
@@ -19,6 +21,8 @@ export const CreateContactScreen = () => {
     address: string[];
     birthday: string[];
   }>({
+    id: `${new Date().getTime().toString()}`,
+    avatar: [],
     firstName: [],
     lastName: [],
     company: [],
@@ -30,17 +34,16 @@ export const CreateContactScreen = () => {
   const [firstName, setFirstName] = useState('');
 
   useEffect(() => {
-    if (firstName) setActive(true);
+    if (params.firstName) setActive(true);
     else setActive(false);
-  }, [firstName]);
+  }, [params.firstName]);
 
   const onChangeValue = useCallback(
-    (value: string) => {
-      setFirstName(value);
+    (value: any) => {
+      setParams(value);
     },
-    [firstName],
+    [params.firstName],
   );
-  console.log('test', isActive);
 
   return (
     <KeyboardAvoidingView
@@ -57,16 +60,26 @@ export const CreateContactScreen = () => {
             <InputInfoContainer>
               <InputInfo
                 placeholder="Họ"
-                value={firstName}
+                value={params.lastName}
                 onChangeText={onChangeValue}
                 autoFocus={true}
               />
             </InputInfoContainer>
             <InputInfoContainer>
-              <InputInfo placeholder="Tên" />
+              <InputInfo
+                placeholder="Tên"
+                value={params.firstName}
+                onChangeText={onChangeValue}
+                autoFocus={true}
+              />
             </InputInfoContainer>
             <InputInfoContainer>
-              <InputInfo placeholder="Công ty" />
+              <InputInfo
+                placeholder="Công ty"
+                value={params.company}
+                onChangeText={onChangeValue}
+                autoFocus={true}
+              />
             </InputInfoContainer>
           </InputContainer>
           <CustomerButtonList label={'thêm số điện thoại'} />
