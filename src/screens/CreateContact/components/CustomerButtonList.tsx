@@ -2,13 +2,26 @@ import {PLUS_ICON, REMOVE_ICON} from '../../../assets';
 import React, {useState, useCallback} from 'react';
 import styled from 'styled-components/native';
 import {CustomerInput} from './CustomerInput';
+import {TextInput} from 'react-native';
 
 interface CustomerButtonListProps {
   label: string;
+  setParams: (prev: any) => void;
+  data: string[];
+  keyName: string;
 }
 
-const Cell = ({onRemove, index}: {onRemove: Function; index: number}) => {
-  const [inputText, setInputText] = useState('');
+interface CustomerCellProps {
+  onRemove: (index: number) => void;
+  index: number;
+  data: string[];
+  setParams: (prev: any) => void;
+  keyName: string;
+}
+
+const Cell = (props: CustomerCellProps) => {
+  const {onRemove, index, data, setParams} = props;
+  console.log('index', index);
 
   // const onChangeValue = useCallback(
   //   (value: string) => {
@@ -17,12 +30,57 @@ const Cell = ({onRemove, index}: {onRemove: Function; index: number}) => {
   //   [inputText],
   // );
 
-  const onValueChange = useCallback((keyName: string, value: string[]) => {
-    setParams(state => ({
-      ...state,
-      [keyName]: value,
-    }));
+  // const onValueChange = useCallback((keyName: string, value: string[]) => {
+  //   setParams(state => ({
+  //     ...state,
+  //     [keyName]: value,
+  //   }));
+  // }, []);
+  //
+
+  const onValueChange = useCallback((value: string) => {
+    setParams(prev => {
+      let _arr = [...prev['phoneNumber']];
+      _arr[index] = value;
+      return {
+        ...prev,
+        ['phoneNumber']: _arr,
+      };
+    });
   }, []);
+
+  // const onValueChangePhoneNumber = useCallback((value: string) => {
+  //   setParams(prev => {
+  //     let _arr = [...prev['phoneNumber']];
+  //     _arr[index] = value;
+  //     return {
+  //       ...prev,
+  //       ['phoneNumber']: _arr,
+  //     };
+  //   });
+  // }, []);
+
+  // const onValueChangeEmail = useCallback((value: string) => {
+  //   setParams(prev => {
+  //     let _arr = [...prev['email']];
+  //     _arr[index] = value;
+  //     return {
+  //       ...prev,
+  //       ['email']: _arr,
+  //     };
+  //   });
+  // }, []);
+  //
+  // const onValueChangeAddress = useCallback((value: string) => {
+  //   setParams(prev => {
+  //     let _arr = [...prev['address']];
+  //     _arr[index] = value;
+  //     return {
+  //       ...prev,
+  //       ['address']: _arr,
+  //     };
+  //   });
+  // }, []);
 
   return (
     <InputContainerView>
@@ -35,20 +93,23 @@ const Cell = ({onRemove, index}: {onRemove: Function; index: number}) => {
       <CustomerInput
         placeholder={'Mời nhập'}
         autoFocus={true}
-        keyName={'firstName'}
-        value={params.firstName}
-        onValueChange={onValueChange}
+        value={data[index]}
+        onChangeText={onValueChange}
       />
     </InputContainerView>
   );
 };
 
 export const CustomerButtonList = (props: CustomerButtonListProps) => {
-  const {label} = props;
+  const {label, setParams, data, keyName} = props;
   const [array, setArray] = useState<string[]>([]);
 
   const addNewValue = useCallback(() => {
-    setArray([...array, '']);
+    setParams(prev => {
+      let _arr = [...prev[keyName]];
+      _arr.push('');
+      return {...prev, [keyName]: _arr};
+    });
   }, [array]);
 
   const onRemove = useCallback(
@@ -61,8 +122,17 @@ export const CustomerButtonList = (props: CustomerButtonListProps) => {
 
   return (
     <Container>
-      {array.map((item, index) => {
-        return <Cell key={index} onRemove={onRemove} index={index} />;
+      {/*Bao loi Object underfined thi them dau hoi cham*/}
+      {data?.map((item, index) => {
+        return (
+          <Cell
+            key={index}
+            onRemove={onRemove}
+            index={index}
+            data={data}
+            setParams={setParams}
+          />
+        );
       })}
       <ButtonContactContainer onPress={addNewValue}>
         <PlusIcon source={PLUS_ICON} />

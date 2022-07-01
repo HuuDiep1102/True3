@@ -44,36 +44,6 @@ export const CreateContactScreen = () => {
     else setActive(false);
   }, [params.firstName, params.value, params.company]);
 
-  // const onChangeFirstName = useCallback(
-  //   (value: string) => {
-  //     setParams({
-  //       ...params,
-  //       firstName: value,
-  //     });
-  //   },
-  //   [params],
-  // );
-  //
-  // const onChangeLastName = useCallback(
-  //   (value: string) => {
-  //     setParams({
-  //       ...params,
-  //       lastName: value,
-  //     });
-  //   },
-  //   [params],
-  // );
-  // const onChangeCompany = useCallback(
-  //   (value: string) => {
-  //     setParams({
-  //       ...params,
-  //       // Voi so dien thoai, hay dia chi thi la mot mang nen phai thay doi su dung phuong thuc cua mang value.push
-  //       value: value,
-  //     });
-  //   },
-  //   [params],
-  // );
-
   // Xay dung ham onChangeText chung
   // Muon su dung ham chung phai tu build component input rieng
 
@@ -83,6 +53,8 @@ export const CreateContactScreen = () => {
       [keyName]: value,
     }));
   }, []);
+
+  console.log('params', params);
 
   return (
     <KeyboardAvoidingView
@@ -135,9 +107,22 @@ export const CreateContactScreen = () => {
               />
             </InputInfoContainer>
           </InputContainer>
-          <CustomerButtonList label={'thêm số điện thoại'} />
-          <CustomerButtonList label={'thêm email'} />
-          <CustomerButtonList label={'thêm địa chỉ'} />
+          <CustomerButtonList
+            label={'thêm số điện thoại'}
+            setParams={setParams}
+            data={params.phoneNumber}
+            keyName={'phoneNumber'}
+          />
+          <CustomerButtonList
+            label={'thêm email'}
+            // setParams={setParams}
+            // data={params.email}
+          />
+          <CustomerButtonList
+            label={'thêm địa chỉ'}
+            // setParams={setParams}
+            // data={params.address}
+          />
           <CustomerButtonDateTime label={'thêm ngày sinh'} />
         </FormContainer>
       </Container>

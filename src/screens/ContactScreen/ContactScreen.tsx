@@ -37,7 +37,10 @@ const CustomItem = item => {
         <ListItemNameLabel>
           {item.value} {item.firstName}
         </ListItemNameLabel>
-        <ListItemPhoneLabel>{item.company}</ListItemPhoneLabel>
+        {item.phoneNumber.map(item => {
+          return <ListItemPhoneLabel>{item}</ListItemPhoneLabel>;
+        })}
+        {/*<ListItemPhoneLabel>{item.company}</ListItemPhoneLabel>*/}
       </ContactContainer>
     </ListItemContainer>
   );
