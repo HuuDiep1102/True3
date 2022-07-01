@@ -34,8 +34,10 @@ const CustomItem = item => {
       <ContactContainer>
         {/*Alphabet list luon yeu cau mot truong la value nen co the tu tuy chinh
         value la firt assassd*/}
-        <ListItemNameLabel>{item.value}</ListItemNameLabel>
-        <ListItemPhoneLabel>{item.phoneNumber}</ListItemPhoneLabel>
+        <ListItemNameLabel>
+          {item.value} {item.firstName}
+        </ListItemNameLabel>
+        <ListItemPhoneLabel>{item.company}</ListItemPhoneLabel>
       </ContactContainer>
     </ListItemContainer>
   );

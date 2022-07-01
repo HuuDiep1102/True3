@@ -3,6 +3,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import {CustomerButtonList} from './components/CustomerButtonList';
 import {CustomerButtonDateTime} from './components/CustomerButtonDateTime';
+import {CustomerInput} from './components/CustomerInput';
 import {AvatarPicker} from './components/AvatarPicker';
 import {KeyboardAvoidingView, Platform} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
@@ -14,65 +15,74 @@ export const CreateContactScreen = () => {
 
   const [params, setParams] = useState<{
     id: string;
-    avatar: string;
-    firstName: string;
-    lastName: string;
-    company: string;
-    phoneNumber: string;
-    email: string;
-    address: string;
-    birthday: string;
-    value: string;
+    value: string[];
+    avatar: string[];
+    firstName: string[];
+    //lastName: string[];
+    company: string[];
+    phoneNumber: string[];
+    email: string[];
+    address: string[];
+    birthday: string[];
   }>({
     id: `${new Date().getTime().toString()}`,
-    avatar: '',
-    firstName: '',
-    lastName: '',
-    company: '',
-    phoneNumber: '',
-    email: '',
-    address: '',
-    birthday: '',
-    value: '',
+    avatar: [],
+    firstName: [],
+    //lastName: [],
+    company: [],
+    phoneNumber: [],
+    email: [],
+    address: [],
+    birthday: [],
+    value: [],
   });
 
-  const [firstName, setFirstName] = useState('');
   console.log('params', params);
 
   useEffect(() => {
-    if (params.firstName || params.lastName || params.company) setActive(true);
+    if (params.firstName || params.value || params.company) setActive(true);
     else setActive(false);
-  }, [params.firstName, params.lastName, params.company]);
+  }, [params.firstName, params.value, params.company]);
 
-  const onChangeFirstName = useCallback(
-    (value: string) => {
-      setParams({
-        ...params,
-        firstName: value,
-      });
-    },
-    [params],
-  );
+  // const onChangeFirstName = useCallback(
+  //   (value: string) => {
+  //     setParams({
+  //       ...params,
+  //       firstName: value,
+  //     });
+  //   },
+  //   [params],
+  // );
+  //
+  // const onChangeLastName = useCallback(
+  //   (value: string) => {
+  //     setParams({
+  //       ...params,
+  //       lastName: value,
+  //     });
+  //   },
+  //   [params],
+  // );
+  // const onChangeCompany = useCallback(
+  //   (value: string) => {
+  //     setParams({
+  //       ...params,
+  //       // Voi so dien thoai, hay dia chi thi la mot mang nen phai thay doi su dung phuong thuc cua mang value.push
+  //       value: value,
+  //     });
+  //   },
+  //   [params],
+  // );
 
-  const onChangeLastName = useCallback(
-    (value: string) => {
-      setParams({
-        ...params,
-        lastName: value,
-      });
-    },
-    [params],
-  );
-  const onChangeCompany = useCallback(
-    (value: string) => {
-      setParams({
-        ...params,
-        // Voi so dien thoai, hay dia chi thi la mot mang nen phai thay doi su dung phuong thuc cua mang value.push
-        value: value,
-      });
-    },
-    [params],
-  );
+  // Xay dung ham onChangeText chung
+  // Muon su dung ham chung phai tu build component input rieng
+
+  const onValueChange = useCallback((keyName: string, value: string[]) => {
+    setParams(state => ({
+      ...state,
+      [keyName]: value,
+    }));
+  }, []);
 
   return (
     <KeyboardAvoidingView
@@ -98,27 +108,30 @@ export const CreateContactScreen = () => {
           <AvatarPicker />
           <InputContainer>
             <InputInfoContainer>
-              <InputInfo
+              <CustomerInput
                 placeholder="Họ"
-                value={params.lastName}
-                onChangeText={onChangeLastName}
-                autoFocus={true}
-              />
-            </InputInfoContainer>
-            <InputInfoContainer>
-              <InputInfo
-                placeholder="Tên"
-                value={params.firstName}
-                onChangeText={onChangeFirstName}
-                autoFocus={true}
-              />
-            </InputInfoContainer>
-            <InputInfoContainer>
-              <InputInfo
-                placeholder="Công ty"
+                keyName={'value'}
                 value={params.value}
-                onChangeText={onChangeCompany}
+                onValueChange={onValueChange}
                 autoFocus={true}
+              />
+            </InputInfoContainer>
+            <InputInfoContainer>
+              <CustomerInput
+                placeholder="Tên"
+                keyName={'firstName'}
+                value={params.firstName}
+                onValueChange={onValueChange}
+                //autoFocus={true}
+              />
+            </InputInfoContainer>
+            <InputInfoContainer>
+              <CustomerInput
+                placeholder="Công ty"
+                keyName={'company'}
+                value={params.company}
+                onValueChange={onValueChange}
+                //autoFocus={true}
               />
             </InputInfoContainer>
           </InputContainer>
@@ -152,8 +165,6 @@ const InputInfoContainer = styled.View`
   border-bottom-color: #e0e0e0;
   justify-content: center;
 `;
-
-const InputInfo = styled.TextInput``;
 
 const HeaderContainer = styled.View`
   flex-direction: row;

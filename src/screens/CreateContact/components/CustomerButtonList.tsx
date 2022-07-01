@@ -1,6 +1,7 @@
 import {PLUS_ICON, REMOVE_ICON} from '../../../assets';
 import React, {useState, useCallback} from 'react';
 import styled from 'styled-components/native';
+import {CustomerInput} from './CustomerInput';
 
 interface CustomerButtonListProps {
   label: string;
@@ -9,12 +10,19 @@ interface CustomerButtonListProps {
 const Cell = ({onRemove, index}: {onRemove: Function; index: number}) => {
   const [inputText, setInputText] = useState('');
 
-  const onChangeValue = useCallback(
-    (value: string) => {
-      setInputText(value);
-    },
-    [inputText],
-  );
+  // const onChangeValue = useCallback(
+  //   (value: string) => {
+  //     setInputText(value);
+  //   },
+  //   [inputText],
+  // );
+
+  const onValueChange = useCallback((keyName: string, value: string[]) => {
+    setParams(state => ({
+      ...state,
+      [keyName]: value,
+    }));
+  }, []);
 
   return (
     <InputContainerView>
@@ -24,11 +32,12 @@ const Cell = ({onRemove, index}: {onRemove: Function; index: number}) => {
         }}>
         <PlusIcon source={REMOVE_ICON} />
       </InputContainer>
-      <InputContact
-        value={inputText}
+      <CustomerInput
         placeholder={'Mời nhập'}
-        onChangeText={onChangeValue}
         autoFocus={true}
+        keyName={'firstName'}
+        value={params.firstName}
+        onValueChange={onValueChange}
       />
     </InputContainerView>
   );

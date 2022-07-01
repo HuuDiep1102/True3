@@ -9,7 +9,7 @@ export function ImagePickerModal({
   isVisible,
   onClose,
   onImageLibraryPress,
-  //onCameraPress,
+  onCameraPress,
 }) {
   return (
     <Modal
@@ -23,10 +23,10 @@ export function ImagePickerModal({
 
           <ButtonText>Library</ButtonText>
         </Button>
-        {/*  <Button onPress={onCameraPress}>*/}
-        {/*    <Image source={AVATAR1} />*/}
-        {/*    <ButtonText>Camera</ButtonText>*/}
-        {/*  </Button>*/}
+        {/*<Button onPress={onCameraPress}>*/}
+        {/*  <ButtonIcon source={CAMERA_ICON} />*/}
+        {/*  <ButtonText>Camera</ButtonText>*/}
+        {/*</Button>*/}
       </Buttons>
     </Modal>
   );
