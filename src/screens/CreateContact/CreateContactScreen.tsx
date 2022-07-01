@@ -3,57 +3,99 @@ import React, {useCallback, useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import {CustomerButtonList} from './components/CustomerButtonList';
 import {CustomerButtonDateTime} from './components/CustomerButtonDateTime';
-import {HeaderCustomerContact} from './components/HeaderCustomeContact';
 import {AvatarPicker} from './components/AvatarPicker';
 import {KeyboardAvoidingView, Platform} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import {updateContactAction} from '../../redux/contact/contactStore';
 
 export const CreateContactScreen = () => {
   const [isActive, setActive] = useState(false);
+  const navigation = useNavigation<any>();
 
   const [params, setParams] = useState<{
     id: string;
-    avatar: string[];
-    firstName: string[];
-    lastName: string[];
-    company: string[];
-    phoneNumber: string[];
-    mail: string[];
-    address: string[];
-    birthday: string[];
+    avatar: string;
+    firstName: string;
+    lastName: string;
+    company: string;
+    phoneNumber: string;
+    email: string;
+    address: string;
+    birthday: string;
+    value: string;
   }>({
     id: `${new Date().getTime().toString()}`,
-    avatar: [],
-    firstName: [],
-    lastName: [],
-    company: [],
-    phoneNumber: [],
-    mail: [],
-    address: [],
-    birthday: [],
+    avatar: '',
+    firstName: '',
+    lastName: '',
+    company: '',
+    phoneNumber: '',
+    email: '',
+    address: '',
+    birthday: '',
+    value: '',
   });
+
   const [firstName, setFirstName] = useState('');
+  console.log('params', params);
 
   useEffect(() => {
     if (params.firstName) setActive(true);
     else setActive(false);
   }, [params.firstName]);
 
-  const onChangeValue = useCallback(
-    (value: any) => {
-      setParams(value);
+  //Choc se tim cach de gop cac ham onChange nay lai
+
+  const onChangeFirstName = useCallback(
+    (value: string) => {
+      setParams({
+        ...params,
+        firstName: value,
+      });
     },
-    [params.firstName],
+    [params],
+  );
+
+  const onChangeLastName = useCallback(
+    (value: string) => {
+      setParams({
+        ...params,
+        lastName: value,
+      });
+    },
+    [params],
+  );
+  const onChangeCompany = useCallback(
+    (value: string) => {
+      setParams({
+        ...params,
+        // Voi so dien thoai, hay dia chi thi la mot mang nen phai thay doi su dung phuong thuc cua mang value.push
+        value: value,
+      });
+    },
+    [params],
   );
 
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <Container>
-        <HeaderCustomerContact
-          label1={'Huỷ'}
-          label2={'Xong'}
-          isActive={isActive}
-        />
+        {/*Su dung HeaderComponent kho tuong tac du lieu*/}
+        <HeaderContainer>
+          {/*Sua lai isActive kho tuong tac du lieu*/}
+          <DrawButton onPress={navigation.goBack}>
+            <HeaderText1 isActive={isActive}>Huy</HeaderText1>
+          </DrawButton>
+          <CreateContactButton
+            onPress={() => {
+              //Kich Xong thi se chuyen cac params thanh state
+              updateContactAction(params);
+              navigation.goBack();
+            }}>
+            <HeaderText2 isActive={isActive}>Xong</HeaderText2>
+          </CreateContactButton>
+        </HeaderContainer>
+
         <FormContainer>
           <AvatarPicker />
           <InputContainer>
@@ -61,7 +103,7 @@ export const CreateContactScreen = () => {
               <InputInfo
                 placeholder="Họ"
                 value={params.lastName}
-                onChangeText={onChangeValue}
+                onChangeText={onChangeLastName}
                 autoFocus={true}
               />
             </InputInfoContainer>
@@ -69,15 +111,15 @@ export const CreateContactScreen = () => {
               <InputInfo
                 placeholder="Tên"
                 value={params.firstName}
-                onChangeText={onChangeValue}
+                onChangeText={onChangeFirstName}
                 autoFocus={true}
               />
             </InputInfoContainer>
             <InputInfoContainer>
               <InputInfo
                 placeholder="Công ty"
-                value={params.company}
-                onChangeText={onChangeValue}
+                value={params.value}
+                onChangeText={onChangeCompany}
                 autoFocus={true}
               />
             </InputInfoContainer>
@@ -114,3 +156,30 @@ const InputInfoContainer = styled.View`
 `;
 
 const InputInfo = styled.TextInput``;
+
+const HeaderContainer = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 20px;
+`;
+
+const HeaderText1 = styled.Text<{isActive: boolean}>`
+  font-size: 18px;
+  font-weight: 400;
+  color: ${p => (p.isActive ? '#828282' : '#f2a54a')};
+`;
+
+const HeaderText2 = styled.Text<{isActive: boolean}>`
+  font-family: 'Roboto-Regular';
+  font-size: 18px;
+  font-weight: 400;
+  color: ${p => (p.isActive ? '#f2a54a' : '#828282')};
+`;
+
+const DrawButton = styled.TouchableOpacity`
+  padding-left: 16px;
+`;
+
+const CreateContactButton = styled.TouchableOpacity`
+  padding-right: 16px;
+`;

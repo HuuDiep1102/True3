@@ -7,6 +7,10 @@
  *
  * @format
  */
+
+/*
+Note: Do useContact ra 1 list de nem vao section list
+ */
 import React from 'react';
 import styled, {css} from 'styled-components/native';
 
@@ -17,6 +21,7 @@ import {useNavigation} from '@react-navigation/native';
 
 import {HeaderCustomer} from '../../components/HeaderCustomer';
 import {Platform} from 'react-native';
+import {useContacts} from '../../redux/contact/contactStore';
 
 const CustomItem = item => {
   const navigation = useNavigation<any>();
@@ -27,8 +32,10 @@ const CustomItem = item => {
         <Avatar source={AVATAR1} />
       </AvatarContainer>
       <ContactContainer>
-        <ListItemNameLabel isIos>{item.value}</ListItemNameLabel>
-        <ListItemPhoneLabel>{item.phoneNumber}</ListItemPhoneLabel>
+        {/*Alphabet list luon yeu cau mot truong la value nen co the tu tuy chinh
+        value la firstName*/}
+        <ListItemNameLabel>{item.value}</ListItemNameLabel>
+        <ListItemPhoneLabel>{item.firstName}</ListItemPhoneLabel>
       </ContactContainer>
     </ListItemContainer>
   );
@@ -44,6 +51,8 @@ const CustomSectionHeader = (section: any) => {
 };
 
 export const ContactScreen = () => {
+  const listContact = useContacts();
+  console.log('list', listContact);
   return (
     <Container>
       <HeaderCustomer label={'Liên hệ'} />
@@ -52,7 +61,7 @@ export const ContactScreen = () => {
         <InputSearch placeholder="Tìm kiếm danh bạ" />
       </SearchbarContainer>
       <AlphabetList
-        data={data}
+        data={listContact}
         letterListContainerStyle={{
           justifyContent: 'space-evenly',
         }}

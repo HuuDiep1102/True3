@@ -1,8 +1,10 @@
 import 'react-redux';
 import {StateType} from 'typesafe-actions';
-
-export interface ContactList {
+//Raw Contact nay la mot phan  tu contact
+// Model phai khop vs ben tao moi
+export interface RawContact {
   id: string;
+  value:string;
   avatar: string;
   firstName: string;
   lastName: string;
