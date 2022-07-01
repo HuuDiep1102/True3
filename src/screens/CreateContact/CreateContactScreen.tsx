@@ -40,11 +40,9 @@ export const CreateContactScreen = () => {
   console.log('params', params);
 
   useEffect(() => {
-    if (params.firstName) setActive(true);
+    if (params.firstName || params.lastName || params.company) setActive(true);
     else setActive(false);
-  }, [params.firstName]);
-
-  //Choc se tim cach de gop cac ham onChange nay lai
+  }, [params.firstName, params.lastName, params.company]);
 
   const onChangeFirstName = useCallback(
     (value: string) => {
@@ -82,9 +80,9 @@ export const CreateContactScreen = () => {
       <Container>
         {/*Su dung HeaderComponent kho tuong tac du lieu*/}
         <HeaderContainer>
-          {/*Sua lai isActive kho tuong tac du lieu*/}
+          {/*Su kho tuong tac du lieu*/}
           <DrawButton onPress={navigation.goBack}>
-            <HeaderText1 isActive={isActive}>Huy</HeaderText1>
+            <HeaderText1 isActive={isActive}>Huỷ</HeaderText1>
           </DrawButton>
           <CreateContactButton
             onPress={() => {

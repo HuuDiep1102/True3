@@ -33,9 +33,9 @@ const CustomItem = item => {
       </AvatarContainer>
       <ContactContainer>
         {/*Alphabet list luon yeu cau mot truong la value nen co the tu tuy chinh
-        value la firstName*/}
+        value la firt assassd*/}
         <ListItemNameLabel>{item.value}</ListItemNameLabel>
-        <ListItemPhoneLabel>{item.firstName}</ListItemPhoneLabel>
+        <ListItemPhoneLabel>{item.phoneNumber}</ListItemPhoneLabel>
       </ContactContainer>
     </ListItemContainer>
   );
