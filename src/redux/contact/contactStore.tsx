@@ -43,7 +43,7 @@ export const useContacts = () => {
 };
 
 export const updateContactAction = (val: RawContact) => {
-  // dispatch vao action update cua contactReducer
+  // dispatch vao action update cua contactReduce
   return store.dispatch(updateContact(val));
 };
 

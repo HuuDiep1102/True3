@@ -11,7 +11,7 @@
 /*
 Note: Do useContact ra 1 list de nem vao section list
  */
-import React from 'react';
+import React, {useCallback} from 'react';
 import styled, {css} from 'styled-components/native';
 
 import {AlphabetList} from 'react-native-section-alphabet-list';
@@ -25,22 +25,26 @@ import {useContacts} from '../../redux/contact/contactStore';
 
 const CustomItem = item => {
   const navigation = useNavigation<any>();
+
   return (
     <ListItemContainer
       onPress={() => navigation.navigate('ContactDetailScreen')}>
       <AvatarContainer>
-        <Avatar source={AVATAR1} />
+        <Avatar
+          source={{
+            uri: 'file:///Users/imacbase/Library/Developer/CoreSimulator/Devices/AB4A37C1-739E-403B-8626-15BADCC5F145/data/Containers/Data/Application/2D1A8E66-8A33-4E89-B096-04BD28E205DA/tmp/88F4720F-39A0-41B8-97D0-27031A039B6F.jpg',
+          }}
+        />
       </AvatarContainer>
       <ContactContainer>
         {/*Alphabet list luon yeu cau mot truong la value nen co the tu tuy chinh
-        value la firt assassd*/}
+        value la lastName*/}
         <ListItemNameLabel>
           {item.value} {item.firstName}
         </ListItemNameLabel>
         {item.phoneNumber.map(item => {
           return <ListItemPhoneLabel>{item}</ListItemPhoneLabel>;
         })}
-        {/*<ListItemPhoneLabel>{item.company}</ListItemPhoneLabel>*/}
       </ContactContainer>
     </ListItemContainer>
   );
@@ -65,24 +69,26 @@ export const ContactScreen = () => {
         <Search source={SEARCH_ICON} />
         <InputSearch placeholder="Tìm kiếm danh bạ" />
       </SearchbarContainer>
-      <AlphabetList
-        data={listContact}
-        letterListContainerStyle={{
-          justifyContent: 'space-evenly',
-        }}
-        indexLetterStyle={{
-          color: '#F2A54A',
-          fontSize: 13,
-          fontWeight: '400',
-        }}
-        indexContainerStyle={{
-          marginRight: 10,
-          paddingTop: 10,
-        }}
-        index={customIndex}
-        renderCustomItem={CustomItem}
-        renderCustomSectionHeader={CustomSectionHeader}
-      />
+      <ListContainer>
+        <AlphabetList
+          data={listContact}
+          letterListContainerStyle={{
+            justifyContent: 'space-evenly',
+          }}
+          indexLetterStyle={{
+            color: '#F2A54A',
+            fontSize: 13,
+            fontWeight: '400',
+          }}
+          indexContainerStyle={{
+            marginRight: 10,
+            paddingTop: 10,
+          }}
+          index={customIndex}
+          renderCustomItem={CustomItem}
+          renderCustomSectionHeader={CustomSectionHeader}
+        />
+      </ListContainer>
     </Container>
   );
 };
@@ -92,6 +98,9 @@ const Container = styled.View`
   background-color: #ffffff;
   padding-top: 37px;
   padding-bottom: 100px;
+`;
+const ListContainer = styled.View`
+  height: 600px;
 `;
 
 const ListItemContainer = styled.TouchableOpacity`
@@ -163,6 +172,7 @@ const AvatarContainer = styled.View`
 const Avatar = styled.Image`
   height: 40px;
   width: 40px;
+  border-radius: 35px;
 `;
 
 const SearchbarContainer = styled.View`

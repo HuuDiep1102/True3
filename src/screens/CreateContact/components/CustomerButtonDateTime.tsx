@@ -1,16 +1,16 @@
 import {PLUS_ICON, REMOVE_ICON} from '../../../assets';
 import React, {useState, useCallback} from 'react';
 import styled from 'styled-components/native';
-import {Text, Button, View, Platform, StyleSheet} from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
 
 interface CustomerButtonDateTimeProps {
   label: string;
+  setParams;
 }
 
 export const CustomerButtonDateTime = (props: CustomerButtonDateTimeProps) => {
-  const {label} = props;
+  const {label, setParams} = props;
   const [array, setArray] = useState<string[]>([]);
 
   const [selectedDate, setSelectedDate] = useState();
@@ -27,6 +27,10 @@ export const CustomerButtonDateTime = (props: CustomerButtonDateTimeProps) => {
 
   const handleConfirm = date => {
     setSelectedDate(date);
+    setParams(state => ({
+      ...state,
+      birthday: moment(selectedDate).format('DD/MM/YYYY'),
+    }));
     hideDatePicker();
   };
 

@@ -2,7 +2,6 @@ import {PLUS_ICON, REMOVE_ICON} from '../../../assets';
 import React, {useState, useCallback} from 'react';
 import styled from 'styled-components/native';
 import {CustomerInput} from './CustomerInput';
-import {TextInput} from 'react-native';
 
 interface CustomerButtonListProps {
   label: string;
@@ -20,67 +19,19 @@ interface CustomerCellProps {
 }
 
 const Cell = (props: CustomerCellProps) => {
-  const {onRemove, index, data, setParams} = props;
+  const {onRemove, index, data, setParams, keyName} = props;
   console.log('index', index);
-
-  // const onChangeValue = useCallback(
-  //   (value: string) => {
-  //     setInputText(value);
-  //   },
-  //   [inputText],
-  // );
-
-  // const onValueChange = useCallback((keyName: string, value: string[]) => {
-  //   setParams(state => ({
-  //     ...state,
-  //     [keyName]: value,
-  //   }));
-  // }, []);
-  //
 
   const onValueChange = useCallback((value: string) => {
     setParams(prev => {
-      let _arr = [...prev['phoneNumber']];
+      let _arr = [...prev[keyName]];
       _arr[index] = value;
       return {
         ...prev,
-        ['phoneNumber']: _arr,
+        [keyName]: _arr,
       };
     });
   }, []);
-
-  // const onValueChangePhoneNumber = useCallback((value: string) => {
-  //   setParams(prev => {
-  //     let _arr = [...prev['phoneNumber']];
-  //     _arr[index] = value;
-  //     return {
-  //       ...prev,
-  //       ['phoneNumber']: _arr,
-  //     };
-  //   });
-  // }, []);
-
-  // const onValueChangeEmail = useCallback((value: string) => {
-  //   setParams(prev => {
-  //     let _arr = [...prev['email']];
-  //     _arr[index] = value;
-  //     return {
-  //       ...prev,
-  //       ['email']: _arr,
-  //     };
-  //   });
-  // }, []);
-  //
-  // const onValueChangeAddress = useCallback((value: string) => {
-  //   setParams(prev => {
-  //     let _arr = [...prev['address']];
-  //     _arr[index] = value;
-  //     return {
-  //       ...prev,
-  //       ['address']: _arr,
-  //     };
-  //   });
-  // }, []);
 
   return (
     <InputContainerView>
@@ -91,6 +42,13 @@ const Cell = (props: CustomerCellProps) => {
         <PlusIcon source={REMOVE_ICON} />
       </InputContainer>
       <CustomerInput
+        style={{
+          width: '93%',
+          paddingLeft: 17,
+          color: '#2f80ed',
+          fontWeight: '400',
+          fontSize: 15,
+        }}
         placeholder={'Mời nhập'}
         autoFocus={true}
         value={data[index]}
@@ -131,6 +89,7 @@ export const CustomerButtonList = (props: CustomerButtonListProps) => {
             index={index}
             data={data}
             setParams={setParams}
+            keyName={keyName}
           />
         );
       })}
@@ -182,13 +141,4 @@ const InputContainerView = styled.View`
   align-items: center;
   border-bottom-width: 0.5px;
   border-bottom-color: #e0e0e0;
-`;
-
-const InputContact = styled.TextInput`
-  width: 93%;
-  padding-left: 17px;
-  color: #2f80ed;
-  font-weight: 400;
-  font-size: 15px;
-  font-family: Roboto-Regular;
 `;

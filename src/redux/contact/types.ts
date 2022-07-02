@@ -6,12 +6,12 @@ import {StateType} from 'typesafe-actions';
 export interface RawContact {
   id: string;
   value: string[];
-  avatar: string[];
+  avatar: string;
   firstName: string[];
   //lastName: string;[]
   company: string[];
   phoneNumber: string[];
   email: string[];
   address: string[];
-  birthday: string[];
+  birthday: string;
 }

@@ -16,24 +16,24 @@ export const CreateContactScreen = () => {
   const [params, setParams] = useState<{
     id: string;
     value: string[];
-    avatar: string[];
+    avatar: string;
     firstName: string[];
     //lastName: string[];
     company: string[];
     phoneNumber: string[];
     email: string[];
     address: string[];
-    birthday: string[];
+    birthday: string;
   }>({
     id: `${new Date().getTime().toString()}`,
-    avatar: [],
+    avatar: '',
     firstName: [],
     //lastName: [],
     company: [],
     phoneNumber: [],
     email: [],
     address: [],
-    birthday: [],
+    birthday: '',
     value: [],
   });
 
@@ -77,7 +77,7 @@ export const CreateContactScreen = () => {
         </HeaderContainer>
 
         <FormContainer>
-          <AvatarPicker />
+          <AvatarPicker setParams={setParams} />
           <InputContainer>
             <InputInfoContainer>
               <CustomerInput
@@ -115,15 +115,20 @@ export const CreateContactScreen = () => {
           />
           <CustomerButtonList
             label={'thêm email'}
-            // setParams={setParams}
-            // data={params.email}
+            setParams={setParams}
+            data={params.email}
+            keyName={'email'}
           />
           <CustomerButtonList
             label={'thêm địa chỉ'}
-            // setParams={setParams}
-            // data={params.address}
+            setParams={setParams}
+            data={params.address}
+            keyName={'address'}
           />
-          <CustomerButtonDateTime label={'thêm ngày sinh'} />
+          <CustomerButtonDateTime
+            label={'thêm ngày sinh'}
+            setParams={setParams}
+          />
         </FormContainer>
       </Container>
     </KeyboardAvoidingView>

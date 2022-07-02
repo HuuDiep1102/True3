@@ -1,11 +1,16 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState, useCallback, useEffect} from 'react';
 import * as ImagePicker from 'react-native-image-picker';
 
 import {ImagePickerModal} from './ImagePickerModal';
 import {ImagePickerAvatar} from './ImageAvatarPicker';
 import styled from 'styled-components/native';
 
-export const AvatarPicker = () => {
+interface AvatarPickerProps {
+  setParams;
+}
+
+export const AvatarPicker = (props: AvatarPickerProps) => {
+  const {setParams} = props;
   const [pickerResponse, setPickerResponse] = useState(null);
   const [visible, setVisible] = useState(false);
 
@@ -27,7 +32,16 @@ export const AvatarPicker = () => {
     ImagePicker.launchCamera(options, setPickerResponse);
   }, []);
 
-  const uri = pickerResponse?.assets && pickerResponse.assets[0].uri;
+  let uri = pickerResponse?.assets && pickerResponse.assets[0].uri;
+
+  console.log(uri);
+
+  useEffect(() => {
+    setParams(state => ({
+      ...state,
+      avatar: uri,
+    }));
+  }, [uri, setParams]);
 
   return (
     <Screen>
