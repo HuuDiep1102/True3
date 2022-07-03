@@ -28,7 +28,7 @@ const CustomItem = item => {
 
   return (
     <ListItemContainer
-      onPress={() => navigation.navigate('ContactDetailScreen')}>
+      onPress={() => navigation.navigate('ContactDetailScreen', {item})}>
       <AvatarContainer>
         <Avatar
           source={{

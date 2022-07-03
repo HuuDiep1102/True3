@@ -7,10 +7,13 @@ import {
   FACETIME_ICON,
   MAIL_ICON,
 } from '../../assets';
+import {useRoute} from '@react-navigation/native';
 
 import {HeaderCustomerInfo} from './components/HeaderCustomerInfo';
 
 export const ContactDetailScreen = () => {
+  const params = useRoute();
+  const item = params?.item;
   return (
     <Container>
       <HeaderContainer>
