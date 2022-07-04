@@ -11,11 +11,10 @@
 /*
 Note: Do useContact ra 1 list de nem vao section list
  */
-import React, {useCallback} from 'react';
+import React from 'react';
 import styled, {css} from 'styled-components/native';
 
 import {AlphabetList} from 'react-native-section-alphabet-list';
-import {AVATAR1} from '../../assets';
 import {SEARCH_ICON} from '../../assets';
 import {useNavigation} from '@react-navigation/native';
 
@@ -32,6 +31,7 @@ const CustomItem = item => {
       <AvatarContainer>
         <Avatar
           source={{
+            //uri: {item.avatar}
             uri: 'file:///Users/imacbase/Library/Developer/CoreSimulator/Devices/AB4A37C1-739E-403B-8626-15BADCC5F145/data/Containers/Data/Application/2D1A8E66-8A33-4E89-B096-04BD28E205DA/tmp/88F4720F-39A0-41B8-97D0-27031A039B6F.jpg',
           }}
         />

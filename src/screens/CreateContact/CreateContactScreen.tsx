@@ -6,14 +6,16 @@ import {CustomerButtonDateTime} from './components/CustomerButtonDateTime';
 import {CustomerInput} from './components/CustomerInput';
 import {AvatarPicker} from './components/AvatarPicker';
 import {KeyboardAvoidingView, Platform} from 'react-native';
-import {useNavigation,useRoute} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {updateContactAction} from '../../redux/contact/contactStore';
 
 export const CreateContactScreen = () => {
   const [isActive, setActive] = useState(false);
   const navigation = useNavigation<any>();
-  const params = useRoute();
-  const item = params?.item
+
+  // const route = useRoute();
+  //
+  // const {item} = route?.params;
 
   const [params, setParams] = useState<{
     id: string;
@@ -26,8 +28,8 @@ export const CreateContactScreen = () => {
     email: string[];
     address: string[];
     birthday: string;
-  }>(item ?? {
-    id: ${new Date().getTime().toString()},
+  }>({
+    id: `${new Date().getTime().toString()}`,
     avatar: '',
     firstName: [],
     //lastName: [],
@@ -39,18 +41,10 @@ export const CreateContactScreen = () => {
     value: [],
   });
 
-  console.log('params', params);
-
   useEffect(() => {
     if (params.firstName || params.value || params.company) setActive(true);
     else setActive(false);
   }, [params.firstName, params.value, params.company]);
-
-  useEffect(() => {
-    if(params){
-      updateContact(params)
-    }
-  }, [params.firstName, params.value, params.company,params.phoneNumber,...]);
 
   // Xay dung ham onChangeText chung
   // Muon su dung ham chung phai tu build component input rieng
@@ -78,7 +72,7 @@ export const CreateContactScreen = () => {
             onPress={() => {
               //Kich Xong thi se chuyen cac params thanh state
               updateContactAction(params);
-              navigation.goBack();
+              navigation.navigate('ContactScreen');
             }}>
             <HeaderText2 isActive={isActive}>Xong</HeaderText2>
           </CreateContactButton>

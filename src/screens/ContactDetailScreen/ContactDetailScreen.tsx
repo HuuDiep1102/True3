@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import styled from 'styled-components/native';
 import {
   AVATAR2,
@@ -6,25 +6,40 @@ import {
   MESSAGE_ICON,
   FACETIME_ICON,
   MAIL_ICON,
+  ARROW_ICON,
 } from '../../assets';
-import {useRoute} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 
-import {HeaderCustomerInfo} from './components/HeaderCustomerInfo';
+import {removeContactAction} from '../../redux/contact/contactStore';
 
 export const ContactDetailScreen = () => {
-  const params = useRoute();
-  const item = params?.item;
+  const navigation = useNavigation<any>();
+
+  const route = useRoute();
+
+  const {item} = route?.params;
+
   return (
     <Container>
       <HeaderContainer>
         <HeaderView />
-        <HeaderCustomerInfo label={'Sửa'} />
+        <HeaderContainerUpdate>
+          <DrawButton onPress={navigation.goBack}>
+            <HeaderImage source={ARROW_ICON} />
+          </DrawButton>
+          <CreateContactButton
+            onPress={() => navigation.navigate('CreateContactScreen', {item})}>
+            <HeaderText>Sửa</HeaderText>
+          </CreateContactButton>
+        </HeaderContainerUpdate>
         <AvatarContainer>
           <LogIcon source={AVATAR2} />
         </AvatarContainer>
 
         <InfoContainer isIos>
-          <InfoName>Nguyễn Tiến Nam</InfoName>
+          <InfoName>
+            {item.value} {item.firstName}
+          </InfoName>
           <InfoJob>UI/UX Design</InfoJob>
         </InfoContainer>
 
@@ -62,7 +77,7 @@ export const ContactDetailScreen = () => {
             <InputTitleText>Điện thoại</InputTitleText>
           </InputTitleContainer>
           <InputContactContainer>
-            <InputContact>0977272160</InputContact>
+            <InputContact>{item.phoneNumber}</InputContact>
           </InputContactContainer>
           <InputTitleContainer>
             <InputTitleText>Ghi chú</InputTitleText>
@@ -77,7 +92,13 @@ export const ContactDetailScreen = () => {
             <BtnMessageText>Gửi tin nhắn</BtnMessageText>
           </Btn>
           <Btn>
-            <BtnRemoveText>Xoá người gọi</BtnRemoveText>
+            <BtnRemoveText
+              onPress={() => {
+                removeContactAction({item});
+                navigation.navigate('ContactScreen');
+              }}>
+              Xoá người gọi
+            </BtnRemoveText>
           </Btn>
         </WrapButton>
       </ContactContainer>
@@ -255,4 +276,27 @@ const BtnRemoveText = styled(BtnMessageText)`
   color: #ff4a4a;
   font-size: 15px;
   font-family: Roboto-Regular;
+`;
+
+const HeaderContainerUpdate = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
+const HeaderText = styled.Text`
+  font-size: 18px;
+  font-weight: 400;
+  color: #f2a54a;
+`;
+
+const DrawButton = styled.TouchableOpacity`
+  padding-left: 16px;
+`;
+
+const CreateContactButton = styled.TouchableOpacity`
+  padding-right: 16px;
+`;
+const HeaderImage = styled.ImageBackground`
+  width: 24px;
+  height: 24px;
 `;

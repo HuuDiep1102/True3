@@ -23,6 +23,8 @@ const contactReducer = createSlice({
     },
     deleteContact: (state, payload: PayloadAction<RawContact>) => {
       //Delete chua hoan thien
+      // const oldState = [...state];
+      // let newState = oldState.filter((item, id) => id !== id)),
       return state;
     },
   },

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {LoginScreen} from '../screens/LoginScreen/LoginScreen';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -29,6 +29,7 @@ const MainNavigation = () => {
         name="ContactDetailScreen"
         component={ContactDetailScreen}
       />
+      <Stack.Screen name="ContactScreen" component={ContactScreen} />
     </Stack.Navigator>
   );
 };
