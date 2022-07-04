@@ -25,14 +25,15 @@ import {useContacts} from '../../redux/contact/contactStore';
 const CustomItem = item => {
   const navigation = useNavigation<any>();
 
+  console.log('intem', item);
+
   return (
     <ListItemContainer
       onPress={() => navigation.navigate('ContactDetailScreen', {item})}>
       <AvatarContainer>
         <Avatar
           source={{
-            //uri: {item.avatar}
-            uri: 'file:///Users/imacbase/Library/Developer/CoreSimulator/Devices/AB4A37C1-739E-403B-8626-15BADCC5F145/data/Containers/Data/Application/2D1A8E66-8A33-4E89-B096-04BD28E205DA/tmp/88F4720F-39A0-41B8-97D0-27031A039B6F.jpg',
+            uri: item.avatar,
           }}
         />
       </AvatarContainer>

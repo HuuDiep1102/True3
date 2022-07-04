@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import styled from 'styled-components/native';
 import {
   AVATAR2,
@@ -9,15 +9,30 @@ import {
   ARROW_ICON,
 } from '../../assets';
 import {useNavigation, useRoute} from '@react-navigation/native';
+import {Linking} from 'react-native';
 
 import {removeContactAction} from '../../redux/contact/contactStore';
 
 export const ContactDetailScreen = () => {
   const navigation = useNavigation<any>();
+  const [isActive, setActive] = useState(false);
 
   const route = useRoute();
 
-  const {item} = route?.params;
+  const item = route?.params.item;
+  console.log('item', item);
+
+  const isActivePhoneNumber = item?.phoneNumber.length > 0 ? true : false;
+  const isActiveMessage = item?.phoneNumber.length > 0 ? true : false;
+  // const isActivePhoneNumber = item?.phoneNumber.length > 0 ? true : false;
+  // const isActivePhoneNumber = item?.phoneNumber.length > 0 ? true : false;
+
+  console.log(isActivePhoneNumber, item.phoneNumber.length);
+
+  useEffect(() => {
+    if (item.phoneNumber.length > 0) setActive(true);
+    else setActive(false);
+  }, [route?.params.item]);
 
   return (
     <Container>
@@ -45,13 +60,20 @@ export const ContactDetailScreen = () => {
 
         <ContactIconContainer>
           <ContactItem>
-            <ContactIconActive>
+            <ContactIconPhone
+              onPress={() => {
+                Linking.openURL(`tel:${item.phoneNumber}`);
+              }}
+              isActive={isActive}>
               <ContactIcon source={PHONE_ICON} />
-            </ContactIconActive>
+            </ContactIconPhone>
             <ContactActiveText>Nhấn gọi điện</ContactActiveText>
           </ContactItem>
           <ContactItem>
-            <ContactIconActive>
+            <ContactIconActive
+              onPress={() => {
+                Linking.openURL(`sms:${item.phoneNumber}`);
+              }}>
               <ContactIcon source={MESSAGE_ICON} />
             </ContactIconActive>
             <ContactActiveText>Nhắn tin</ContactActiveText>
@@ -63,7 +85,11 @@ export const ContactDetailScreen = () => {
             <ContactActiveText>Facetime</ContactActiveText>
           </ContactItem>
           <ContactItem>
-            <ContactIconInactive disabled={true}>
+            <ContactIconInactive
+              disabled={false}
+              onPress={() => {
+                Linking.openURL(`mailto:${item.email}`);
+              }}>
               <ContactIcon source={MAIL_ICON} />
             </ContactIconInactive>
             <ContactInactiveText>Gửi mail</ContactInactiveText>
@@ -77,7 +103,31 @@ export const ContactDetailScreen = () => {
             <InputTitleText>Điện thoại</InputTitleText>
           </InputTitleContainer>
           <InputContactContainer>
-            <InputContact>{item.phoneNumber}</InputContact>
+            {item.phoneNumber.map(item => {
+              return (
+                <InputContactButton
+                  onPress={() => {
+                    Linking.openURL(`sms:${item}`);
+                  }}>
+                  <InputContact>{item}</InputContact>
+                </InputContactButton>
+              );
+            })}
+          </InputContactContainer>
+          <InputTitleContainer>
+            <InputTitleText>Email</InputTitleText>
+          </InputTitleContainer>
+          <InputContactContainer>
+            {item.email.map(item => {
+              return (
+                <InputContactButton
+                  onPress={() => {
+                    Linking.openURL(`mailto:${item}`);
+                  }}>
+                  <InputContact>{item}</InputContact>
+                </InputContactButton>
+              );
+            })}
           </InputContactContainer>
           <InputTitleContainer>
             <InputTitleText>Ghi chú</InputTitleText>
@@ -88,7 +138,10 @@ export const ContactDetailScreen = () => {
         </WrapInput>
 
         <WrapButton>
-          <Btn>
+          <Btn
+            onPress={() => {
+              Linking.openURL(`sms:${item.phoneNumber}`);
+            }}>
             <BtnMessageText>Gửi tin nhắn</BtnMessageText>
           </Btn>
           <Btn>
@@ -148,14 +201,28 @@ const ContactItem = styled.View`
   justify-content: center;
   align-items: center;
 `;
+const ContactIconPhone = styled.TouchableOpacity<{
+  isActive: boolean;
+}>`
+  height: 40px;
+  width: 40px;
+  border-radius: 20px;
+  border-width: 0.5px;
+  border-color: #bdbdbd;
+  justify-content: center;
+  align-items: center;
+  background-color: ${p => (p.isActive ? '#f2a54a' : '#ffffff')};
+`;
 
 const ContactIconActive = styled.TouchableOpacity`
   height: 40px;
   width: 40px;
   border-radius: 20px;
-  background-color: #f2a54a;
+  border-width: 0.5px;
+  border-color: #bdbdbd;
   justify-content: center;
   align-items: center;
+  background-color: #f2a54a;
 `;
 
 const ContactIconInactive = styled.TouchableOpacity`
@@ -172,6 +239,7 @@ const ContactIconInactive = styled.TouchableOpacity`
 const ContactIcon = styled.Image`
   height: 24px;
   width: 24px;
+  tint-color: gray;
 `;
 
 const ContactActiveText = styled.Text`
@@ -227,6 +295,8 @@ const InputContact = styled.Text`
   padding-bottom: 8px;
 `;
 
+const InputContactButton = styled.TouchableOpacity``;
+
 const WrapInput = styled.View`
   height: 64px;
   width: 100%;
@@ -235,7 +305,7 @@ const WrapInput = styled.View`
 `;
 
 const WrapButton = styled.View`
-  margin-top: 80px;
+  margin-top: 250px;
   width: 100%;
   justify-content: center;
   align-items: center;
