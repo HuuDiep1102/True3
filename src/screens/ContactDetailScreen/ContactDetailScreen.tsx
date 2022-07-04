@@ -10,6 +10,7 @@ import {
 } from '../../assets';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {Linking} from 'react-native';
+import ContactItem from './components/ContactItem';
 
 import {removeContactAction} from '../../redux/contact/contactStore';
 
@@ -59,7 +60,8 @@ export const ContactDetailScreen = () => {
         </InfoContainer>
 
         <ContactIconContainer>
-          <ContactItem>
+          <ContactItem label1={'item.phoneNumber'} label2={'Goi dien'} active={isActive} keyName={'Goi dien'}/>
+          {/* <ContactItem>
             <ContactIconPhone
               onPress={() => {
                 Linking.openURL(`tel:${item.phoneNumber}`);
@@ -68,7 +70,7 @@ export const ContactDetailScreen = () => {
               <ContactIcon source={PHONE_ICON} />
             </ContactIconPhone>
             <ContactActiveText>Nhấn gọi điện</ContactActiveText>
-          </ContactItem>
+          </ContactItem> */}
           <ContactItem>
             <ContactIconActive
               onPress={() => {

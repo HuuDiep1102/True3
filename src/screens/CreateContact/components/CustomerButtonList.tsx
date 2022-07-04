@@ -37,7 +37,7 @@ const Cell = (props: CustomerCellProps) => {
     <InputContainerView>
       <InputContainer
         onPress={() => {
-          onRemove(index);
+          onRemove(data[index]);
         }}>
         <PlusIcon source={REMOVE_ICON} />
       </InputContainer>
@@ -71,9 +71,9 @@ export const CustomerButtonList = (props: CustomerButtonListProps) => {
   }, [array]);
 
   const onRemove = useCallback(
-    (index: number) => {
+    (value: string) => {
       const oldArray = [...array];
-      setArray(oldArray.filter((_item, _index) => _index !== index));
+      setArray(oldArray.filter((_item, _index) => _item[keyName].splice(_item[keyName].indexOf(value), 1))); //_item[keyName] => phoneNumber => [ '134275']
     },
     [array],
   );
