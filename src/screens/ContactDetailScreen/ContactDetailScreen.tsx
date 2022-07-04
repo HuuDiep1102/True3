@@ -94,7 +94,7 @@ export const ContactDetailScreen = () => {
           <Btn>
             <BtnRemoveText
               onPress={() => {
-                removeContactAction({item});
+                removeContactAction(item);
                 navigation.navigate('ContactScreen');
               }}>
               Xoá người gọi

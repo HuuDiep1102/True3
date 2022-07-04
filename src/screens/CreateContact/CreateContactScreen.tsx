@@ -13,9 +13,11 @@ export const CreateContactScreen = () => {
   const [isActive, setActive] = useState(false);
   const navigation = useNavigation<any>();
 
-  // const route = useRoute();
-  //
-  // const {item} = route?.params;
+  const route = useRoute();
+
+  console.log('route', route);
+
+  const item: any = route?.params?.item;
 
   const [params, setParams] = useState<{
     id: string;
@@ -40,6 +42,12 @@ export const CreateContactScreen = () => {
     birthday: '',
     value: [],
   });
+
+  useEffect(() => {
+    if (item) {
+      setParams(item);
+    }
+  }, [item]);
 
   useEffect(() => {
     if (params.firstName || params.value || params.company) setActive(true);

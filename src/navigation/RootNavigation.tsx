@@ -19,7 +19,6 @@ const MainNavigation = () => {
     <Stack.Navigator
       initialRouteName="TabNavigation"
       screenOptions={{headerShown: false}}>
-      {/*<Stack.Screen name="TabNavigation" component={TabNavigation} />*/}
       <Stack.Screen name="Draw" component={DrawerNavigation} />
       <Stack.Screen
         name="CreateContactScreen"
@@ -41,11 +40,6 @@ const DrawerNavigation = () => {
       initialRouteName="TabNavigation"
       screenOptions={{headerShown: false, drawerType: 'front'}}>
       <Drawer.Screen name="TabNavigation" component={TabNavigation} />
-      {/*<Drawer.Screen name="ContactScreen" component={ContactScreen} />*/}
-      {/*<Drawer.Screen*/}
-      {/*  name="ContactDetailScreen"*/}
-      {/*  component={ContactDetailScreen}*/}
-      {/*/>*/}
     </Drawer.Navigator>
   );
 };

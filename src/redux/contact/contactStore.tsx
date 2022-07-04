@@ -21,16 +21,16 @@ const contactReducer = createSlice({
       //Neu ko tim thay index thi se tien hanh tao mot phan tu moi
       return [...state, payload.payload];
     },
-    deleteContact: (state, payload: PayloadAction<RawContact>) => {
+    removeContact: (state, payload: PayloadAction<RawContact>) => {
       //Delete chua hoan thien
-      // const oldState = [...state];
-      // let newState = oldState.filter((item, id) => id !== id)),
-      return state;
+      const oldState = [...state];
+      const newState = oldState.filter(item => item.id !== payload.payload.id);
+      return newState;
     },
   },
 });
 
-export const {updateContact, deleteContact} = contactReducer.actions; // goi ra cac action cua contactReducer
+export const {updateContact, removeContact} = contactReducer.actions; // goi ra cac action cua contactReducer
 
 export const store = configureStore({
   // khoi tao reducer
@@ -51,5 +51,5 @@ export const updateContactAction = (val: RawContact) => {
 
 export const removeContactAction = (val: RawContact) => {
   // dispatch vao action update cua contactReducer
-  return store.dispatch(deleteContact(val));
+  return store.dispatch(removeContact(val));
 };
