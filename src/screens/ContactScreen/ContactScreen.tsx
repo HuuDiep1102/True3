@@ -11,7 +11,7 @@
 /*
 Note: Do useContact ra 1 list de nem vao section list
  */
-import React from 'react';
+import React, {useCallback, useState} from 'react';
 import styled, {css} from 'styled-components/native';
 
 import {AlphabetList} from 'react-native-section-alphabet-list';
@@ -24,8 +24,6 @@ import {useContacts} from '../../redux/contact/contactStore';
 
 const CustomItem = item => {
   const navigation = useNavigation<any>();
-
-  console.log('intem', item);
 
   return (
     <ListItemContainer
@@ -62,17 +60,40 @@ const CustomSectionHeader = (section: any) => {
 
 export const ContactScreen = () => {
   const listContact = useContacts();
-  console.log('list', listContact);
+
+  //console.log('list', listContact);
+
+  const [value, setValue] = useState('');
+  const [data, setData] = useState(listContact);
+
+  const onChangeText = useCallback(text => {
+    setValue(text);
+    const oldData = [...listContact];
+    setData(
+      oldData.filter(
+        item =>
+          item.value.indexOf(text) > -1 ||
+          item.firstName.indexOf(text) > -1 ||
+          item.phoneNumber[0].indexOf(text) > -1,
+      ),
+    );
+  }, []);
+
   return (
     <Container>
       <HeaderCustomer label={'Liên hệ'} />
       <SearchbarContainer>
         <Search source={SEARCH_ICON} />
-        <InputSearch placeholder="Tìm kiếm danh bạ" />
+        <InputSearch
+          placeholder="Tìm kiếm danh bạ"
+          value={value}
+          onChangeText={onChangeText}
+          placeholderTextColor={'#BDBDBD'}
+        />
       </SearchbarContainer>
       <ListContainer>
         <AlphabetList
-          data={listContact}
+          data={value !== '' ? data : listContact}
           letterListContainerStyle={{
             justifyContent: 'space-evenly',
           }}
@@ -188,7 +209,9 @@ const SearchbarContainer = styled.View`
   align-items: center;
 `;
 
-const InputSearch = styled.TextInput``;
+const InputSearch = styled.TextInput`
+  color: black;
+`;
 
 const Search = styled.Image`
   position: absolute;
@@ -197,83 +220,6 @@ const Search = styled.Image`
   width: 16px;
 `;
 
-const data = [
-  {
-    value: 'Nguyễn Tiến Nam',
-    phoneNumber: '0907812123',
-    key: '1',
-  },
-  {
-    value: 'Vũ Mạnh Linh',
-    phoneNumber: '0907812123',
-    key: '2',
-  },
-  {
-    value: 'Trần Thái Hà',
-    phoneNumber: '0907812123',
-    key: '3',
-  },
-  {
-    value: 'Bui Mạnh Đạt',
-    phoneNumber: '090788623',
-    key: '4',
-  },
-  {
-    value: 'An Phan',
-    phoneNumber: '0907812123',
-    key: '5',
-  },
-  {
-    value: 'Binh Vu',
-    phoneNumber: '0907812123',
-    key: '6',
-  },
-  {
-    value: 'Uyen Nguyen',
-    phoneNumber: '0907812123',
-    key: '7',
-  },
-  {
-    value: 'Minh Anh',
-    phoneNumber: '090788623',
-    key: '8',
-  },
-  {
-    value: 'Ong Mạnh Linh',
-    phoneNumber: '0907812123',
-    key: '9',
-  },
-  {
-    value: 'Pham Thái Hà',
-    phoneNumber: '0907812123',
-    key: '10',
-  },
-  {
-    value: 'Sun Mạnh Đạt',
-    phoneNumber: '090788623',
-    key: '11',
-  },
-  {
-    value: 'Luu Phan',
-    phoneNumber: '0907812123',
-    key: '12',
-  },
-  {
-    value: 'Zurich Vu',
-    phoneNumber: '0907812123',
-    key: '13',
-  },
-  {
-    value: 'Yen Nguyen',
-    phoneNumber: '0907812123',
-    key: '14',
-  },
-  {
-    value: 'Ung Anh',
-    phoneNumber: '090788623',
-    key: '15',
-  },
-];
 const customIndex = [
   'a',
   'ă',

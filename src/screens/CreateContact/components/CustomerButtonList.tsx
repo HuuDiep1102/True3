@@ -20,7 +20,6 @@ interface CustomerCellProps {
 
 const Cell = (props: CustomerCellProps) => {
   const {onRemove, index, data, setParams, keyName} = props;
-  console.log('index', index);
 
   const onValueChange = useCallback((value: string) => {
     setParams(prev => {
@@ -37,6 +36,7 @@ const Cell = (props: CustomerCellProps) => {
     <InputContainerView>
       <InputContainer
         onPress={() => {
+          //onRemove(index);
           onRemove(index);
         }}>
         <PlusIcon source={REMOVE_ICON} />
@@ -72,10 +72,19 @@ export const CustomerButtonList = (props: CustomerButtonListProps) => {
 
   const onRemove = useCallback(
     (index: number) => {
-      const oldArray = [...array];
-      setArray(oldArray.filter((_item, _index) => _index !== index));
+      // const oldArray = [...data];
+      // console.log('oldArray', oldArray);
+      // //setArray(oldArray.filter((_item, _index) => _index !== index));
+      // const newArray = oldArray.filter((_item, _index) => _index !== index);
+      // console.log('newArray', newArray);
+      // //setParams([keyName] = newArray)
+      setParams(prev => {
+        const oldArray = [...data];
+        const newArray = oldArray.filter((_item, _index) => _index !== index);
+        return {...prev, [keyName]: newArray};
+      });
     },
-    [array],
+    [data],
   );
 
   return (

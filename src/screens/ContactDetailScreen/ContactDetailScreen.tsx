@@ -99,7 +99,7 @@ export const ContactDetailScreen = () => {
               return (
                 <InputContactButton
                   onPress={() => {
-                    Linking.openURL(`sms:${item}`);
+                    Linking.openURL(`tel:${item}`);
                   }}>
                   <InputContact>{item}</InputContact>
                 </InputContactButton>
@@ -197,16 +197,18 @@ const InfoContainer = styled.View`
   align-items: center;
 `;
 
-const InfoName = styled.TextInput`
+const InfoName = styled.Text`
   font-weight: 500;
   font-size: 18px;
   align-self: center;
+  color: black;
 `;
 
-const InfoJob = styled.TextInput`
+const InfoJob = styled.Text`
   font-weight: 400;
   font-size: 13px;
   opacity: 0.5;
+  color: black;
 `;
 
 const ContactContainer = styled.View``;

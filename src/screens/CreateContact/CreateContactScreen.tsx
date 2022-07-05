@@ -96,6 +96,7 @@ export const CreateContactScreen = () => {
                 value={params.value}
                 onValueChange={onValueChange}
                 autoFocus={true}
+                placeholderTextColor={'#BDBDBD'}
               />
             </InputInfoContainer>
             <InputInfoContainer>
@@ -104,7 +105,7 @@ export const CreateContactScreen = () => {
                 keyName={'firstName'}
                 value={params.firstName}
                 onValueChange={onValueChange}
-                //autoFocus={true}
+                placeholderTextColor={'#BDBDBD'}
               />
             </InputInfoContainer>
             <InputInfoContainer>
@@ -113,6 +114,7 @@ export const CreateContactScreen = () => {
                 keyName={'company'}
                 value={params.company}
                 onValueChange={onValueChange}
+                placeholderTextColor={'#BDBDBD'}
                 //autoFocus={true}
               />
             </InputInfoContainer>
