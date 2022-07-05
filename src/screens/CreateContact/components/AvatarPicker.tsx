@@ -23,7 +23,7 @@ export const AvatarPicker = (props: AvatarPickerProps) => {
     ImagePicker.launchImageLibrary(options, setPickerResponse);
   }, []);
 
-  const onCameraPress = React.useCallback(() => {
+  const onCameraPress = useCallback(() => {
     const options = {
       saveToPhotos: true,
       mediaType: 'photo',
@@ -45,7 +45,7 @@ export const AvatarPicker = (props: AvatarPickerProps) => {
 
   return (
     <Screen>
-      <ImagePickerAvatar uri={uri} onPress={() => setVisible(true)} />
+      <ImagePickerAvatar uri={uri} onPress={onImageLibraryPress} />
       <ImagePickerModal
         isVisible={visible}
         onClose={() => setVisible(false)}

@@ -20,6 +20,7 @@ const MainNavigation = () => {
       initialRouteName="TabNavigation"
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="Draw" component={DrawerNavigation} />
+      <Stack.Screen name="ContactScreen" component={ContactScreen} />
       <Stack.Screen
         name="CreateContactScreen"
         component={CreateContactScreen}
@@ -28,7 +29,7 @@ const MainNavigation = () => {
         name="ContactDetailScreen"
         component={ContactDetailScreen}
       />
-      <Stack.Screen name="ContactScreen" component={ContactScreen} />
+      {/*<Stack.Screen name="ContactScreen" component={ContactScreen} />*/}
     </Stack.Navigator>
   );
 };

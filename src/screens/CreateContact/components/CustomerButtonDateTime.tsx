@@ -1,5 +1,5 @@
 import {PLUS_ICON, REMOVE_ICON} from '../../../assets';
-import React, {useState, useCallback} from 'react';
+import React, {useState, useCallback, useEffect} from 'react';
 import styled from 'styled-components/native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
@@ -21,18 +21,21 @@ export const CustomerButtonDateTime = (props: CustomerButtonDateTimeProps) => {
     setDatePickerVisibility(true);
   }, [array]);
 
-  const hideDatePicker = () => {
+  const hideDatePicker = useCallback(() => {
     setDatePickerVisibility(false);
-  };
+  }, []);
 
-  const handleConfirm = date => {
+  const handleConfirm = useCallback(date => {
     setSelectedDate(date);
+    hideDatePicker();
+  }, []);
+
+  useEffect(() => {
     setParams(state => ({
       ...state,
-      birthday: moment(selectedDate).format('DD/MM/YYYY'),
+      avatar: moment(selectedDate).format('DD/MM/YYYY'),
     }));
-    hideDatePicker();
-  };
+  }, [moment(selectedDate).format('DD/MM/YYYY'), setParams]);
 
   const onRemove = useCallback(
     (index: number) => {
