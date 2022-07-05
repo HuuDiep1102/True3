@@ -62,24 +62,17 @@ const CustomSectionHeader = (section: any) => {
 
 export const ContactScreen = () => {
   const listContact = useContacts();
-  const [value,setValue] = useState('');
-  const [data,setData] = useState(listContact)
-  
-  const onChangeText = useCallback((text) => {
-    setValue(text)
-    setData(oldData => oldData.filter(item => item.name.include(text))) // text: vf item.name: nam
-  },[])
   console.log('list', listContact);
   return (
     <Container>
       <HeaderCustomer label={'Liên hệ'} />
       <SearchbarContainer>
         <Search source={SEARCH_ICON} />
-        <InputSearch placeholder="Tìm kiếm danh bạ" value={value} onChangeText={onChangeText}/>
+        <InputSearch placeholder="Tìm kiếm danh bạ" />
       </SearchbarContainer>
       <ListContainer>
         <AlphabetList
-          data={data}
+          data={listContact}
           letterListContainerStyle={{
             justifyContent: 'space-evenly',
           }}

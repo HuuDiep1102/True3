@@ -1,7 +1,6 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import styled from 'styled-components/native';
 import {
-  AVATAR2,
   PHONE_ICON,
   MESSAGE_ICON,
   FACETIME_ICON,
@@ -10,29 +9,28 @@ import {
 } from '../../assets';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {Linking} from 'react-native';
-import ContactItem from './components/ContactItem';
+import {ContactItem} from './components/ContactItem';
 
 import {removeContactAction} from '../../redux/contact/contactStore';
 
 export const ContactDetailScreen = () => {
   const navigation = useNavigation<any>();
-  const [isActive, setActive] = useState(false);
+  const [isActivePhoneNumber, setActivePhoneNumber] = useState(false);
+  const [isActiveEmail, setActiveEmail] = useState(false);
 
   const route = useRoute();
 
   const item = route?.params.item;
   console.log('item', item);
 
-  const isActivePhoneNumber = item?.phoneNumber.length > 0 ? true : false;
-  const isActiveMessage = item?.phoneNumber.length > 0 ? true : false;
-  // const isActivePhoneNumber = item?.phoneNumber.length > 0 ? true : false;
-  // const isActivePhoneNumber = item?.phoneNumber.length > 0 ? true : false;
-
-  console.log(isActivePhoneNumber, item.phoneNumber.length);
+  useEffect(() => {
+    if (item.phoneNumber.length > 0) setActivePhoneNumber(true);
+    else setActivePhoneNumber(false);
+  }, [route?.params.item]);
 
   useEffect(() => {
-    if (item.phoneNumber.length > 0) setActive(true);
-    else setActive(false);
+    if (item.email.length > 0) setActiveEmail(true);
+    else setActiveEmail(false);
   }, [route?.params.item]);
 
   return (
@@ -49,7 +47,11 @@ export const ContactDetailScreen = () => {
           </CreateContactButton>
         </HeaderContainerUpdate>
         <AvatarContainer>
-          <LogIcon source={AVATAR2} />
+          <LogIcon
+            source={{
+              uri: item.avatar,
+            }}
+          />
         </AvatarContainer>
 
         <InfoContainer isIos>
@@ -60,42 +62,30 @@ export const ContactDetailScreen = () => {
         </InfoContainer>
 
         <ContactIconContainer>
-          <ContactItem label1={'item.phoneNumber'} label2={'Goi dien'} active={isActive} keyName={'Goi dien'}/>
-          {/* <ContactItem>
-            <ContactIconPhone
-              onPress={() => {
-                Linking.openURL(`tel:${item.phoneNumber}`);
-              }}
-              isActive={isActive}>
-              <ContactIcon source={PHONE_ICON} />
-            </ContactIconPhone>
-            <ContactActiveText>Nhấn gọi điện</ContactActiveText>
-          </ContactItem> */}
-          <ContactItem>
-            <ContactIconActive
-              onPress={() => {
-                Linking.openURL(`sms:${item.phoneNumber}`);
-              }}>
-              <ContactIcon source={MESSAGE_ICON} />
-            </ContactIconActive>
-            <ContactActiveText>Nhắn tin</ContactActiveText>
-          </ContactItem>
-          <ContactItem>
-            <ContactIconActive>
-              <ContactIcon source={FACETIME_ICON} />
-            </ContactIconActive>
-            <ContactActiveText>Facetime</ContactActiveText>
-          </ContactItem>
-          <ContactItem>
-            <ContactIconInactive
-              disabled={false}
-              onPress={() => {
-                Linking.openURL(`mailto:${item.email}`);
-              }}>
-              <ContactIcon source={MAIL_ICON} />
-            </ContactIconInactive>
-            <ContactInactiveText>Gửi mail</ContactInactiveText>
-          </ContactItem>
+          <ContactItem
+            label1={`tel:${item.phoneNumber}`}
+            label2={'Nhấn gọi điện'}
+            icon={PHONE_ICON}
+            active={isActivePhoneNumber}
+          />
+          <ContactItem
+            label1={`sms:${item.phoneNumber}`}
+            label2={'Nhắn tin'}
+            icon={MESSAGE_ICON}
+            active={isActivePhoneNumber}
+          />
+          <ContactItem
+            label1={`tel:${item.phoneNumber}`}
+            label2={'Facetime'}
+            icon={FACETIME_ICON}
+            active={isActivePhoneNumber}
+          />
+          <ContactItem
+            label1={`mailto:${item.email}`}
+            label2={'Gửi mail'}
+            icon={MAIL_ICON}
+            active={isActiveEmail}
+          />
         </ContactIconContainer>
       </HeaderContainer>
 
@@ -188,6 +178,7 @@ const AvatarContainer = styled.View`
 const LogIcon = styled.Image`
   height: 100px;
   width: 100px;
+  border-radius: 55px;
 `;
 
 const ContactIconContainer = styled.View`
@@ -197,67 +188,6 @@ const ContactIconContainer = styled.View`
   align-items: center;
   margin-top: 20px;
   margin-bottom: 5px;
-`;
-
-const ContactItem = styled.View`
-  justify-content: center;
-  align-items: center;
-`;
-const ContactIconPhone = styled.TouchableOpacity<{
-  isActive: boolean;
-}>`
-  height: 40px;
-  width: 40px;
-  border-radius: 20px;
-  border-width: 0.5px;
-  border-color: #bdbdbd;
-  justify-content: center;
-  align-items: center;
-  background-color: ${p => (p.isActive ? '#f2a54a' : '#ffffff')};
-`;
-
-const ContactIconActive = styled.TouchableOpacity`
-  height: 40px;
-  width: 40px;
-  border-radius: 20px;
-  border-width: 0.5px;
-  border-color: #bdbdbd;
-  justify-content: center;
-  align-items: center;
-  background-color: #f2a54a;
-`;
-
-const ContactIconInactive = styled.TouchableOpacity`
-  height: 40px;
-  width: 40px;
-  border-radius: 20px;
-  border-width: 0.5px;
-  border-color: #bdbdbd;
-  background-color: #ffffff;
-  justify-content: center;
-  align-items: center;
-`;
-
-const ContactIcon = styled.Image`
-  height: 24px;
-  width: 24px;
-  tint-color: gray;
-`;
-
-const ContactActiveText = styled.Text`
-  font-weight: 400;
-  font-size: 11px;
-  align-self: center;
-  padding: 10px;
-  color: #f2a54a;
-`;
-
-const ContactInactiveText = styled.Text`
-  font-weight: 400;
-  font-size: 11px;
-  align-self: center;
-  padding: 10px;
-  color: #bdbdbd;
 `;
 
 const InfoContainer = styled.View`
