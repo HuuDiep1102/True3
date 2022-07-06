@@ -82,7 +82,7 @@ const DrawerContainer = styled.View`
       margin-top: 0;
     `,
     android: css`
-      margin-top: -30;
+      margin-top: -20;
     `,
   })};
 `;

@@ -122,7 +122,7 @@ const Container = styled.View`
   padding-bottom: 100px;
 `;
 const ListContainer = styled.View`
-  height: 600px;
+  //margin-bottom: 150px;
 `;
 
 const ListItemContainer = styled.TouchableOpacity`

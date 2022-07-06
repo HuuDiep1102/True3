@@ -36,7 +36,6 @@ const Cell = (props: CustomerCellProps) => {
     <InputContainerView>
       <InputContainer
         onPress={() => {
-          //onRemove(index);
           onRemove(index);
         }}>
         <PlusIcon source={REMOVE_ICON} />
@@ -53,6 +52,7 @@ const Cell = (props: CustomerCellProps) => {
         autoFocus={true}
         value={data[index]}
         onChangeText={onValueChange}
+        placeholderTextColor={'#BDBDBD'}
       />
     </InputContainerView>
   );
@@ -72,12 +72,6 @@ export const CustomerButtonList = (props: CustomerButtonListProps) => {
 
   const onRemove = useCallback(
     (index: number) => {
-      // const oldArray = [...data];
-      // console.log('oldArray', oldArray);
-      // //setArray(oldArray.filter((_item, _index) => _index !== index));
-      // const newArray = oldArray.filter((_item, _index) => _index !== index);
-      // console.log('newArray', newArray);
-      // //setParams([keyName] = newArray)
       setParams(prev => {
         const oldArray = [...data];
         const newArray = oldArray.filter((_item, _index) => _index !== index);

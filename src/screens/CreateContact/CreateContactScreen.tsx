@@ -15,31 +15,29 @@ export const CreateContactScreen = () => {
 
   const route = useRoute();
 
-  console.log('route', route);
-
   const item: any = route?.params?.item;
 
   const [params, setParams] = useState<{
     id: string;
     value: string[];
-    avatar: string[];
+    avatar: string;
     firstName: string[];
     //lastName: string[];
     company: string[];
     phoneNumber: string[];
     email: string[];
     address: string[];
-    birthday: string[];
+    birthday: string;
   }>({
-    id: '',
-    avatar: [],
+    id: `${new Date().getTime().toString()}`,
+    avatar: '',
     firstName: [],
     //lastName: [],
     company: [],
     phoneNumber: [],
     email: [],
     address: [],
-    birthday: [],
+    birthday: '',
     value: [],
   });
 
@@ -49,15 +47,15 @@ export const CreateContactScreen = () => {
     }
     return () => {
       setParams({
-        id: '',
-        avatar: [],
+        id: `${new Date().getTime().toString()}`,
+        avatar: '',
         firstName: [],
         //lastName: [],
         company: [],
         phoneNumber: [],
         email: [],
         address: [],
-        birthday: [],
+        birthday: '',
         value: [],
       });
     };
@@ -77,8 +75,6 @@ export const CreateContactScreen = () => {
       [keyName]: value,
     }));
   }, []);
-
-  console.log('params', params);
 
   return (
     <KeyboardAvoidingView

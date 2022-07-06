@@ -21,7 +21,6 @@ export const ContactDetailScreen = () => {
   const route = useRoute();
 
   const item = route?.params.item;
-  console.log('item', item);
 
   useEffect(() => {
     if (item.phoneNumber.length > 0) setActivePhoneNumber(true);

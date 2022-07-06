@@ -34,8 +34,6 @@ export const AvatarPicker = (props: AvatarPickerProps) => {
 
   let uri = pickerResponse?.assets && pickerResponse.assets[0].uri;
 
-  console.log(uri);
-
   useEffect(() => {
     setParams(state => ({
       ...state,
