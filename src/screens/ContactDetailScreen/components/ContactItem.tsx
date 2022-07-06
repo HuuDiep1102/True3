@@ -1,6 +1,16 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components/native';
-import {Linking} from 'react-native';
+import {
+  Alert,
+  Linking,
+  Modal,
+  Pressable,
+  Text,
+  View,
+  StyleSheet,
+} from 'react-native';
+import {useRoute} from '@react-navigation/native';
+import {PHONE_ICON} from '../../../assets';
 
 interface ContactItemProps {
   label1: string;
@@ -11,12 +21,47 @@ interface ContactItemProps {
 
 export const ContactItem = (props: ContactItemProps) => {
   const {label1, label2, icon, active} = props;
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const route = useRoute();
+
+  const item = route?.params.item;
 
   return (
     <ContactItemContainer>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}>
+        <CenteredView>
+          <ModalView>
+            <InputContactContainer>
+              {item.phoneNumber.map(item => {
+                return (
+                  <InputContactButton
+                    onPress={() => {
+                      Linking.openURL(`tel:${item}`);
+                    }}>
+                    <ContactIconImage isActive={active} source={PHONE_ICON} />
+                    <InputContact>{item}</InputContact>
+                  </InputContactButton>
+                );
+              })}
+            </InputContactContainer>
+            <ButtonClose onPress={() => setModalVisible(!modalVisible)}>
+              <TextStyle>Hide Modal</TextStyle>
+            </ButtonClose>
+          </ModalView>
+        </CenteredView>
+      </Modal>
+
       <ContactIcon
         onPress={() => {
-          Linking.openURL(label1);
+          //Linking.openURL(label1);
+          setModalVisible(true);
         }}
         isActive={active}
         disabled={!active}>
@@ -26,6 +71,46 @@ export const ContactItem = (props: ContactItemProps) => {
     </ContactItemContainer>
   );
 };
+
+const InputContactContainer = styled.View`
+  width: 90%;
+  background-color: white;
+  //background-color: #00008b;
+`;
+const InputContact = styled.Text`
+  color: #2f80ed;
+  font-size: 17px;
+  font-weight: 400;
+  font-family: Roboto-Regular;
+  padding-bottom: 8px;
+`;
+
+const InputContactButton = styled.TouchableOpacity``;
+
+const CenteredView = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  margin-top: 22px;
+`;
+
+const ModalView = styled.View`
+  margin: 20px;
+  background-color: white;
+  border-radius: 20px;
+  padding: 35px;
+  align-items: center;
+`;
+
+const ButtonClose = styled.TouchableOpacity`
+  background-color: #2196f3;
+`;
+
+const TextStyle = styled.Text`
+  color: white;
+  font-weight: bold;
+  text-align: center;
+`;
 
 const ContactItemContainer = styled.View`
   justify-content: center;

@@ -14,6 +14,8 @@ import {ContactItem} from './components/ContactItem';
 
 import {removeContactAction} from '../../redux/contact/contactStore';
 
+import {KeyboardAvoidingView, Platform} from 'react-native';
+
 export const ContactDetailScreen = () => {
   const navigation = useNavigation<any>();
   const [isActivePhoneNumber, setActivePhoneNumber] = useState(false);
@@ -88,62 +90,64 @@ export const ContactDetailScreen = () => {
           />
         </ContactIconContainer>
       </HeaderContainer>
-
-      <ContactContainer>
-        <WrapInput>
-          <InputTitleContainer>
-            <InputTitleText>Điện thoại</InputTitleText>
-          </InputTitleContainer>
-          <InputContactContainer>
-            {item.phoneNumber.map(item => {
-              return (
-                <InputContactButton
-                  onPress={() => {
-                    Linking.openURL(`tel:${item}`);
-                  }}>
-                  <InputContact>{item}</InputContact>
-                </InputContactButton>
-              );
-            })}
-          </InputContactContainer>
-          <InputTitleContainer>
-            <InputTitleText>Email</InputTitleText>
-          </InputTitleContainer>
-          <InputContactContainer>
-            {item.email.map(item => {
-              return (
-                <InputContactButton
-                  onPress={() => {
-                    Linking.openURL(`mailto:${item}`);
-                  }}>
-                  <InputContact>{item}</InputContact>
-                </InputContactButton>
-              );
-            })}
-          </InputContactContainer>
-          <InputTitleContainer>
-            <InputTitleText>Ghi chú</InputTitleText>
-          </InputTitleContainer>
-          <InputContactContainer>
-            <InputContact></InputContact>
-          </InputContactContainer>
-          <WrapButton>
-            <BtnMessage
-              onPress={() => {
-                Linking.openURL(`sms:${item.phoneNumber}`);
-              }}>
-              <BtnMessageText>Gửi tin nhắn</BtnMessageText>
-            </BtnMessage>
-            <BtnRemove
-              onPress={() => {
-                removeContactAction(item);
-                navigation.navigate('ContactScreen');
-              }}>
-              <BtnRemoveText>Xoá người gọi</BtnRemoveText>
-            </BtnRemove>
-          </WrapButton>
-        </WrapInput>
-      </ContactContainer>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <ContactContainer>
+          <WrapInput>
+            <InputTitleContainer>
+              <InputTitleText>Điện thoại</InputTitleText>
+            </InputTitleContainer>
+            <InputContactContainer>
+              {item.phoneNumber.map(item => {
+                return (
+                  <InputContactButton
+                    onPress={() => {
+                      Linking.openURL(`tel:${item}`);
+                    }}>
+                    <InputContact>{item}</InputContact>
+                  </InputContactButton>
+                );
+              })}
+            </InputContactContainer>
+            <InputTitleContainer>
+              <InputTitleText>Email</InputTitleText>
+            </InputTitleContainer>
+            <InputContactContainer>
+              {item.email.map(item => {
+                return (
+                  <InputContactButton
+                    onPress={() => {
+                      Linking.openURL(`mailto:${item}`);
+                    }}>
+                    <InputContact>{item}</InputContact>
+                  </InputContactButton>
+                );
+              })}
+            </InputContactContainer>
+            <InputTitleContainer>
+              <InputTitleText>Ghi chú</InputTitleText>
+            </InputTitleContainer>
+            <InputContactContainer>
+              <InputContact></InputContact>
+            </InputContactContainer>
+            <WrapButton>
+              <BtnMessage
+                onPress={() => {
+                  Linking.openURL(`sms:${item.phoneNumber}`);
+                }}>
+                <BtnMessageText>Gửi tin nhắn</BtnMessageText>
+              </BtnMessage>
+              <BtnRemove
+                onPress={() => {
+                  removeContactAction(item);
+                  navigation.navigate('ContactScreen');
+                }}>
+                <BtnRemoveText>Xoá người gọi</BtnRemoveText>
+              </BtnRemove>
+            </WrapButton>
+          </WrapInput>
+        </ContactContainer>
+      </KeyboardAvoidingView>
     </Container>
   );
 };
@@ -208,7 +212,9 @@ const InfoJob = styled.Text`
   color: black;
 `;
 
-const ContactContainer = styled.ScrollView``;
+const ContactContainer = styled.ScrollView`
+  height: 100px;
+`;
 
 const InputContactContainer = styled.View`
   width: 90%;

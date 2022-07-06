@@ -8,6 +8,7 @@ interface CustomerButtonListProps {
   setParams: (prev: any) => void;
   data: string[];
   keyName: string;
+  keyboardType;
 }
 
 interface CustomerCellProps {
@@ -16,10 +17,11 @@ interface CustomerCellProps {
   data: string[];
   setParams: (prev: any) => void;
   keyName: string;
+  keyboardType;
 }
 
 const Cell = (props: CustomerCellProps) => {
-  const {onRemove, index, data, setParams, keyName} = props;
+  const {onRemove, index, data, setParams, keyName, keyboardType} = props;
 
   const onValueChange = useCallback((value: string) => {
     setParams(prev => {
@@ -53,13 +55,14 @@ const Cell = (props: CustomerCellProps) => {
         value={data[index]}
         onChangeText={onValueChange}
         placeholderTextColor={'#BDBDBD'}
+        keyboardType={keyboardType}
       />
     </InputContainerView>
   );
 };
 
 export const CustomerButtonList = (props: CustomerButtonListProps) => {
-  const {label, setParams, data, keyName} = props;
+  const {label, setParams, data, keyName, keyboardType} = props;
   const [array, setArray] = useState<string[]>([]);
 
   const addNewValue = useCallback(() => {
@@ -93,6 +96,7 @@ export const CustomerButtonList = (props: CustomerButtonListProps) => {
             data={data}
             setParams={setParams}
             keyName={keyName}
+            keyboardType={keyboardType}
           />
         );
       })}

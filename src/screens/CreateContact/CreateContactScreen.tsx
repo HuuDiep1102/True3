@@ -125,6 +125,7 @@ export const CreateContactScreen = () => {
             setParams={setParams}
             data={params.phoneNumber}
             keyName={'phoneNumber'}
+            keyboardType="numeric"
           />
           <CustomerButtonList
             label={'thêm email'}
