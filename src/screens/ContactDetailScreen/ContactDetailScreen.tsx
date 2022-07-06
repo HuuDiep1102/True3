@@ -1,3 +1,4 @@
+/////ContactDetail
 import React, {useEffect, useMemo, useState} from 'react';
 import styled from 'styled-components/native';
 import {
@@ -126,25 +127,22 @@ export const ContactDetailScreen = () => {
           <InputContactContainer>
             <InputContact></InputContact>
           </InputContactContainer>
-        </WrapInput>
-
-        <WrapButton>
-          <Btn
-            onPress={() => {
-              Linking.openURL(`sms:${item.phoneNumber}`);
-            }}>
-            <BtnMessageText>Gửi tin nhắn</BtnMessageText>
-          </Btn>
-          <Btn>
-            <BtnRemoveText
+          <WrapButton>
+            <BtnMessage
+              onPress={() => {
+                Linking.openURL(`sms:${item.phoneNumber}`);
+              }}>
+              <BtnMessageText>Gửi tin nhắn</BtnMessageText>
+            </BtnMessage>
+            <BtnRemove
               onPress={() => {
                 removeContactAction(item);
                 navigation.navigate('ContactScreen');
               }}>
-              Xoá người gọi
-            </BtnRemoveText>
-          </Btn>
-        </WrapButton>
+              <BtnRemoveText>Xoá người gọi</BtnRemoveText>
+            </BtnRemove>
+          </WrapButton>
+        </WrapInput>
       </ContactContainer>
     </Container>
   );
@@ -210,15 +208,14 @@ const InfoJob = styled.Text`
   color: black;
 `;
 
-const ContactContainer = styled.View``;
+const ContactContainer = styled.ScrollView``;
 
 const InputContactContainer = styled.View`
   width: 90%;
   background-color: white;
   border-bottom-width: 0.5px;
   border-bottom-color: #e0e0e0;
-  justify-content: center;
-  align-items: flex-start;
+  //background-color: #00008b;
 `;
 const InputContact = styled.Text`
   color: #2f80ed;
@@ -238,10 +235,10 @@ const WrapInput = styled.View`
 `;
 
 const WrapButton = styled.View`
-  margin-top: 250px;
   width: 100%;
   justify-content: center;
   align-items: center;
+  background-color: red;
 `;
 
 const InputTitleContainer = styled.View`
@@ -260,7 +257,14 @@ const InputTitleText = styled.Text`
   color: black;
 `;
 
-const Btn = styled.TouchableOpacity`
+const BtnMessage = styled.TouchableOpacity`
+  height: 45px;
+  width: 90%;
+  border-bottom-width: 0.5px;
+  border-bottom-color: #e0e0e0;
+  justify-content: center;
+`;
+const BtnRemove = styled.TouchableOpacity`
   height: 45px;
   width: 90%;
   border-bottom-width: 0.5px;

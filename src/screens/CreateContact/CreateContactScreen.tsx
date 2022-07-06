@@ -9,6 +9,10 @@ import {KeyboardAvoidingView, Platform} from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {updateContactAction} from '../../redux/contact/contactStore';
 
+import {useForm, Controller} from 'react-hook-form';
+import {yupResolver} from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+
 export const CreateContactScreen = () => {
   const [isActive, setActive] = useState(false);
   const navigation = useNavigation<any>();
@@ -44,21 +48,8 @@ export const CreateContactScreen = () => {
   useEffect(() => {
     if (item) {
       setParams(item);
+      return;
     }
-    return () => {
-      setParams({
-        id: `${new Date().getTime().toString()}`,
-        avatar: '',
-        firstName: [],
-        //lastName: [],
-        company: [],
-        phoneNumber: [],
-        email: [],
-        address: [],
-        birthday: '',
-        value: [],
-      });
-    };
   }, [item]);
 
   useEffect(() => {
@@ -150,6 +141,8 @@ export const CreateContactScreen = () => {
           <CustomerButtonDateTime
             label={'thêm ngày sinh'}
             setParams={setParams}
+            data={params.birthday}
+            keyName={'birthday'}
           />
         </FormContainer>
       </Container>

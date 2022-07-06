@@ -41,9 +41,11 @@ const CustomItem = item => {
         <ListItemNameLabel>
           {item.value} {item.firstName}
         </ListItemNameLabel>
-        {item.phoneNumber.map(item => {
-          return <ListItemPhoneLabel>{item}</ListItemPhoneLabel>;
-        })}
+        <ListItemPhoneContainer numberOfLines={1}>
+          {item.phoneNumber.map(item => {
+            return <ListItemPhoneLabel>{item} </ListItemPhoneLabel>;
+          })}
+        </ListItemPhoneContainer>
       </ContactContainer>
     </ListItemContainer>
   );
@@ -79,6 +81,8 @@ export const ContactScreen = () => {
     );
   }, []);
 
+  console.log('list', listContact);
+
   return (
     <Container>
       <HeaderCustomer label={'Liên hệ'} />
@@ -91,6 +95,11 @@ export const ContactScreen = () => {
           placeholderTextColor={'#BDBDBD'}
         />
       </SearchbarContainer>
+      {!listContact.length ? (
+        <NotificationView>
+          <NotificationText>The list is empty</NotificationText>
+        </NotificationView>
+      ) : null}
       <ListContainer>
         <AlphabetList
           data={value !== '' ? data : listContact}
@@ -125,6 +134,16 @@ const ListContainer = styled.View`
   //margin-bottom: 150px;
 `;
 
+const NotificationView = styled.View`
+  justify-content: center;
+  align-items: center;
+  padding-top: 300px;
+`;
+
+const NotificationText = styled.Text`
+  color: black;
+  font-size: 18px;
+`;
 const ListItemContainer = styled.TouchableOpacity`
   flex-direction: row;
   height: 64px;
@@ -165,6 +184,10 @@ const ListItemNameLabel = styled.Text`
   color: #333333;
   font-style: normal;
   font-family: Roboto-Regular;
+`;
+
+const ListItemPhoneContainer = styled.Text`
+  //flex-direction: row;
 `;
 
 const ListItemPhoneLabel = styled.Text`

@@ -6,15 +6,27 @@ import moment from 'moment';
 
 interface CustomerButtonDateTimeProps {
   label: string;
-  setParams;
+  setParams: (prev: any) => void;
+  data: string;
+  keyName: string;
 }
 
 export const CustomerButtonDateTime = (props: CustomerButtonDateTimeProps) => {
-  const {label, setParams} = props;
+  const {label, setParams, data, keyName} = props;
   const [array, setArray] = useState<string[]>([]);
 
   const [selectedDate, setSelectedDate] = useState();
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+
+  // const addNewValue = useCallback(() => {
+  //   setParams(prev => {
+  //     let _arr = [...prev[keyName]];
+  //     _arr.push('');
+  //     return {...prev, [keyName]: _arr};
+  //   });
+  //
+  //   setDatePickerVisibility(true);
+  // }, [array]);
 
   const addNewValue = useCallback(() => {
     setArray([...array, '']);
@@ -31,9 +43,15 @@ export const CustomerButtonDateTime = (props: CustomerButtonDateTimeProps) => {
   }, []);
 
   useEffect(() => {
-    setParams(state => ({
-      ...state,
-      avatar: moment(selectedDate).format('DD/MM/YYYY'),
+    // setParams(prev => {
+    //   let _arr = [...prev[birthday]];
+    //   _arr.push('');
+    //   return {...prev, [birthday]: _arr};
+    // });
+
+    setParams(prev => ({
+      ...prev,
+      birthday: moment(selectedDate).format('DD/MM/YYYY'),
     }));
   }, [moment(selectedDate).format('DD/MM/YYYY'), setParams]);
 
@@ -57,14 +75,15 @@ export const CustomerButtonDateTime = (props: CustomerButtonDateTimeProps) => {
               <PlusIcon source={REMOVE_ICON} />
             </InputContainer>
             <DateTimeView>
-              <DateTimeText>{`${
-                selectedDate ? moment(selectedDate).format('DD/MM/YYYY') : ''
-              }`}</DateTimeText>
+              <DateTimeButton onPress={addNewValue}>
+                <DateTimeText value={data}></DateTimeText>
+              </DateTimeButton>
               <DateTimePickerModal
                 isVisible={isDatePickerVisible}
                 mode="date"
                 onConfirm={handleConfirm}
                 onCancel={hideDatePicker}
+                //value={data}
               />
             </DateTimeView>
           </InputContainerView>
@@ -95,7 +114,9 @@ const DateTimeView = styled.View`
   justify-content: center;
 `;
 
-const DateTimeText = styled.Text`
+const DateTimeButton = styled.TouchableOpacity``;
+
+const DateTimeText = styled.TextInput`
   padding-left: 17px;
   color: #2f80ed;
   font-size: 15px;
