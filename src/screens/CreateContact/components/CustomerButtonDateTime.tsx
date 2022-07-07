@@ -8,11 +8,10 @@ interface CustomerButtonDateTimeProps {
   label: string;
   setParams: (prev: any) => void;
   data: string;
-  keyName: string;
 }
 
 export const CustomerButtonDateTime = (props: CustomerButtonDateTimeProps) => {
-  const {label, setParams, data, keyName} = props;
+  const {label, setParams, data} = props;
   const [array, setArray] = useState<string[]>([]);
 
   const [selectedDate, setSelectedDate] = useState();
@@ -32,6 +31,10 @@ export const CustomerButtonDateTime = (props: CustomerButtonDateTimeProps) => {
     setArray([...array, '']);
     setDatePickerVisibility(true);
   }, [array]);
+
+  const updateValue = useCallback(() => {
+    setDatePickerVisibility(true);
+  }, []);
 
   const hideDatePicker = useCallback(() => {
     setDatePickerVisibility(false);
@@ -63,11 +66,7 @@ export const CustomerButtonDateTime = (props: CustomerButtonDateTimeProps) => {
     [array],
   );
 
-  console.log('birthday', data);
-
-  const onValueChange = () => {
-    console.log('birthday');
-  };
+  //console.log('birthday', data);
 
   return (
     <Container>
@@ -81,15 +80,14 @@ export const CustomerButtonDateTime = (props: CustomerButtonDateTimeProps) => {
               <PlusIcon source={REMOVE_ICON} />
             </InputContainer>
             <DateTimeView>
-              <DateTimeButton onPress={addNewValue}>
-                <DateTimeText value={data} onChangeText={onValueChange} />
+              <DateTimeButton onPress={updateValue}>
+                <DateTimeText>{data}</DateTimeText>
               </DateTimeButton>
               <DateTimePickerModal
                 isVisible={isDatePickerVisible}
                 mode="date"
                 onConfirm={handleConfirm}
                 onCancel={hideDatePicker}
-                //value={data}
               />
             </DateTimeView>
           </InputContainerView>
@@ -120,9 +118,12 @@ const DateTimeView = styled.View`
   justify-content: center;
 `;
 
-const DateTimeButton = styled.TouchableOpacity``;
+const DateTimeButton = styled.TouchableOpacity`
+  height: 30px;
+  justify-content: center;
+`;
 
-const DateTimeText = styled.TextInput`
+const DateTimeText = styled.Text`
   padding-left: 17px;
   color: #2f80ed;
   font-size: 15px;

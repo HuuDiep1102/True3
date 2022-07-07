@@ -18,12 +18,26 @@ interface CustomerCellProps {
   setParams: (prev: any) => void;
   keyName: string;
   keyboardType;
+  valid: string;
+  setEmailValidError: Function;
+  setPhoneNumberValidError: Function;
 }
 
 const Cell = (props: CustomerCellProps) => {
-  const {onRemove, index, data, setParams, keyName, keyboardType} = props;
+  const {
+    onRemove,
+    index,
+    data,
+    setParams,
+    keyName,
+    keyboardType,
+    setEmailValidError,
+    setPhoneNumberValidError,
+  } = props;
 
   const onValueChange = useCallback((value: string) => {
+    handleValidEmail(value);
+    handleValidPhoneNumber(value);
     setParams(prev => {
       let _arr = [...prev[keyName]];
       _arr[index] = value;
@@ -33,6 +47,34 @@ const Cell = (props: CustomerCellProps) => {
       };
     });
   }, []);
+
+  const handleValidEmail = val => {
+    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+
+    if (keyName !== 'email') return;
+
+    if (val.length === 0) {
+      setEmailValidError('Trường này không được để trống');
+    } else if (!reg.test(val)) {
+      setEmailValidError('Email nhập không đúng định dạng');
+    } else if (reg.test(val)) {
+      setEmailValidError('');
+    }
+  };
+
+  const handleValidPhoneNumber = val => {
+    let reg = /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/;
+
+    if (keyName !== 'phoneNumber') return;
+
+    if (val.length === 0) {
+      setPhoneNumberValidError('Trường này không được để trống');
+    } else if (!reg.test(val)) {
+      setPhoneNumberValidError('Số điện thoại không đúng định dạng');
+    } else if (reg.test(val)) {
+      setPhoneNumberValidError('');
+    }
+  };
 
   return (
     <InputContainerView>
@@ -84,6 +126,9 @@ export const CustomerButtonList = (props: CustomerButtonListProps) => {
     [data],
   );
 
+  const [emailValidError, setEmailValidError] = useState('');
+  const [phoneNumberValidError, setPhoneNumberValidError] = useState('');
+
   return (
     <Container>
       {/*Bao loi Object underfined thi them dau hoi cham*/}
@@ -97,6 +142,8 @@ export const CustomerButtonList = (props: CustomerButtonListProps) => {
             setParams={setParams}
             keyName={keyName}
             keyboardType={keyboardType}
+            setEmailValidError={setEmailValidError}
+            setPhoneNumberValidError={setPhoneNumberValidError}
           />
         );
       })}
@@ -104,6 +151,10 @@ export const CustomerButtonList = (props: CustomerButtonListProps) => {
         <PlusIcon source={PLUS_ICON} />
         <ButtonContactText>{label}</ButtonContactText>
       </ButtonContactContainer>
+      {phoneNumberValidError ? (
+        <ValidText>{phoneNumberValidError}</ValidText>
+      ) : null}
+      {emailValidError ? <ValidText>{emailValidError}</ValidText> : null}
     </Container>
   );
 };
@@ -113,6 +164,12 @@ const Container = styled.View`
   align-items: center;
   flex-direction: column;
   margin-top: 24px;
+`;
+
+const ValidText = styled.Text`
+  font-size: 15px;
+  color: red;
+  padding-top: 5px;
 `;
 
 const PlusIcon = styled.Image`

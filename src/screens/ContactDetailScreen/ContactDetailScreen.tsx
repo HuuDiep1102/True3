@@ -69,24 +69,28 @@ export const ContactDetailScreen = () => {
             label2={'Nhấn gọi điện'}
             icon={PHONE_ICON}
             active={isActivePhoneNumber}
+            keyName={item.phoneNumber}
           />
           <ContactItem
             label1={`sms:${item.phoneNumber}`}
             label2={'Nhắn tin'}
             icon={MESSAGE_ICON}
             active={isActivePhoneNumber}
+            keyName={item.phoneNumber}
           />
           <ContactItem
             label1={`tel:${item.phoneNumber}`}
             label2={'Facetime'}
             icon={FACETIME_ICON}
             active={isActivePhoneNumber}
+            keyName={item.phoneNumber}
           />
           <ContactItem
             label1={`mailto:${item.email}`}
             label2={'Gửi mail'}
             icon={MAIL_ICON}
             active={isActiveEmail}
+            keyName={item.email}
           />
         </ContactIconContainer>
       </HeaderContainer>
@@ -136,7 +140,7 @@ export const ContactDetailScreen = () => {
               <WrapButton>
                 <BtnMessage
                   onPress={() => {
-                    Linking.openURL(`sms:${item.phoneNumber}`);
+                    Linking.openURL(`sms:${item.phoneNumber[0]}`);
                   }}>
                   <BtnMessageText>Gửi tin nhắn</BtnMessageText>
                 </BtnMessage>
@@ -226,7 +230,7 @@ const InputContactContainer = styled.View`
   border-bottom-width: 0.5px;
   border-bottom-color: #e0e0e0;
 `;
-const InputContact = styled.Text`
+const InputContact = styled.TextInput`
   color: #2f80ed;
   font-size: 17px;
   font-weight: 400;

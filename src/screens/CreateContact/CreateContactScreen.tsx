@@ -132,18 +132,19 @@ export const CreateContactScreen = () => {
             setParams={setParams}
             data={params.email}
             keyName={'email'}
+            keyboardType="default"
           />
           <CustomerButtonList
             label={'thêm địa chỉ'}
             setParams={setParams}
             data={params.address}
             keyName={'address'}
+            keyboardType="default"
           />
           <CustomerButtonDateTime
             label={'thêm ngày sinh'}
             setParams={setParams}
             data={params.birthday}
-            keyName={'birthday'}
           />
         </FormContainer>
       </Container>

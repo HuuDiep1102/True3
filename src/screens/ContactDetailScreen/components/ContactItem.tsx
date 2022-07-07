@@ -17,10 +17,11 @@ interface ContactItemProps {
   label2: string;
   icon: any;
   active: boolean;
+  keyName: string;
 }
 
 export const ContactItem = (props: ContactItemProps) => {
-  const {label1, label2, icon, active} = props;
+  const {label1, label2, icon, active, keyName} = props;
   const [modalVisible, setModalVisible] = useState(false);
 
   const route = useRoute();
@@ -39,13 +40,13 @@ export const ContactItem = (props: ContactItemProps) => {
         <CenteredView>
           <ModalView>
             <InputContactContainer>
-              {item.phoneNumber.map(item => {
+              {keyName.map(item => {
                 return (
                   <InputContactButton
                     onPress={() => {
-                      Linking.openURL(`tel:${item}`);
+                      Linking.openURL(label1);
                     }}>
-                    <ContactIconImage isActive={active} source={PHONE_ICON} />
+                    <ContactIconImage isActive={active} source={icon} />
                     <InputContact>{item}</InputContact>
                   </InputContactButton>
                 );
@@ -74,18 +75,29 @@ export const ContactItem = (props: ContactItemProps) => {
 
 const InputContactContainer = styled.View`
   width: 90%;
-  background-color: white;
+  background-color: antiquewhite;
+  border-radius: 15px;
+  padding: 5px;
+  justify-content: center;
+  align-items: center;
   //background-color: #00008b;
 `;
 const InputContact = styled.Text`
-  color: #2f80ed;
   font-size: 17px;
   font-weight: 400;
   font-family: Roboto-Regular;
   padding-bottom: 8px;
+  color: black;
+  border-radius: 10px;
+  width: 150px;
+  padding-left: 10px;
 `;
 
-const InputContactButton = styled.TouchableOpacity``;
+const InputContactButton = styled.TouchableOpacity`
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+`;
 
 const CenteredView = styled.View`
   flex: 1;
@@ -96,14 +108,20 @@ const CenteredView = styled.View`
 
 const ModalView = styled.View`
   margin: 20px;
-  background-color: gray;
+  background-color: antiquewhite;
   border-radius: 20px;
-  padding: 35px;
+  padding: 10px;
   align-items: center;
+  justify-content: center;
 `;
 
 const ButtonClose = styled.TouchableOpacity`
   background-color: #2196f3;
+  width: 100px;
+  height: 30px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 15px;
 `;
 
 const TextStyle = styled.Text`
