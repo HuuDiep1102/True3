@@ -1,16 +1,8 @@
 import React, {useState} from 'react';
 import styled from 'styled-components/native';
-import {
-  Alert,
-  Linking,
-  Modal,
-  Pressable,
-  Text,
-  View,
-  StyleSheet,
-} from 'react-native';
+import {Linking} from 'react-native';
+import Modal from 'react-native-modal';
 import {useRoute} from '@react-navigation/native';
-import {PHONE_ICON} from '../../../assets';
 
 interface ContactItemProps {
   label1: string;
@@ -31,30 +23,29 @@ export const ContactItem = (props: ContactItemProps) => {
   return (
     <ContactItemContainer>
       <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
+        isVisible={modalVisible}
+        hasBackdrop={true}
+        onBackdropPress={() => {
+          setModalVisible(false);
         }}>
         <CenteredView>
           <ModalView>
             <InputContactContainer>
-              {keyName.map(item => {
+              {item.phoneNumber.map(item => {
                 return (
                   <InputContactButton
                     onPress={() => {
-                      Linking.openURL(label1);
+                      Linking.openURL(
+                        keyName === 'item.phoneNumber'
+                          ? `tel:${item}`
+                          : `mailto:${item}`,
+                      );
                     }}>
-                    <ContactIconImage isActive={active} source={icon} />
                     <InputContact>{item}</InputContact>
                   </InputContactButton>
                 );
               })}
             </InputContactContainer>
-            <ButtonClose onPress={() => setModalVisible(!modalVisible)}>
-              <TextStyle>Hide Modal</TextStyle>
-            </ButtonClose>
           </ModalView>
         </CenteredView>
       </Modal>
@@ -100,7 +91,6 @@ const InputContactButton = styled.TouchableOpacity`
 `;
 
 const CenteredView = styled.View`
-  flex: 1;
   justify-content: center;
   align-items: center;
   margin-top: 22px;
