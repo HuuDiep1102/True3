@@ -230,7 +230,7 @@ const InputContactContainer = styled.View`
   border-bottom-width: 0.5px;
   border-bottom-color: #e0e0e0;
 `;
-const InputContact = styled.TextInput`
+const InputContact = styled.Text`
   color: #2f80ed;
   font-size: 17px;
   font-weight: 400;
