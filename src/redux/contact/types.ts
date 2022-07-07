@@ -5,9 +5,9 @@ import {StateType} from 'typesafe-actions';
 // value thay cho lastname
 export interface RawContact {
   id: string;
-  value: string[];
+  value: string;
   avatar: string;
-  firstName: string[];
+  firstName: string;
   //lastName: string;[]
   company: string[];
   phoneNumber: string[];

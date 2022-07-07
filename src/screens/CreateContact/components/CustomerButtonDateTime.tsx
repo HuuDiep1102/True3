@@ -63,6 +63,12 @@ export const CustomerButtonDateTime = (props: CustomerButtonDateTimeProps) => {
     [array],
   );
 
+  console.log('birthday', data);
+
+  const onValueChange = () => {
+    console.log('birthday');
+  };
+
   return (
     <Container>
       {array.map((item, index) => {
@@ -76,7 +82,7 @@ export const CustomerButtonDateTime = (props: CustomerButtonDateTimeProps) => {
             </InputContainer>
             <DateTimeView>
               <DateTimeButton onPress={addNewValue}>
-                <DateTimeText value={data}></DateTimeText>
+                <DateTimeText value={data} onChangeText={onValueChange} />
               </DateTimeButton>
               <DateTimePickerModal
                 isVisible={isDatePickerVisible}

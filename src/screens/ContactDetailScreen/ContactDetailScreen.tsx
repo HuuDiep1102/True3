@@ -9,7 +9,7 @@ import {
   ARROW_ICON,
 } from '../../assets';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {Linking} from 'react-native';
+import {FlatList, Linking, View} from 'react-native';
 import {ContactItem} from './components/ContactItem';
 
 import {removeContactAction} from '../../redux/contact/contactStore';
@@ -40,7 +40,7 @@ export const ContactDetailScreen = () => {
       <HeaderContainer>
         <HeaderView />
         <HeaderContainerUpdate>
-          <DrawButton onPress={navigation.goBack}>
+          <DrawButton onPress={() => navigation.navigate('TabNavigation')}>
             <HeaderImage source={ARROW_ICON} />
           </DrawButton>
           <CreateContactButton
@@ -90,64 +90,68 @@ export const ContactDetailScreen = () => {
           />
         </ContactIconContainer>
       </HeaderContainer>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-        <ContactContainer>
-          <WrapInput>
-            <InputTitleContainer>
-              <InputTitleText>Điện thoại</InputTitleText>
-            </InputTitleContainer>
-            <InputContactContainer>
-              {item.phoneNumber.map(item => {
-                return (
-                  <InputContactButton
-                    onPress={() => {
-                      Linking.openURL(`tel:${item}`);
-                    }}>
-                    <InputContact>{item}</InputContact>
-                  </InputContactButton>
-                );
-              })}
-            </InputContactContainer>
-            <InputTitleContainer>
-              <InputTitleText>Email</InputTitleText>
-            </InputTitleContainer>
-            <InputContactContainer>
-              {item.email.map(item => {
-                return (
-                  <InputContactButton
-                    onPress={() => {
-                      Linking.openURL(`mailto:${item}`);
-                    }}>
-                    <InputContact>{item}</InputContact>
-                  </InputContactButton>
-                );
-              })}
-            </InputContactContainer>
-            <InputTitleContainer>
-              <InputTitleText>Ghi chú</InputTitleText>
-            </InputTitleContainer>
-            <InputContactContainer>
-              <InputContact></InputContact>
-            </InputContactContainer>
-            <WrapButton>
-              <BtnMessage
-                onPress={() => {
-                  Linking.openURL(`sms:${item.phoneNumber}`);
-                }}>
-                <BtnMessageText>Gửi tin nhắn</BtnMessageText>
-              </BtnMessage>
-              <BtnRemove
-                onPress={() => {
-                  removeContactAction(item);
-                  navigation.navigate('ContactScreen');
-                }}>
-                <BtnRemoveText>Xoá người gọi</BtnRemoveText>
-              </BtnRemove>
-            </WrapButton>
-          </WrapInput>
-        </ContactContainer>
-      </KeyboardAvoidingView>
+
+      <FlatList
+        data={[{}]}
+        renderItem={() => <View />}
+        ListFooterComponent={
+          <>
+            <WrapInput>
+              <InputTitleContainer>
+                <InputTitleText>Điện thoại</InputTitleText>
+              </InputTitleContainer>
+              <InputContactContainer>
+                {item.phoneNumber.map(item => {
+                  return (
+                    <InputContactButton
+                      onPress={() => {
+                        Linking.openURL(`tel:${item}`);
+                      }}>
+                      <InputContact>{item}</InputContact>
+                    </InputContactButton>
+                  );
+                })}
+              </InputContactContainer>
+              <InputTitleContainer>
+                <InputTitleText>Email</InputTitleText>
+              </InputTitleContainer>
+              <InputContactContainer>
+                {item.email.map(item => {
+                  return (
+                    <InputContactButton
+                      onPress={() => {
+                        Linking.openURL(`mailto:${item}`);
+                      }}>
+                      <InputContact>{item}</InputContact>
+                    </InputContactButton>
+                  );
+                })}
+              </InputContactContainer>
+              <InputTitleContainer>
+                <InputTitleText>Ghi chú</InputTitleText>
+              </InputTitleContainer>
+              <InputContactContainer>
+                <InputContact></InputContact>
+              </InputContactContainer>
+              <WrapButton>
+                <BtnMessage
+                  onPress={() => {
+                    Linking.openURL(`sms:${item.phoneNumber}`);
+                  }}>
+                  <BtnMessageText>Gửi tin nhắn</BtnMessageText>
+                </BtnMessage>
+                <BtnRemove
+                  onPress={() => {
+                    removeContactAction(item);
+                    navigation.navigate('TabNavigation');
+                  }}>
+                  <BtnRemoveText>Xoá người gọi</BtnRemoveText>
+                </BtnRemove>
+              </WrapButton>
+            </WrapInput>
+          </>
+        }
+      />
     </Container>
   );
 };
@@ -212,8 +216,8 @@ const InfoJob = styled.Text`
   color: black;
 `;
 
-const ContactContainer = styled.ScrollView`
-  height: 100px;
+const ContactContainer = styled.View`
+  padding-bottom: 15px;
 `;
 
 const InputContactContainer = styled.View`
@@ -221,7 +225,6 @@ const InputContactContainer = styled.View`
   background-color: white;
   border-bottom-width: 0.5px;
   border-bottom-color: #e0e0e0;
-  //background-color: #00008b;
 `;
 const InputContact = styled.Text`
   color: #2f80ed;
@@ -234,7 +237,6 @@ const InputContact = styled.Text`
 const InputContactButton = styled.TouchableOpacity``;
 
 const WrapInput = styled.View`
-  height: 64px;
   width: 100%;
   justify-content: flex-start;
   align-items: center;
@@ -244,7 +246,6 @@ const WrapButton = styled.View`
   width: 100%;
   justify-content: center;
   align-items: center;
-  background-color: red;
 `;
 
 const InputTitleContainer = styled.View`

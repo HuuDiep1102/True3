@@ -23,9 +23,9 @@ export const CreateContactScreen = () => {
 
   const [params, setParams] = useState<{
     id: string;
-    value: string[];
+    value: string;
     avatar: string;
-    firstName: string[];
+    firstName: string;
     //lastName: string[];
     company: string[];
     phoneNumber: string[];
@@ -35,14 +35,14 @@ export const CreateContactScreen = () => {
   }>({
     id: `${new Date().getTime().toString()}`,
     avatar: '',
-    firstName: [],
+    firstName: '',
     //lastName: [],
     company: [],
     phoneNumber: [],
     email: [],
     address: [],
     birthday: '',
-    value: [],
+    value: '',
   });
 
   useEffect(() => {
@@ -81,14 +81,14 @@ export const CreateContactScreen = () => {
             onPress={() => {
               //Kich Xong thi se chuyen cac params thanh state
               updateContactAction(params);
-              navigation.navigate('ContactScreen');
+              navigation.navigate('ContactDetailScreen', {item: params});
             }}>
             <HeaderText2 isActive={isActive}>Xong</HeaderText2>
           </CreateContactButton>
         </HeaderContainer>
 
         <FormContainer>
-          <AvatarPicker setParams={setParams} />
+          <AvatarPicker setParams={setParams} imageUri={item?.avatar} />
           <InputContainer>
             <InputInfoContainer>
               <CustomerInput

@@ -7,10 +7,11 @@ import styled from 'styled-components/native';
 
 interface AvatarPickerProps {
   setParams;
+  imageUri: string;
 }
 
 export const AvatarPicker = (props: AvatarPickerProps) => {
-  const {setParams} = props;
+  const {setParams, imageUri} = props;
   const [pickerResponse, setPickerResponse] = useState(null);
   const [visible, setVisible] = useState(false);
 
@@ -43,7 +44,10 @@ export const AvatarPicker = (props: AvatarPickerProps) => {
 
   return (
     <Screen>
-      <ImagePickerAvatar uri={uri} onPress={onImageLibraryPress} />
+      <ImagePickerAvatar
+        uri={uri ? uri : imageUri}
+        onPress={onImageLibraryPress}
+      />
       <ImagePickerModal
         isVisible={visible}
         onClose={() => setVisible(false)}

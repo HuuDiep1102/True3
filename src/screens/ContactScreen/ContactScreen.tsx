@@ -11,7 +11,7 @@
 /*
 Note: Do useContact ra 1 list de nem vao section list
  */
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import styled, {css} from 'styled-components/native';
 
 import {AlphabetList} from 'react-native-section-alphabet-list';
@@ -63,23 +63,27 @@ const CustomSectionHeader = (section: any) => {
 export const ContactScreen = () => {
   const listContact = useContacts();
 
-  //console.log('list', listContact);
-
   const [value, setValue] = useState('');
-  const [data, setData] = useState(listContact);
+  const [data, setData] = useState([]);
 
   const onChangeText = useCallback(text => {
+    console.log(text);
     setValue(text);
-    const oldData = [...listContact];
-    setData(
-      oldData.filter(
-        item =>
-          item.value.indexOf(text) > -1 ||
-          item.firstName.indexOf(text) > -1 ||
-          item.phoneNumber[0].indexOf(text) > -1,
-      ),
-    );
   }, []);
+
+  useEffect(() => {
+    let _data = listContact.filter(item => {
+      return (
+        item.firstName?.toLowerCase().includes(value?.toLowerCase()) ||
+        item.value?.toLowerCase().includes(value?.toLowerCase()) ||
+        item.phoneNumber
+          ?.toString()
+          ?.toLowerCase()
+          .includes(value?.toLowerCase())
+      );
+    });
+    setData(_data);
+  }, [value, listContact]);
 
   console.log('list', listContact);
 
@@ -102,7 +106,7 @@ export const ContactScreen = () => {
       ) : null}
       <ListContainer>
         <AlphabetList
-          data={value !== '' ? data : listContact}
+          data={data}
           letterListContainerStyle={{
             justifyContent: 'space-evenly',
           }}
