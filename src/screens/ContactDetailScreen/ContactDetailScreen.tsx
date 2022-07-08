@@ -7,14 +7,15 @@ import {
   FACETIME_ICON,
   MAIL_ICON,
   ARROW_ICON,
+  AVATAR_DEFAULT_ICON,
+  CAMERA_INPUT_ICON,
 } from '../../assets';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {FlatList, Linking, View} from 'react-native';
+import {Alert, FlatList, Linking, View, Image} from 'react-native';
 import {ContactItem} from './components/ContactItem';
 
 import {removeContactAction} from '../../redux/contact/contactStore';
-
-import {KeyboardAvoidingView, Platform} from 'react-native';
+import {AvatarPicker} from '../CreateContact/components/AvatarPicker';
 
 export const ContactDetailScreen = () => {
   const navigation = useNavigation<any>();
@@ -22,6 +23,8 @@ export const ContactDetailScreen = () => {
   const [isActiveEmail, setActiveEmail] = useState(false);
 
   const route = useRoute();
+
+  const imageDefault = Image.resolveAssetSource(AVATAR_DEFAULT_ICON).uri;
 
   const item = route?.params.item;
 
@@ -36,6 +39,21 @@ export const ContactDetailScreen = () => {
   }, [route?.params.item]);
 
   console.log('item', item);
+
+  const showConfirmDialog = () => {
+    return Alert.alert('Nhắc nhở', 'Bạn có chắc chắn muốn xoá liên hệ?', [
+      {
+        text: 'Yes',
+        onPress: () => {
+          removeContactAction(item);
+          navigation.navigate('TabNavigation');
+        },
+      },
+      {
+        text: 'No',
+      },
+    ]);
+  };
 
   return (
     <Container>
@@ -53,9 +71,12 @@ export const ContactDetailScreen = () => {
         <AvatarContainer>
           <LogIcon
             source={{
-              uri: item.avatar,
+              uri: item.avatar ? item.avatar : imageDefault,
             }}
           />
+          <AddButton>
+            <AddButtonIcon source={CAMERA_INPUT_ICON} />
+          </AddButton>
         </AvatarContainer>
 
         <InfoContainer isIos>
@@ -137,7 +158,7 @@ export const ContactDetailScreen = () => {
                 <InputTitleText>Ghi chú</InputTitleText>
               </InputTitleContainer>
               <InputContactContainer>
-                <InputContact></InputContact>
+                <InputContactNote></InputContactNote>
               </InputContactContainer>
               <WrapButton>
                 <BtnMessage
@@ -146,11 +167,7 @@ export const ContactDetailScreen = () => {
                   }}>
                   <BtnMessageText>Gửi tin nhắn</BtnMessageText>
                 </BtnMessage>
-                <BtnRemove
-                  onPress={() => {
-                    removeContactAction(item);
-                    navigation.navigate('TabNavigation');
-                  }}>
+                <BtnRemove onPress={() => showConfirmDialog()}>
                   <BtnRemoveText>Xoá người gọi</BtnRemoveText>
                 </BtnRemove>
               </WrapButton>
@@ -240,6 +257,14 @@ const InputContact = styled.Text`
   padding-bottom: 8px;
 `;
 
+const InputContactNote = styled.TextInput`
+  color: #2f80ed;
+  font-size: 17px;
+  font-weight: 400;
+  font-family: Roboto-Regular;
+  padding-bottom: 8px;
+`;
+
 const InputContactButton = styled.TouchableOpacity``;
 
 const WrapInput = styled.View`
@@ -301,6 +326,21 @@ const BtnRemoveText = styled(BtnMessageText)`
 const HeaderContainerUpdate = styled.View`
   flex-direction: row;
   justify-content: space-between;
+`;
+const AddButton = styled.View`
+  height: 30px;
+  width: 30px;
+  background-color: #f2a54a;
+  border-radius: 50px;
+  position: absolute;
+  right: 150px;
+  top: 70px;
+  justify-content: center;
+  align-items: center;
+`;
+const AddButtonIcon = styled.Image`
+  height: 13px;
+  width: 15px;
 `;
 
 const HeaderText = styled.Text`

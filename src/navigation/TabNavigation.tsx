@@ -40,6 +40,7 @@ export const TabNavigation = () => {
           marginBottom: Platform.OS === 'ios' ? 0 : 8,
         },
         headerShown: false,
+        tabBarHideOnKeyboard: true,
       })}>
       <Tab.Screen name="Danh bạ" component={ContactScreen} />
       <Tab.Screen name="Gần đây" component={HistoryScreen} />

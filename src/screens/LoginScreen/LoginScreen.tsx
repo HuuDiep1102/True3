@@ -10,7 +10,6 @@
 
 import React from 'react';
 import styled from 'styled-components/native';
-import {Platform} from 'react-native';
 import {IC_BANNER_LOGO, LOADING_LOGO, LOGO} from '../../assets';
 import {useNavigation} from '@react-navigation/native';
 

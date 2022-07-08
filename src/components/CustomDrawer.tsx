@@ -10,9 +10,11 @@ import {CustomerButtonList} from '../screens/CreateContact/components/CustomerBu
 
 const CustomDrawer = props => {
   const [isShow, setShow] = useState(false);
+  const [isDrop, setDrop] = useState(false);
 
   const showEdit = () => {
     setShow(!isShow);
+    setDrop(!isDrop);
   };
 
   return (
@@ -37,13 +39,10 @@ const CustomDrawer = props => {
 
         <CollectionContainer>
           <CollectionButton onPress={showEdit}>
-            <DropIcon source={DROP_ICON} />
+            <DropIcon isDrop={isDrop} source={DROP_ICON} />
             <CollectionButtonText>COLLECTIONS</CollectionButtonText>
             <EditButtonText>Edit</EditButtonText>
           </CollectionButton>
-          {/*<EditButton onPress={() => {}}>*/}
-          {/*  <EditButtonText>Edit</EditButtonText>*/}
-          {/*</EditButton>*/}
         </CollectionContainer>
 
         {isShow && (
@@ -164,15 +163,6 @@ const CollectionButtonText = styled.Text`
   color: black;
 `;
 
-const EditButton = styled.TouchableOpacity`
-  flex-direction: row;
-  background-color: rgba(242, 165, 74, 0.1);
-  width: 100px;
-  height: 44px;
-  justify-content: center;
-  align-items: center;
-`;
-
 const EditButtonText = styled.Text`
   position: absolute;
   font-size: 13px;
@@ -206,9 +196,10 @@ const LogIcon = styled.Image`
   width: 20px;
 `;
 
-const DropIcon = styled.Image`
+const DropIcon = styled.Image<{isDrop: boolean}>`
   height: 5px;
   width: 10px;
+  transform: rotate(${p => (p.isDrop ? '0deg' : '-90deg')});
 `;
 
 export default CustomDrawer;

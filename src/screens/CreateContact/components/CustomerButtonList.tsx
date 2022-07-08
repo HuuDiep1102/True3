@@ -63,7 +63,7 @@ const Cell = (props: CustomerCellProps) => {
   };
 
   const handleValidPhoneNumber = val => {
-    let reg = /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/;
+    let reg = /(84|0[3|5|7|8|9])+([0-9]{8})\b/;
 
     if (keyName !== 'phoneNumber') return;
 
@@ -87,7 +87,6 @@ const Cell = (props: CustomerCellProps) => {
       <CustomerInput
         style={{
           width: '93%',
-          paddingLeft: 17,
           color: '#2f80ed',
           fontWeight: '400',
           fontSize: 15,
@@ -195,7 +194,13 @@ const ButtonContactContainer = styled.TouchableOpacity`
   border-bottom-color: #e0e0e0;
 `;
 
-const InputContainer = styled.TouchableOpacity``;
+const InputContainer = styled.TouchableOpacity`
+  width: 50px;
+  height: 40px;
+  margin-left: -10px;
+  padding-left: 10px;
+  justify-content: center;
+`;
 
 const InputContainerView = styled.View`
   height: 44px;

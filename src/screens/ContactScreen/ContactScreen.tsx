@@ -15,15 +15,17 @@ import React, {useCallback, useEffect, useState} from 'react';
 import styled, {css} from 'styled-components/native';
 
 import {AlphabetList} from 'react-native-section-alphabet-list';
-import {SEARCH_ICON} from '../../assets';
+import {AVATAR_DEFAULT_ICON, SEARCH_ICON} from '../../assets';
 import {useNavigation} from '@react-navigation/native';
 
 import {HeaderCustomer} from '../../components/HeaderCustomer';
-import {Platform} from 'react-native';
+import {Image, Platform} from 'react-native';
 import {useContacts} from '../../redux/contact/contactStore';
 
 const CustomItem = item => {
   const navigation = useNavigation<any>();
+
+  const imageDefault = Image.resolveAssetSource(AVATAR_DEFAULT_ICON).uri;
 
   return (
     <ListItemContainer
@@ -31,7 +33,7 @@ const CustomItem = item => {
       <AvatarContainer>
         <Avatar
           source={{
-            uri: item.avatar,
+            uri: item.avatar ? item.avatar : imageDefault,
           }}
         />
       </AvatarContainer>
@@ -43,7 +45,7 @@ const CustomItem = item => {
         </ListItemNameLabel>
         <ListItemPhoneContainer numberOfLines={1}>
           {item.phoneNumber.map(item => {
-            return <ListItemPhoneLabel>{item} </ListItemPhoneLabel>;
+            return <ListItemPhoneLabel>{item}, </ListItemPhoneLabel>;
           })}
         </ListItemPhoneContainer>
       </ContactContainer>
@@ -157,7 +159,9 @@ const ListItemContainer = styled.TouchableOpacity`
 const ContactContainer = styled.View`
   width: 75%;
   height: 64px;
-  justify-content: space-evenly;
+  justify-content: space-between;
+  padding-top: 12px;
+  padding-bottom: 12px;
   align-items: flex-start;
   border-bottom-width: 0.5px;
   border-bottom-color: #e0e0e0;
@@ -226,6 +230,7 @@ const Avatar = styled.Image`
 
 const SearchbarContainer = styled.View`
   background-color: #f2f2f2;
+  opacity: 0.5;
   height: 36px;
   margin-left: 10px;
   margin-right: 10px;
@@ -238,6 +243,9 @@ const SearchbarContainer = styled.View`
 
 const InputSearch = styled.TextInput`
   color: black;
+  width: 100%;
+  font-size: 13px;
+  font-weight: 300;
 `;
 
 const Search = styled.Image`

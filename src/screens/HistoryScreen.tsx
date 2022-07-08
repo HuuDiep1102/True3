@@ -34,7 +34,7 @@ export const HistoryScreen = () => {
       <FlatListStyled
         data={data}
         renderItem={renderItem}
-        keyExtractor={item => item.id}
+        keyExtractor={(item: any) => item?.key}
       />
     </Container>
   );

@@ -16,9 +16,9 @@ export const ContactItem = (props: ContactItemProps) => {
   const {label1, label2, icon, active, keyName} = props;
   const [modalVisible, setModalVisible] = useState(false);
 
-  const route = useRoute();
+  //const route = useRoute();
 
-  const item = route?.params.item;
+  //const item = route?.params.item;
 
   return (
     <ContactItemContainer>
@@ -100,21 +100,6 @@ const ModalView = styled.View`
   justify-content: center;
 `;
 
-const ButtonClose = styled.TouchableOpacity`
-  background-color: #2196f3;
-  width: 100px;
-  height: 30px;
-  justify-content: center;
-  align-items: center;
-  border-radius: 15px;
-`;
-
-const TextStyle = styled.Text`
-  color: white;
-  font-weight: bold;
-  text-align: center;
-`;
-
 const ContactItemContainer = styled.View`
   justify-content: center;
   align-items: center;
@@ -125,7 +110,7 @@ const ContactIcon = styled.TouchableOpacity<{
   height: 40px;
   width: 40px;
   border-radius: 20px;
-  border-width: 0.5px;
+  border-width: ${p => (p.isActive ? 0 : 0.5)};
   border-color: #bdbdbd;
   justify-content: center;
   align-items: center;

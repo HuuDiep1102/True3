@@ -56,7 +56,7 @@ export const store = configureStore({
 
 export const useContacts = () => {
   // connect vao store de lay ra danh sac
-  return useSelector(state => state.contactReducer);
+  return useSelector((state: any) => state.contactReducer);
 };
 
 export const updateContactAction = (val: RawContact) => {
