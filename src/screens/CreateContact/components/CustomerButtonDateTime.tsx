@@ -1,3 +1,5 @@
+///CustomerButtonDateTime
+
 import {PLUS_ICON, REMOVE_ICON} from '../../../assets';
 import React, {useState, useCallback, useEffect} from 'react';
 import styled from 'styled-components/native';
@@ -7,11 +9,12 @@ import moment from 'moment';
 interface CustomerButtonDateTimeProps {
   label: string;
   setParams: (prev: any) => void;
-  data: string;
+  data: string[];
 }
 
 export const CustomerButtonDateTime = (props: CustomerButtonDateTimeProps) => {
   const {label, setParams, data} = props;
+
   const [array, setArray] = useState<string[]>([]);
 
   const [selectedDate, setSelectedDate] = useState();
@@ -28,9 +31,21 @@ export const CustomerButtonDateTime = (props: CustomerButtonDateTimeProps) => {
   // }, [array]);
 
   const addNewValue = useCallback(() => {
-    setArray([...array, '']);
+    setParams(prev => {
+      let _data = [...data];
+      _data.push('');
+      return {...prev, ['birthday']: _data};
+    });
     setDatePickerVisibility(true);
-  }, [array]);
+  }, []);
+
+  // const addNewValue = useCallback(() => {
+  //   setParams(prev => {
+  //     let _arr = [...prev[keyName]];
+  //     _arr.push('');
+  //     return {...prev, [keyName]: _arr};
+  //   });
+  // }, [array]);
 
   const updateValue = useCallback(() => {
     setDatePickerVisibility(true);
@@ -40,37 +55,45 @@ export const CustomerButtonDateTime = (props: CustomerButtonDateTimeProps) => {
     setDatePickerVisibility(false);
   }, []);
 
-  const handleConfirm = useCallback(date => {
+  const handleConfirm = useCallback((date, index) => {
     setSelectedDate(date);
+    setParams(prev => {
+      let _data = [...data];
+      _data[index] = moment(date).format('DD/MM/YYYY');
+      return {...prev, birthday: _data};
+    });
     hideDatePicker();
   }, []);
 
-  useEffect(() => {
-    // setParams(prev => {
-    //   let _arr = [...prev[birthday]];
-    //   _arr.push('');
-    //   return {...prev, [birthday]: _arr};
-    // });
+  // useEffect(() => {
+  //   setParams(prev => {
+  //     let _arr = [...prev[birthday]];
+  //     _arr.push('');
+  //     return {...prev, [birthday]: _arr};
+  //   });
 
-    setParams(prev => ({
-      ...prev,
-      birthday: moment(selectedDate).format('DD/MM/YYYY'),
-    }));
-  }, [moment(selectedDate).format('DD/MM/YYYY'), setParams]);
+  //   setParams(prev => ({
+  //     ...prev,
+  //     birthday: moment(selectedDate).format('DD/MM/YYYY'),
+  //   }));
+  // }, [moment(selectedDate).format('DD/MM/YYYY'), setParams]);
 
   const onRemove = useCallback(
     (index: number) => {
-      const oldArray = [...array];
-      setArray(oldArray.filter((_item, _index) => _index !== index));
+      setParams(prev => {
+        const oldArray = [...data];
+        const newArray = oldArray.filter((_item, _index) => _index !== index);
+        return {...prev, birthday: newArray};
+      });
     },
-    [array],
+    [data],
   );
 
   //console.log('birthday', data);
 
   return (
     <Container>
-      {array.map((item, index) => {
+      {data?.map((item, index) => {
         return (
           <InputContainerView>
             <InputContainer
@@ -81,12 +104,14 @@ export const CustomerButtonDateTime = (props: CustomerButtonDateTimeProps) => {
             </InputContainer>
             <DateTimeView>
               <DateTimeButton onPress={updateValue}>
-                <DateTimeText>{data}</DateTimeText>
+                <DateTimeText>{item}</DateTimeText>
               </DateTimeButton>
               <DateTimePickerModal
                 isVisible={isDatePickerVisible}
                 mode="date"
-                onConfirm={handleConfirm}
+                onConfirm={date => {
+                  handleConfirm(date, index);
+                }}
                 onCancel={hideDatePicker}
               />
             </DateTimeView>
