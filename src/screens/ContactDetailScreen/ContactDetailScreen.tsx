@@ -35,6 +35,8 @@ export const ContactDetailScreen = () => {
     else setActiveEmail(false);
   }, [route?.params.item]);
 
+  console.log('item', item);
+
   return (
     <Container>
       <HeaderContainer>
@@ -65,28 +67,28 @@ export const ContactDetailScreen = () => {
 
         <ContactIconContainer>
           <ContactItem
-            label1={`tel:${item.phoneNumber}`}
+            label1={`tel:`}
             label2={'Nhấn gọi điện'}
             icon={PHONE_ICON}
             active={isActivePhoneNumber}
             keyName={item.phoneNumber}
           />
           <ContactItem
-            label1={`sms:${item.phoneNumber}`}
+            label1={`sms:`}
             label2={'Nhắn tin'}
             icon={MESSAGE_ICON}
             active={isActivePhoneNumber}
             keyName={item.phoneNumber}
           />
           <ContactItem
-            label1={`tel:${item.phoneNumber}`}
+            label1={'tel:'}
             label2={'Facetime'}
             icon={FACETIME_ICON}
             active={isActivePhoneNumber}
             keyName={item.phoneNumber}
           />
           <ContactItem
-            label1={`mailto:${item.email}`}
+            label1={'mailto:'}
             label2={'Gửi mail'}
             icon={MAIL_ICON}
             active={isActiveEmail}

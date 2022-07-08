@@ -5,11 +5,11 @@ import Modal from 'react-native-modal';
 import {useRoute} from '@react-navigation/native';
 
 interface ContactItemProps {
-  label1: string;
+  label1: any;
   label2: string;
   icon: any;
   active: boolean;
-  keyName: string;
+  keyName: any;
 }
 
 export const ContactItem = (props: ContactItemProps) => {
@@ -31,15 +31,11 @@ export const ContactItem = (props: ContactItemProps) => {
         <CenteredView>
           <ModalView>
             <InputContactContainer>
-              {item.phoneNumber.map(item => {
+              {keyName.map(item => {
                 return (
                   <InputContactButton
                     onPress={() => {
-                      Linking.openURL(
-                        keyName === 'item.phoneNumber'
-                          ? `tel:${item}`
-                          : `mailto:${item}`,
-                      );
+                      Linking.openURL(label1 + item);
                     }}>
                     <InputContact>{item}</InputContact>
                   </InputContactButton>
@@ -52,7 +48,6 @@ export const ContactItem = (props: ContactItemProps) => {
 
       <ContactIcon
         onPress={() => {
-          //Linking.openURL(label1);
           setModalVisible(true);
         }}
         isActive={active}

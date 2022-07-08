@@ -9,10 +9,6 @@ import {KeyboardAvoidingView, Platform} from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {updateContactAction} from '../../redux/contact/contactStore';
 
-import {useForm, Controller} from 'react-hook-form';
-import {yupResolver} from '@hookform/resolvers/yup';
-import * as yup from 'yup';
-
 export const CreateContactScreen = () => {
   const [isActive, setActive] = useState(false);
   const navigation = useNavigation<any>();
@@ -31,7 +27,7 @@ export const CreateContactScreen = () => {
     phoneNumber: string[];
     email: string[];
     address: string[];
-    birthday: string;
+    birthday: string[];
   }>({
     id: `${new Date().getTime().toString()}`,
     avatar: '',
@@ -41,7 +37,7 @@ export const CreateContactScreen = () => {
     phoneNumber: [],
     email: [],
     address: [],
-    birthday: '',
+    birthday: [],
     value: '',
   });
 

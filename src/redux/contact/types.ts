@@ -13,5 +13,5 @@ export interface RawContact {
   phoneNumber: string[];
   email: string[];
   address: string[];
-  birthday: string;
+  birthday: string[];
 }
