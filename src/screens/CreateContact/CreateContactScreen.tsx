@@ -5,7 +5,7 @@ import {CustomerButtonList} from './components/CustomerButtonList';
 import {CustomerButtonDateTime} from './components/CustomerButtonDateTime';
 import {CustomerInput} from './components/CustomerInput';
 import {AvatarPicker} from './components/AvatarPicker';
-import {KeyboardAvoidingView, Platform} from 'react-native';
+import {Keyboard, KeyboardAvoidingView, Platform} from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {updateContactAction} from '../../redux/contact/contactStore';
 
@@ -46,6 +46,7 @@ export const CreateContactScreen = () => {
       setParams(item);
       return;
     }
+    Keyboard.dismiss;
   }, [item]);
 
   useEffect(() => {
@@ -92,7 +93,7 @@ export const CreateContactScreen = () => {
                 keyName={'value'}
                 value={params.value}
                 onValueChange={onValueChange}
-                autoFocus={true}
+                //autoFocus={true}
                 placeholderTextColor={'#BDBDBD'}
               />
             </InputInfoContainer>
@@ -103,6 +104,7 @@ export const CreateContactScreen = () => {
                 value={params.firstName}
                 onValueChange={onValueChange}
                 placeholderTextColor={'#BDBDBD'}
+                //autoFocus={true}
               />
             </InputInfoContainer>
             <InputInfoContainer>

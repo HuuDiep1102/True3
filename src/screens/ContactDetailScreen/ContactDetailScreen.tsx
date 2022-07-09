@@ -57,71 +57,19 @@ export const ContactDetailScreen = () => {
 
   return (
     <Container>
-      <HeaderContainer>
-        <HeaderView />
-        <HeaderContainerUpdate>
-          <DrawButton onPress={() => navigation.navigate('TabNavigation')}>
-            <HeaderImage source={ARROW_ICON} />
-          </DrawButton>
-          <CreateContactButton
-            onPress={() => navigation.navigate('CreateContactScreen', {item})}>
-            <HeaderText>Sửa</HeaderText>
-          </CreateContactButton>
-        </HeaderContainerUpdate>
-        <AvatarContainer>
-          <LogIcon
-            source={{
-              uri: item.avatar ? item.avatar : imageDefault,
-            }}
-          />
-          <AddButton>
-            <AddButtonIcon source={CAMERA_INPUT_ICON} />
-          </AddButton>
-        </AvatarContainer>
-
-        <InfoContainer isIos>
-          <InfoName>
-            {item.value} {item.firstName}
-          </InfoName>
-          <InfoJob>UI/UX Design</InfoJob>
-        </InfoContainer>
-
-        <ContactIconContainer>
-          <ContactItem
-            label1={`tel:`}
-            label2={'Nhấn gọi điện'}
-            icon={PHONE_ICON}
-            active={isActivePhoneNumber}
-            keyName={item.phoneNumber}
-          />
-          <ContactItem
-            label1={`sms:`}
-            label2={'Nhắn tin'}
-            icon={MESSAGE_ICON}
-            active={isActivePhoneNumber}
-            keyName={item.phoneNumber}
-          />
-          <ContactItem
-            label1={'tel:'}
-            label2={'Facetime'}
-            icon={FACETIME_ICON}
-            active={isActivePhoneNumber}
-            keyName={item.phoneNumber}
-          />
-          <ContactItem
-            label1={'mailto:'}
-            label2={'Gửi mail'}
-            icon={MAIL_ICON}
-            active={isActiveEmail}
-            keyName={item.email}
-          />
-        </ContactIconContainer>
-      </HeaderContainer>
-
+      <HeaderView />
+      <HeaderContainerUpdate>
+        <DrawButton onPress={() => navigation.navigate('TabNavigation')}>
+          <HeaderImage source={ARROW_ICON} />
+        </DrawButton>
+        <CreateContactButton
+          onPress={() => navigation.navigate('CreateContactScreen', {item})}>
+          <HeaderText>Sửa</HeaderText>
+        </CreateContactButton>
+      </HeaderContainerUpdate>
       <FlatList
         data={[{}]}
-        renderItem={() => <View />}
-        ListFooterComponent={
+        renderItem={() => (
           <>
             <WrapInput>
               <InputTitleContainer>
@@ -173,28 +121,82 @@ export const ContactDetailScreen = () => {
               </WrapButton>
             </WrapInput>
           </>
+        )}
+        ListHeaderComponent={
+          <>
+            <HeaderContainer>
+              <AvatarContainer>
+                <LogIcon
+                  source={{
+                    uri: item.avatar ? item.avatar : imageDefault,
+                  }}
+                />
+                <AddButton>
+                  <AddButtonIcon source={CAMERA_INPUT_ICON} />
+                </AddButton>
+              </AvatarContainer>
+
+              <InfoContainer>
+                <InfoName>
+                  {item.value} {item.firstName}
+                </InfoName>
+                <InfoJob>UI/UX Design</InfoJob>
+              </InfoContainer>
+
+              <ContactIconContainer>
+                <ContactItem
+                  label1={`tel:`}
+                  label2={'Nhấn gọi điện'}
+                  icon={PHONE_ICON}
+                  active={isActivePhoneNumber}
+                  keyName={item.phoneNumber}
+                />
+                <ContactItem
+                  label1={`sms:`}
+                  label2={'Nhắn tin'}
+                  icon={MESSAGE_ICON}
+                  active={isActivePhoneNumber}
+                  keyName={item.phoneNumber}
+                />
+                <ContactItem
+                  label1={'tel:'}
+                  label2={'Facetime'}
+                  icon={FACETIME_ICON}
+                  active={isActivePhoneNumber}
+                  keyName={item.phoneNumber}
+                />
+                <ContactItem
+                  label1={'mailto:'}
+                  label2={'Gửi mail'}
+                  icon={MAIL_ICON}
+                  active={isActiveEmail}
+                  keyName={item.email}
+                />
+              </ContactIconContainer>
+            </HeaderContainer>
+          </>
         }
+        // stickyHeaderIndices={[0]}
       />
     </Container>
   );
 };
 
 const Container = styled.SafeAreaView`
-  flex: 1;
   background-color: white;
-  padding-top: 40px;
 `;
 
-const HeaderContainer = styled.View``;
-
+const HeaderContainer = styled.View`
+  z-index: 1;
+`;
 const HeaderView = styled.View`
   background-color: #f2a54a;
   opacity: 0.05;
   position: absolute;
-  top: -60px;
+  top: 0;
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom: 400px;
 `;
 
 const AvatarContainer = styled.View`
@@ -268,9 +270,11 @@ const InputContactNote = styled.TextInput`
 const InputContactButton = styled.TouchableOpacity``;
 
 const WrapInput = styled.View`
+  margin-bottom: 200px;
   width: 100%;
   justify-content: flex-start;
   align-items: center;
+  background-color: white;
 `;
 
 const WrapButton = styled.View`

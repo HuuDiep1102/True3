@@ -2,6 +2,7 @@ import * as React from 'react';
 //import {TextInput, TextInputProps} from 'react-native';
 import styled from 'styled-components/native';
 import {useCallback} from 'react';
+import {TextInputProps} from 'react-native';
 
 interface CustomInputProps extends TextInputProps {
   keyName: string;
@@ -16,7 +17,13 @@ export const CustomerInput = React.memo((props: CustomInputProps) => {
     onValueChange(keyName, value);
   }, []);
 
-  return <TextInput onChangeText={onChangeText} {...remainingProps} />;
+  return (
+    <TextInput
+      onChangeText={onChangeText}
+      autoFocus={true}
+      {...remainingProps}
+    />
+  );
 });
 
 const TextInput = styled.TextInput`
