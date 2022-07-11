@@ -9,7 +9,7 @@ export interface RawContact {
   avatar: string;
   firstName: string;
   //lastName: string;[]
-  company: string[];
+  company: string;
   phoneNumber: string[];
   email: string[];
   address: string[];

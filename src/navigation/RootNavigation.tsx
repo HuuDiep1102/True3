@@ -22,12 +22,12 @@ const MainNavigation = () => {
       <Stack.Screen name="Draw" component={DrawerNavigation} />
       {/*<Stack.Screen name="ContactScreen" component={ContactScreen} />*/}
       <Stack.Screen
-        name="CreateContactScreen"
-        component={CreateContactScreen}
-      />
-      <Stack.Screen
         name="ContactDetailScreen"
         component={ContactDetailScreen}
+      />
+      <Stack.Screen
+        name="CreateContactScreen"
+        component={CreateContactScreen}
       />
       {/*<Stack.Screen name="ContactScreen" component={ContactScreen} />*/}
     </Stack.Navigator>

@@ -20,21 +20,11 @@ export const CustomerButtonDateTime = (props: CustomerButtonDateTimeProps) => {
   const [selectedDate, setSelectedDate] = useState();
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
-  // const addNewValue = useCallback(() => {
-  //   setParams(prev => {
-  //     let _arr = [...prev[keyName]];
-  //     _arr.push('');
-  //     return {...prev, [keyName]: _arr};
-  //   });
-  //
-  //   setDatePickerVisibility(true);
-  // }, [array]);
-
   const addNewValue = useCallback(() => {
     setParams(prev => {
       let _data = [...data];
       _data.push('');
-      return {...prev, ['birthday']: _data};
+      return {...prev, birthday: _data};
     });
     setDatePickerVisibility(true);
   }, []);
@@ -51,32 +41,24 @@ export const CustomerButtonDateTime = (props: CustomerButtonDateTimeProps) => {
     setDatePickerVisibility(true);
   }, []);
 
-  const hideDatePicker = useCallback(() => {
+  const hideDatePicker = useCallback((index: number) => {
+    setParams(prev => {
+      return {...prev, birthday: prev.birthday[0] === '' ? [] : prev.birthday};
+    });
     setDatePickerVisibility(false);
   }, []);
 
   const handleConfirm = useCallback((date, index) => {
-    setSelectedDate(date);
+    //setSelectedDate(date);
     setParams(prev => {
       let _data = [...data];
+      // _data.push('');
+
       _data[index] = moment(date).format('DD/MM/YYYY');
       return {...prev, birthday: _data};
     });
     hideDatePicker();
   }, []);
-
-  // useEffect(() => {
-  //   setParams(prev => {
-  //     let _arr = [...prev[birthday]];
-  //     _arr.push('');
-  //     return {...prev, [birthday]: _arr};
-  //   });
-
-  //   setParams(prev => ({
-  //     ...prev,
-  //     birthday: moment(selectedDate).format('DD/MM/YYYY'),
-  //   }));
-  // }, [moment(selectedDate).format('DD/MM/YYYY'), setParams]);
 
   const onRemove = useCallback(
     (index: number) => {
@@ -88,8 +70,6 @@ export const CustomerButtonDateTime = (props: CustomerButtonDateTimeProps) => {
     },
     [data],
   );
-
-  //console.log('birthday', data);
 
   return (
     <Container>

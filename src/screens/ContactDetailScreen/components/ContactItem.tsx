@@ -16,15 +16,13 @@ export const ContactItem = (props: ContactItemProps) => {
   const {label1, label2, icon, active, keyName} = props;
   const [modalVisible, setModalVisible] = useState(false);
 
-  //const route = useRoute();
-
-  //const item = route?.params.item;
-
   return (
     <ContactItemContainer>
       <Modal
+        style={{justifyContent: 'flex-end'}}
         isVisible={modalVisible}
         hasBackdrop={true}
+        statusBarTranslucent={true}
         onBackdropPress={() => {
           setModalVisible(false);
         }}>
@@ -37,6 +35,7 @@ export const ContactItem = (props: ContactItemProps) => {
                     onPress={() => {
                       Linking.openURL(label1 + item);
                     }}>
+                    <ContactIconImageModal source={icon} />
                     <InputContact>{item}</InputContact>
                   </InputContactButton>
                 );
@@ -60,13 +59,9 @@ export const ContactItem = (props: ContactItemProps) => {
 };
 
 const InputContactContainer = styled.View`
-  width: 90%;
-  background-color: antiquewhite;
+  background-color: white;
   border-radius: 15px;
   padding: 5px;
-  justify-content: center;
-  align-items: center;
-  //background-color: #00008b;
 `;
 const InputContact = styled.Text`
   font-size: 17px;
@@ -75,29 +70,23 @@ const InputContact = styled.Text`
   padding-bottom: 8px;
   color: black;
   border-radius: 10px;
-  width: 150px;
   padding-left: 10px;
 `;
 
 const InputContactButton = styled.TouchableOpacity`
   flex-direction: row;
-  justify-content: center;
-  align-items: center;
 `;
 
 const CenteredView = styled.View`
-  justify-content: center;
   align-items: center;
-  margin-top: 22px;
 `;
 
 const ModalView = styled.View`
-  margin: 20px;
-  background-color: antiquewhite;
-  border-radius: 20px;
-  padding: 10px;
-  align-items: center;
-  justify-content: center;
+  width: 120%;
+  background-color: white;
+  border-radius: 30px;
+  padding-top: 10px;
+  padding-left: 20px;
 `;
 
 const ContactItemContainer = styled.View`
@@ -123,6 +112,13 @@ const ContactIconImage = styled.Image<{
   height: 24px;
   width: 24px;
   tint-color: ${p => (p.isActive ? '#ffffff' : '#BDBDBD')};
+`;
+
+const ContactIconImageModal = styled.Image`
+  height: 24px;
+  width: 24px;
+  tint-color: #f2a54a;
+  margin-bottom: 6px;
 `;
 
 const ContactText = styled.Text<{

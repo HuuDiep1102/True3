@@ -40,10 +40,9 @@ export const HistoryScreen = () => {
   );
 };
 
-const Container = styled.SafeAreaView`
+const Container = styled.View`
   flex: 1;
   background-color: #ffffff;
-  padding-top: 40px;
 `;
 
 const FlatListStyled = styled.FlatList``;

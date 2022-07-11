@@ -133,8 +133,7 @@ export const ContactScreen = () => {
 const Container = styled.View`
   flex: 1;
   background-color: #ffffff;
-  padding-top: 37px;
-  padding-bottom: 100px;
+  //padding-bottom: 100px;
 `;
 const ListContainer = styled.View`
   //margin-bottom: 150px;

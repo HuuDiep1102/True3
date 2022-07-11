@@ -18,9 +18,9 @@ interface CustomerCellProps {
   setParams: (prev: any) => void;
   keyName: string;
   keyboardType;
-  valid: string;
   setEmailValidError: Function;
   setPhoneNumberValidError: Function;
+  autoFocus: boolean;
 }
 
 const Cell = (props: CustomerCellProps) => {
@@ -33,6 +33,7 @@ const Cell = (props: CustomerCellProps) => {
     keyboardType,
     setEmailValidError,
     setPhoneNumberValidError,
+    autoFocus,
   } = props;
 
   const onValueChange = useCallback((value: string) => {
@@ -41,6 +42,7 @@ const Cell = (props: CustomerCellProps) => {
     setParams(prev => {
       let _arr = [...prev[keyName]];
       _arr[index] = value;
+      // _arr.filter(x => x !== null);
       return {
         ...prev,
         [keyName]: _arr,
@@ -92,11 +94,11 @@ const Cell = (props: CustomerCellProps) => {
           fontSize: 15,
         }}
         placeholder={'Mời nhập'}
-        autoFocus={true}
         value={data[index]}
         onChangeText={onValueChange}
         placeholderTextColor={'#BDBDBD'}
         keyboardType={keyboardType}
+        autoFocus={autoFocus}
       />
     </InputContainerView>
   );
@@ -135,6 +137,7 @@ export const CustomerButtonList = (props: CustomerButtonListProps) => {
         return (
           <Cell
             key={index}
+            autoFocus={item === ''}
             onRemove={onRemove}
             index={index}
             data={data}

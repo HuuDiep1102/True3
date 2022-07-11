@@ -4,6 +4,7 @@ import {CAMERA_ICON, MENU_ICON} from '../assets';
 import {Colors} from '../theme/Color';
 import {useNavigation} from '@react-navigation/native';
 import 'react-native-gesture-handler';
+import {getStatusBarHeight} from 'react-native-status-bar-height';
 
 interface HeaderCustomerProps {
   label: string;
@@ -29,13 +30,16 @@ export const HeaderCustomer = (props: HeaderCustomerProps) => {
 const HeaderContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
-  height: 44px;
-  margin-top: 11px;
+  height: ${44 + getStatusBarHeight()}px;
+  padding-top: ${getStatusBarHeight()}px;
+  width: 100%;
 `;
+
 const HeaderText = styled.Text`
   font-size: 24px;
   font-weight: 500;
   color: ${Colors.gray1};
+  margin-top: -6px;
 `;
 
 const DrawButton = styled.TouchableOpacity`

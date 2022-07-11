@@ -8,6 +8,7 @@ import {AvatarPicker} from './components/AvatarPicker';
 import {Keyboard, KeyboardAvoidingView, Platform} from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {updateContactAction} from '../../redux/contact/contactStore';
+import {Header} from 'react-native/Libraries/NewAppScreen';
 
 export const CreateContactScreen = () => {
   const [isActive, setActive] = useState(false);
@@ -22,8 +23,7 @@ export const CreateContactScreen = () => {
     value: string;
     avatar: string;
     firstName: string;
-    //lastName: string[];
-    company: string[];
+    company: string;
     phoneNumber: string[];
     email: string[];
     address: string[];
@@ -32,8 +32,7 @@ export const CreateContactScreen = () => {
     id: `${new Date().getTime().toString()}`,
     avatar: '',
     firstName: '',
-    //lastName: [],
-    company: [],
+    company: '',
     phoneNumber: [],
     email: [],
     address: [],
@@ -63,10 +62,12 @@ export const CreateContactScreen = () => {
       [keyName]: value,
     }));
   }, []);
-
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      // keyboardVerticalOffset={Header.HEIGHT + 20}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'null'}
+      //keyboardVerticalOffset={Platform.select({ios: 0, android: 600})}
+      style={{flex: 1}}>
       <Container>
         {/*Su dung HeaderComponent kho tuong tac du lieu*/}
         <HeaderContainer>
@@ -77,8 +78,16 @@ export const CreateContactScreen = () => {
           <CreateContactButton
             onPress={() => {
               //Kich Xong thi se chuyen cac params thanh state
-              updateContactAction(params);
-              navigation.navigate('ContactDetailScreen', {item: params});
+              if (params) {
+                const newParams = {
+                  ...params,
+                  phoneNumber: params.phoneNumber.filter(phone => phone !== ''),
+                  address: params.address.filter(address => address !== ''),
+                  email: params.email.filter(email => email !== ''),
+                };
+                updateContactAction(newParams);
+                navigation.navigate('ContactDetailScreen', {item: newParams});
+              }
             }}>
             <HeaderText2 isActive={isActive}>Xong</HeaderText2>
           </CreateContactButton>
@@ -93,8 +102,8 @@ export const CreateContactScreen = () => {
                 keyName={'value'}
                 value={params.value}
                 onValueChange={onValueChange}
-                //autoFocus={true}
                 placeholderTextColor={'#BDBDBD'}
+                autoFocus={true}
               />
             </InputInfoContainer>
             <InputInfoContainer>
@@ -104,7 +113,7 @@ export const CreateContactScreen = () => {
                 value={params.firstName}
                 onValueChange={onValueChange}
                 placeholderTextColor={'#BDBDBD'}
-                //autoFocus={true}
+                autoFocus={false}
               />
             </InputInfoContainer>
             <InputInfoContainer>
@@ -114,7 +123,7 @@ export const CreateContactScreen = () => {
                 value={params.company}
                 onValueChange={onValueChange}
                 placeholderTextColor={'#BDBDBD'}
-                //autoFocus={true}
+                autoFocus={false}
               />
             </InputInfoContainer>
           </InputContainer>

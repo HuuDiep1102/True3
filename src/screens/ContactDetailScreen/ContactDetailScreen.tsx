@@ -16,6 +16,7 @@ import {ContactItem} from './components/ContactItem';
 
 import {removeContactAction} from '../../redux/contact/contactStore';
 import {AvatarPicker} from '../CreateContact/components/AvatarPicker';
+import Modal from 'react-native-modal';
 
 export const ContactDetailScreen = () => {
   const navigation = useNavigation<any>();
@@ -26,19 +27,21 @@ export const ContactDetailScreen = () => {
 
   const imageDefault = Image.resolveAssetSource(AVATAR_DEFAULT_ICON).uri;
 
+  const [modalVisible, setModalVisible] = useState(false);
+
   const item = route?.params.item;
 
   useEffect(() => {
     if (item.phoneNumber.length > 0) setActivePhoneNumber(true);
     else setActivePhoneNumber(false);
-  }, [route?.params.item]);
+  }, [item]);
 
   useEffect(() => {
     if (item.email.length > 0) setActiveEmail(true);
     else setActiveEmail(false);
-  }, [route?.params.item]);
+  }, [item]);
 
-  console.log('item', item);
+  //console.log('item', item);
 
   const showConfirmDialog = () => {
     return Alert.alert('Nhắc nhở', 'Bạn có chắc chắn muốn xoá liên hệ?', [
@@ -109,12 +112,39 @@ export const ContactDetailScreen = () => {
                 <InputContactNote></InputContactNote>
               </InputContactContainer>
               <WrapButton>
+                <Modal
+                  style={{justifyContent: 'flex-end'}}
+                  isVisible={modalVisible}
+                  hasBackdrop={true}
+                  statusBarTranslucent={true}
+                  onBackdropPress={() => {
+                    setModalVisible(false);
+                  }}>
+                  <CenteredView>
+                    <ModalView>
+                      <InputContactContainerMessage>
+                        {item.phoneNumber.map(item => {
+                          return (
+                            <InputContactButton
+                              onPress={() => {
+                                Linking.openURL(`sms:` + item);
+                              }}>
+                              <ContactIconImageModal source={MESSAGE_ICON} />
+                              <InputContact>{item}</InputContact>
+                            </InputContactButton>
+                          );
+                        })}
+                      </InputContactContainerMessage>
+                    </ModalView>
+                  </CenteredView>
+                </Modal>
                 <BtnMessage
                   onPress={() => {
-                    Linking.openURL(`sms:${item.phoneNumber[0]}`);
+                    setModalVisible(true);
                   }}>
                   <BtnMessageText>Gửi tin nhắn</BtnMessageText>
                 </BtnMessage>
+
                 <BtnRemove onPress={() => showConfirmDialog()}>
                   <BtnRemoveText>Xoá người gọi</BtnRemoveText>
                 </BtnRemove>
@@ -131,9 +161,6 @@ export const ContactDetailScreen = () => {
                     uri: item.avatar ? item.avatar : imageDefault,
                   }}
                 />
-                <AddButton>
-                  <AddButtonIcon source={CAMERA_INPUT_ICON} />
-                </AddButton>
               </AvatarContainer>
 
               <InfoContainer>
@@ -184,6 +211,7 @@ export const ContactDetailScreen = () => {
 
 const Container = styled.SafeAreaView`
   background-color: white;
+  margin-bottom: 20px;
 `;
 
 const HeaderContainer = styled.View`
@@ -241,15 +269,16 @@ const InfoJob = styled.Text`
   color: black;
 `;
 
-const ContactContainer = styled.View`
-  padding-bottom: 15px;
-`;
-
 const InputContactContainer = styled.View`
   width: 90%;
   background-color: white;
   border-bottom-width: 0.5px;
   border-bottom-color: #e0e0e0;
+`;
+
+const InputContactContainerMessage = styled.View`
+  width: 90%;
+  background-color: white;
 `;
 const InputContact = styled.Text`
   color: #2f80ed;
@@ -257,6 +286,7 @@ const InputContact = styled.Text`
   font-weight: 400;
   font-family: Roboto-Regular;
   padding-bottom: 8px;
+  padding-left: 10px;
 `;
 
 const InputContactNote = styled.TextInput`
@@ -267,7 +297,9 @@ const InputContactNote = styled.TextInput`
   padding-bottom: 8px;
 `;
 
-const InputContactButton = styled.TouchableOpacity``;
+const InputContactButton = styled.TouchableOpacity`
+  flex-direction: row;
+`;
 
 const WrapInput = styled.View`
   margin-bottom: 200px;
@@ -330,6 +362,7 @@ const BtnRemoveText = styled(BtnMessageText)`
 const HeaderContainerUpdate = styled.View`
   flex-direction: row;
   justify-content: space-between;
+  margin-top: 30px;
 `;
 const AddButton = styled.View`
   height: 30px;
@@ -337,7 +370,7 @@ const AddButton = styled.View`
   background-color: #f2a54a;
   border-radius: 50px;
   position: absolute;
-  right: 150px;
+  right: 140px;
   top: 70px;
   justify-content: center;
   align-items: center;
@@ -363,4 +396,22 @@ const CreateContactButton = styled.TouchableOpacity`
 const HeaderImage = styled.ImageBackground`
   width: 24px;
   height: 24px;
+`;
+const ContactIconImageModal = styled.Image`
+  height: 24px;
+  width: 24px;
+  tint-color: #f2a54a;
+  margin-bottom: 6px;
+  margin-left: 5px;
+`;
+const CenteredView = styled.View`
+  align-items: center;
+`;
+
+const ModalView = styled.View`
+  width: 120%;
+  background-color: white;
+  border-radius: 30px;
+  padding-top: 10px;
+  padding-left: 20px;
 `;
