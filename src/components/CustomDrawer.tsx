@@ -5,8 +5,6 @@ import {DrawerContentScrollView} from '@react-navigation/drawer';
 import {ASSIGNMENT_ICON, AVATAR2, ADD_ICON, DROP_ICON} from '../assets';
 
 import styled, {css} from 'styled-components/native';
-import {useNavigation} from '@react-navigation/native';
-import {CustomerButtonList} from '../screens/CreateContact/components/CustomerButtonList';
 
 const CustomDrawer = props => {
   const [isShow, setShow] = useState(false);
@@ -75,15 +73,6 @@ export const CustomerItem = (props: CustomerItemProps) => {
 
 const DrawerContainer = styled.View`
   flex: 1;
-
-  ${Platform.select({
-    ios: css`
-      margin-top: 0;
-    `,
-    android: css`
-      margin-top: -20;
-    `,
-  })};
 `;
 
 const BannerContainer = styled.View`

@@ -31,7 +31,7 @@ const HeaderContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
   height: ${44 + getStatusBarHeight()}px;
-  padding-top: ${getStatusBarHeight()}px;
+  padding-top: ${7 + getStatusBarHeight()}px;
   width: 100%;
 `;
 

@@ -5,16 +5,21 @@ import {CustomerButtonList} from './components/CustomerButtonList';
 import {CustomerButtonDateTime} from './components/CustomerButtonDateTime';
 import {CustomerInput} from './components/CustomerInput';
 import {AvatarPicker} from './components/AvatarPicker';
-import {Keyboard, KeyboardAvoidingView, Platform} from 'react-native';
+import {
+  InteractionManager,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {updateContactAction} from '../../redux/contact/contactStore';
-import {Header} from 'react-native/Libraries/NewAppScreen';
+import {slugify} from '../../ultis/string';
 
 export const CreateContactScreen = () => {
   const [isActive, setActive] = useState(false);
   const navigation = useNavigation<any>();
 
-  const route = useRoute();
+  const route = useRoute<any>();
 
   const item: any = route?.params?.item;
 
@@ -56,39 +61,53 @@ export const CreateContactScreen = () => {
   // Xay dung ham onChangeText chung
   // Muon su dung ham chung phai tu build component input rieng
 
-  const onValueChange = useCallback((keyName: string, value: string[]) => {
+  const onUpdate = useCallback(() => {
+    const newParams = {
+      ...params,
+      phoneNumber: params.phoneNumber.filter(phone => phone !== ''),
+      address: params.address.filter(address => address !== ''),
+      email: params.email.filter(email => email !== ''),
+      normalizerForSearch: `${params.firstName} ${params.value} ${slugify(
+        params.firstName,
+      )} ${slugify(params.value)}`,
+    };
+    updateContactAction(newParams);
+    InteractionManager.runAfterInteractions(() => {
+      setTimeout(() => {
+        navigation.reset({
+          index: 0,
+          routes: [
+            {
+              name: 'Draw',
+            },
+          ],
+        });
+        navigation.navigate('ContactDetailScreen', {
+          item: newParams,
+        });
+      }, 300);
+    });
+  }, [params]);
+
+  const onValueChange = useCallback((keyName: string, value: string) => {
     setParams(state => ({
       ...state,
       [keyName]: value,
     }));
   }, []);
+
   return (
     <KeyboardAvoidingView
-      // keyboardVerticalOffset={Header.HEIGHT + 20}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'null'}
-      //keyboardVerticalOffset={Platform.select({ios: 0, android: 600})}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{flex: 1}}>
       <Container>
         {/*Su dung HeaderComponent kho tuong tac du lieu*/}
         <HeaderContainer>
           {/*Su kho tuong tac du lieu*/}
-          <DrawButton onPress={navigation.goBack}>
+          <DrawButton onPress={navigation.goBack} disabled={isActive}>
             <HeaderText1 isActive={isActive}>Huỷ</HeaderText1>
           </DrawButton>
-          <CreateContactButton
-            onPress={() => {
-              //Kich Xong thi se chuyen cac params thanh state
-              if (params) {
-                const newParams = {
-                  ...params,
-                  phoneNumber: params.phoneNumber.filter(phone => phone !== ''),
-                  address: params.address.filter(address => address !== ''),
-                  email: params.email.filter(email => email !== ''),
-                };
-                updateContactAction(newParams);
-                navigation.navigate('ContactDetailScreen', {item: newParams});
-              }
-            }}>
+          <CreateContactButton onPress={onUpdate} disabled={!isActive}>
             <HeaderText2 isActive={isActive}>Xong</HeaderText2>
           </CreateContactButton>
         </HeaderContainer>
@@ -159,7 +178,7 @@ export const CreateContactScreen = () => {
   );
 };
 
-const Container = styled.SafeAreaView`
+const Container = styled.View`
   background-color: white;
   height: 100%;
   justify-content: center;
@@ -183,7 +202,6 @@ const InputInfoContainer = styled.View`
 const HeaderContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
-  margin-bottom: 20px;
 `;
 
 const HeaderText1 = styled.Text<{isActive: boolean}>`

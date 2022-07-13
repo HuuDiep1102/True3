@@ -5,9 +5,10 @@ import {StateType} from 'typesafe-actions';
 // value thay cho lastname
 export interface RawContact {
   id: string;
-  value: string;
+  value: string; // Điệp
   avatar: string;
-  firstName: string;
+  firstName: string; // Hữu
+  normalizerForSearch?: string; // firstName + value + slugify(firstName) + slugify(value)  Hữu Điệp huu diep
   //lastName: string;[]
   company: string;
   phoneNumber: string[];

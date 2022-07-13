@@ -61,5 +61,5 @@ export const AvatarPicker = (props: AvatarPickerProps) => {
 const Screen = styled.View`
   background-color: #f2f2fc;
   width: 100%;
-  height: 150px;
+  height: 124px;
 `;

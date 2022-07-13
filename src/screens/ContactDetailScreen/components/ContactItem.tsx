@@ -29,9 +29,10 @@ export const ContactItem = (props: ContactItemProps) => {
         <CenteredView>
           <ModalView>
             <InputContactContainer>
-              {keyName.map(item => {
+              {keyName.map((item, index) => {
                 return (
                   <InputContactButton
+                    key={index}
                     onPress={() => {
                       Linking.openURL(label1 + item);
                     }}>
@@ -47,7 +48,9 @@ export const ContactItem = (props: ContactItemProps) => {
 
       <ContactIcon
         onPress={() => {
-          setModalVisible(true);
+          if (keyName.length === 1) {
+            Linking.openURL(label1 + keyName[0]);
+          } else setModalVisible(true);
         }}
         isActive={active}
         disabled={!active}>
@@ -99,7 +102,7 @@ const ContactIcon = styled.TouchableOpacity<{
   height: 40px;
   width: 40px;
   border-radius: 20px;
-  border-width: ${p => (p.isActive ? 0 : 0.5)};
+  border-width: ${p => (p.isActive ? 0 : 0.5)}px;
   border-color: #bdbdbd;
   justify-content: center;
   align-items: center;

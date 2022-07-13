@@ -75,7 +75,7 @@ export const CustomerButtonDateTime = (props: CustomerButtonDateTimeProps) => {
     <Container>
       {data?.map((item, index) => {
         return (
-          <InputContainerView>
+          <InputContainerView key={index}>
             <InputContainer
               onPress={() => {
                 onRemove(0);
@@ -154,11 +154,6 @@ const ButtonContactContainer = styled.TouchableOpacity`
 
 const InputContainer = styled.TouchableOpacity`
   flex-direction: row;
-`;
-
-const DateText = styled.Text`
-  font-size: 18px;
-  color: black;
 `;
 
 const InputContainerView = styled.View`

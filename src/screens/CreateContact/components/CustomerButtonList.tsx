@@ -16,11 +16,12 @@ interface CustomerCellProps {
   index: number;
   data: string[];
   setParams: (prev: any) => void;
-  keyName: string;
   keyboardType;
-  setEmailValidError: Function;
-  setPhoneNumberValidError: Function;
+  keyName: string;
+  // setEmailValidError: Function;
+  // setPhoneNumberValidError: Function;
   autoFocus: boolean;
+  label: string;
 }
 
 const Cell = (props: CustomerCellProps) => {
@@ -29,20 +30,20 @@ const Cell = (props: CustomerCellProps) => {
     index,
     data,
     setParams,
-    keyName,
     keyboardType,
+    keyName,
     setEmailValidError,
     setPhoneNumberValidError,
     autoFocus,
+    label,
   } = props;
 
   const onValueChange = useCallback((value: string) => {
-    handleValidEmail(value);
-    handleValidPhoneNumber(value);
+    // handleValidEmail(value);
+    // handleValidPhoneNumber(value);
     setParams(prev => {
       let _arr = [...prev[keyName]];
       _arr[index] = value;
-      // _arr.filter(x => x !== null);
       return {
         ...prev,
         [keyName]: _arr,
@@ -50,34 +51,29 @@ const Cell = (props: CustomerCellProps) => {
     });
   }, []);
 
-  const handleValidEmail = val => {
-    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
-
-    if (keyName !== 'email') return;
-
-    if (val.length === 0) {
-      setEmailValidError('Trường này không được để trống');
-    } else if (!reg.test(val)) {
-      setEmailValidError('Email nhập không đúng định dạng');
-    } else if (reg.test(val)) {
-      setEmailValidError('');
-    }
-  };
-
-  const handleValidPhoneNumber = val => {
-    let reg = /(84|0[3|5|7|8|9])+([0-9]{8})\b/;
-
-    if (keyName !== 'phoneNumber') return;
-
-    if (val.length === 0) {
-      setPhoneNumberValidError('Trường này không được để trống');
-    } else if (!reg.test(val)) {
-      setPhoneNumberValidError('Số điện thoại không đúng định dạng');
-    } else if (reg.test(val)) {
-      setPhoneNumberValidError('');
-    }
-  };
-
+  // const handleValidEmail = val => {
+  //   let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+  //
+  //   if (keyName !== 'email') return;
+  //
+  //   if (!reg.test(val)) {
+  //     setEmailValidError('Email nhập không đúng định dạng');
+  //   } else if (reg.test(val)) {
+  //     setEmailValidError('');
+  //   }
+  // };
+  //
+  // const handleValidPhoneNumber = val => {
+  //   let reg =
+  //     /^((\+)33|0)[1-9](\d{2}){4}$|(^1800\d{4}$)|(^1\d{1|2|3|4|5|6}$)\b/;
+  //   if (keyName !== 'phoneNumber') return;
+  //
+  //   if (!reg.test(val)) {
+  //     setPhoneNumberValidError('Số điện thoại không đúng định dạng');
+  //   } else if (reg.test(val)) {
+  //     setPhoneNumberValidError('');
+  //   }
+  // };
   return (
     <InputContainerView>
       <InputContainer
@@ -93,12 +89,13 @@ const Cell = (props: CustomerCellProps) => {
           fontWeight: '400',
           fontSize: 15,
         }}
-        placeholder={'Mời nhập'}
+        placeholder={label}
         value={data[index]}
         onChangeText={onValueChange}
         placeholderTextColor={'#BDBDBD'}
         keyboardType={keyboardType}
         autoFocus={autoFocus}
+        keyName={keyName}
       />
     </InputContainerView>
   );
@@ -144,8 +141,9 @@ export const CustomerButtonList = (props: CustomerButtonListProps) => {
             setParams={setParams}
             keyName={keyName}
             keyboardType={keyboardType}
-            setEmailValidError={setEmailValidError}
-            setPhoneNumberValidError={setPhoneNumberValidError}
+            label={label}
+            // setEmailValidError={setEmailValidError}
+            // setPhoneNumberValidError={setPhoneNumberValidError}
           />
         );
       })}
@@ -153,10 +151,10 @@ export const CustomerButtonList = (props: CustomerButtonListProps) => {
         <PlusIcon source={PLUS_ICON} />
         <ButtonContactText>{label}</ButtonContactText>
       </ButtonContactContainer>
-      {phoneNumberValidError ? (
-        <ValidText>{phoneNumberValidError}</ValidText>
-      ) : null}
-      {emailValidError ? <ValidText>{emailValidError}</ValidText> : null}
+      {/*{phoneNumberValidError ? (*/}
+      {/*  <ValidText>{phoneNumberValidError}</ValidText>*/}
+      {/*) : null}*/}
+      {/*{emailValidError ? <ValidText>{emailValidError}</ValidText> : null}*/}
     </Container>
   );
 };

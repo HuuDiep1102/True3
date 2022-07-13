@@ -1,5 +1,5 @@
 /////ContactDetail
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import {
   PHONE_ICON,
@@ -8,14 +8,12 @@ import {
   MAIL_ICON,
   ARROW_ICON,
   AVATAR_DEFAULT_ICON,
-  CAMERA_INPUT_ICON,
 } from '../../assets';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {Alert, FlatList, Linking, View, Image} from 'react-native';
+import {Alert, FlatList, Linking, Image} from 'react-native';
 import {ContactItem} from './components/ContactItem';
 
 import {removeContactAction} from '../../redux/contact/contactStore';
-import {AvatarPicker} from '../CreateContact/components/AvatarPicker';
 import Modal from 'react-native-modal';
 
 export const ContactDetailScreen = () => {
@@ -23,13 +21,13 @@ export const ContactDetailScreen = () => {
   const [isActivePhoneNumber, setActivePhoneNumber] = useState(false);
   const [isActiveEmail, setActiveEmail] = useState(false);
 
-  const route = useRoute();
+  const route = useRoute<any>();
 
   const imageDefault = Image.resolveAssetSource(AVATAR_DEFAULT_ICON).uri;
 
   const [modalVisible, setModalVisible] = useState(false);
 
-  const item = route?.params.item;
+  const item: any = route?.params?.item;
 
   useEffect(() => {
     if (item.phoneNumber.length > 0) setActivePhoneNumber(true);
@@ -40,8 +38,6 @@ export const ContactDetailScreen = () => {
     if (item.email.length > 0) setActiveEmail(true);
     else setActiveEmail(false);
   }, [item]);
-
-  //console.log('item', item);
 
   const showConfirmDialog = () => {
     return Alert.alert('Nhắc nhở', 'Bạn có chắc chắn muốn xoá liên hệ?', [
@@ -79,31 +75,41 @@ export const ContactDetailScreen = () => {
                 <InputTitleText>Điện thoại</InputTitleText>
               </InputTitleContainer>
               <InputContactContainer>
-                {item.phoneNumber.map(item => {
-                  return (
-                    <InputContactButton
-                      onPress={() => {
-                        Linking.openURL(`tel:${item}`);
-                      }}>
-                      <InputContact>{item}</InputContact>
-                    </InputContactButton>
-                  );
-                })}
+                {item.phoneNumber && item.phoneNumber.length > 0 ? (
+                  item.phoneNumber.map((item, index) => {
+                    return (
+                      <InputContactButton
+                        key={index}
+                        onPress={() => {
+                          Linking.openURL(`tel:${item}`);
+                        }}>
+                        <InputContact>{item}</InputContact>
+                      </InputContactButton>
+                    );
+                  })
+                ) : (
+                  <InputContact>Chưa có số điện thoại</InputContact>
+                )}
               </InputContactContainer>
               <InputTitleContainer>
                 <InputTitleText>Email</InputTitleText>
               </InputTitleContainer>
               <InputContactContainer>
-                {item.email.map(item => {
-                  return (
-                    <InputContactButton
-                      onPress={() => {
-                        Linking.openURL(`mailto:${item}`);
-                      }}>
-                      <InputContact>{item}</InputContact>
-                    </InputContactButton>
-                  );
-                })}
+                {item.email && item.email.length > 0 ? (
+                  item.email.map((item, index) => {
+                    return (
+                      <InputContactButton
+                        key={index}
+                        onPress={() => {
+                          Linking.openURL(`mailto:${item}`);
+                        }}>
+                        <InputContact>{item}</InputContact>
+                      </InputContactButton>
+                    );
+                  })
+                ) : (
+                  <InputContact>Chưa có email</InputContact>
+                )}
               </InputContactContainer>
               <InputTitleContainer>
                 <InputTitleText>Ghi chú</InputTitleText>
@@ -123,9 +129,10 @@ export const ContactDetailScreen = () => {
                   <CenteredView>
                     <ModalView>
                       <InputContactContainerMessage>
-                        {item.phoneNumber.map(item => {
+                        {item.phoneNumber.map((item, index) => {
                           return (
                             <InputContactButton
+                              key={index}
                               onPress={() => {
                                 Linking.openURL(`sms:` + item);
                               }}>
@@ -140,7 +147,11 @@ export const ContactDetailScreen = () => {
                 </Modal>
                 <BtnMessage
                   onPress={() => {
-                    setModalVisible(true);
+                    {
+                      item.phoneNumber && item.phoneNumber.length > 0
+                        ? setModalVisible(true)
+                        : setModalVisible(false);
+                    }
                   }}>
                   <BtnMessageText>Gửi tin nhắn</BtnMessageText>
                 </BtnMessage>
@@ -203,13 +214,12 @@ export const ContactDetailScreen = () => {
             </HeaderContainer>
           </>
         }
-        // stickyHeaderIndices={[0]}
       />
     </Container>
   );
 };
 
-const Container = styled.SafeAreaView`
+const Container = styled.View`
   background-color: white;
   margin-bottom: 20px;
 `;
@@ -224,11 +234,11 @@ const HeaderView = styled.View`
   top: 0;
   left: 0;
   right: 0;
-  bottom: 400px;
+  bottom: 360px;
 `;
 
 const AvatarContainer = styled.View`
-  margin-top: 14px;
+  padding-top: 14px;
   justify-content: center;
   align-items: center;
 `;
@@ -286,7 +296,6 @@ const InputContact = styled.Text`
   font-weight: 400;
   font-family: Roboto-Regular;
   padding-bottom: 8px;
-  padding-left: 10px;
 `;
 
 const InputContactNote = styled.TextInput`
@@ -319,16 +328,16 @@ const InputTitleContainer = styled.View`
   width: 100%;
   justify-content: flex-start;
   align-items: center;
-  padding: 10px 0;
 `;
 
 const InputTitleText = styled.Text`
   font-weight: 400;
   justify-content: center;
   align-self: flex-start;
-  padding-left: 20px;
-  padding-top: 10px;
+  padding-left: 18px;
+  padding-top: 9px;
   color: black;
+  padding-bottom: 8px;
 `;
 
 const BtnMessage = styled.TouchableOpacity`
@@ -362,22 +371,7 @@ const BtnRemoveText = styled(BtnMessageText)`
 const HeaderContainerUpdate = styled.View`
   flex-direction: row;
   justify-content: space-between;
-  margin-top: 30px;
-`;
-const AddButton = styled.View`
-  height: 30px;
-  width: 30px;
-  background-color: #f2a54a;
-  border-radius: 50px;
-  position: absolute;
-  right: 140px;
-  top: 70px;
-  justify-content: center;
-  align-items: center;
-`;
-const AddButtonIcon = styled.Image`
-  height: 13px;
-  width: 15px;
+  padding-top: 40px;
 `;
 
 const HeaderText = styled.Text`

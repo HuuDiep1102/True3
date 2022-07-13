@@ -6,7 +6,6 @@ import {TabNavigation} from './TabNavigation';
 import {CreateContactScreen} from '../screens/CreateContact/CreateContactScreen';
 import {ContactDetailScreen} from '../screens/ContactDetailScreen/ContactDetailScreen';
 import {createDrawerNavigator} from '@react-navigation/drawer';
-import {ContactScreen} from '../screens/ContactScreen/ContactScreen';
 import 'react-native-gesture-handler';
 import CustomDrawer from '../components/CustomDrawer';
 
@@ -20,7 +19,6 @@ const MainNavigation = () => {
       initialRouteName="TabNavigation"
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="Draw" component={DrawerNavigation} />
-      {/*<Stack.Screen name="ContactScreen" component={ContactScreen} />*/}
       <Stack.Screen
         name="ContactDetailScreen"
         component={ContactDetailScreen}
@@ -29,7 +27,6 @@ const MainNavigation = () => {
         name="CreateContactScreen"
         component={CreateContactScreen}
       />
-      {/*<Stack.Screen name="ContactScreen" component={ContactScreen} />*/}
     </Stack.Navigator>
   );
 };
