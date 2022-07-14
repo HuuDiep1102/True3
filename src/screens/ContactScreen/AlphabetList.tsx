@@ -1,5 +1,5 @@
 import {AlphabetList} from 'react-native-section-alphabet-list';
-import React from 'react';
+import React, {useCallback} from 'react';
 import styled, {css} from 'styled-components/native';
 import {useNavigation} from '@react-navigation/native';
 import {Image, Platform} from 'react-native';
@@ -14,9 +14,12 @@ const CustomItem = item => {
 
   const imageDefault = Image.resolveAssetSource(AVATAR_DEFAULT_ICON).uri;
 
+  const onDetails = useCallback(() => {
+    navigation.navigate('ContactDetailScreen', {item});
+  }, []);
+
   return (
-    <ListItemContainer
-      onPress={() => navigation.navigate('ContactDetailScreen', {item})}>
+    <ListItemContainer onPress={onDetails}>
       <AvatarContainer>
         <Avatar
           source={{

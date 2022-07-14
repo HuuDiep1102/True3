@@ -7,7 +7,10 @@ import {CAMERA_INPUT_ICON, AVATAR_DEFAULT_ICON} from '../../../assets';
 export function ImagePickerAvatar({uri, onPress}) {
   return (
     <Container>
-      <Avatar source={{uri}}>
+      <Avatar
+        style={{height: 100, width: 100}}
+        imageStyle={{borderRadius: 50}}
+        source={{uri}}>
         <AvatarImage source={AVATAR_DEFAULT_ICON} />
         <AddButton onPress={onPress}>
           <AddButtonIcon source={CAMERA_INPUT_ICON} />

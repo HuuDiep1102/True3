@@ -1,18 +1,11 @@
-import {createSlice, configureStore, PayloadAction} from '@reduxjs/toolkit';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RawContact} from './types';
 import {useSelector} from 'react-redux';
-import {persistStore, persistReducer} from 'redux-persist';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
+import {store} from '../persist';
 
 // Tao ra mot mang rong voi kieu phan tu la RawContact
 const initContact: RawContact[] = [];
-
-// const persistConfig = {
-//   key: 'root',
-//   storage: AsyncStorage,
-// };
-
-const contactReducer = createSlice({
+export const contactReducer = createSlice({
   // dinh nghia 1 cai reducer su dung createSlide
   name: 'contactReducer',
   initialState: initContact,
@@ -37,26 +30,20 @@ const contactReducer = createSlice({
   },
 });
 
-/////
-
-// const persistedReducer = persistReducer(persistConfig, contactReducer.reducer);
-
-/////
-
 export const {updateContact, removeContact} = contactReducer.actions; // goi ra cac action cua contactReducer
 
-export const store = configureStore({
-  //khoi tao reducer
-  reducer: {
-    contactReducer: contactReducer.reducer,
-  },
-
-  //reducer: persistedReducer,
-});
+// export const store = configureStore({
+//   //khoi tao reducer
+//   reducer: {
+//     contactReducer: contactReducer.reducer,
+//   },
+//
+//   //reducer: persistedReducer,
+// });
 
 export const useContacts = () => {
   // connect vao store de lay ra danh sac
-  return useSelector((state: any) => state.contactReducer);
+  return useSelector((state: any) => state.contacts);
 };
 
 export const updateContactAction = (val: RawContact) => {

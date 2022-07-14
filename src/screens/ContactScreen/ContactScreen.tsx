@@ -43,7 +43,7 @@ export const ContactScreen = () => {
     }
 
     return _data;
-  }, [value]);
+  }, [value, listContact]);
 
   console.log('data', data);
 

@@ -1,5 +1,5 @@
 /////ContactDetail
-import React, {useEffect, useState} from 'react';
+import React, { useCallback, useEffect, useState } from "react";
 import styled from 'styled-components/native';
 import {
   PHONE_ICON,
@@ -54,15 +54,23 @@ export const ContactDetailScreen = () => {
     ]);
   };
 
+  const onBack = useCallback(() => {
+    navigation.navigate('TabNavigation');
+  }, []);
+
+  const onCreateContact = useCallback(() => {
+    navigation.navigate('CreateContactScreen', {item})
+  }, []);
+
   return (
     <Container>
       <HeaderView />
       <HeaderContainerUpdate>
-        <DrawButton onPress={() => navigation.navigate('TabNavigation')}>
+        <DrawButton onPress={onBack}>
           <HeaderImage source={ARROW_ICON} />
         </DrawButton>
         <CreateContactButton
-          onPress={() => navigation.navigate('CreateContactScreen', {item})}>
+          onPress={onCreateContact}>
           <HeaderText>Sửa</HeaderText>
         </CreateContactButton>
       </HeaderContainerUpdate>

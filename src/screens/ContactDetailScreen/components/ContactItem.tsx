@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import styled from 'styled-components/native';
 import {Linking} from 'react-native';
 import Modal from 'react-native-modal';
-import {useRoute} from '@react-navigation/native';
 
 interface ContactItemProps {
   label1: any;
