@@ -32,15 +32,6 @@ export const contactReducer = createSlice({
 
 export const {updateContact, removeContact} = contactReducer.actions; // goi ra cac action cua contactReducer
 
-// export const store = configureStore({
-//   //khoi tao reducer
-//   reducer: {
-//     contactReducer: contactReducer.reducer,
-//   },
-//
-//   //reducer: persistedReducer,
-// });
-
 export const useContacts = () => {
   // connect vao store de lay ra danh sac
   return useSelector((state: any) => state.contacts);

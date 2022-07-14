@@ -1,10 +1,9 @@
 import React, {useState} from 'react';
-import {Platform} from 'react-native';
 import {DrawerContentScrollView} from '@react-navigation/drawer';
 
 import {ASSIGNMENT_ICON, AVATAR2, ADD_ICON, DROP_ICON} from '../assets';
 
-import styled, {css} from 'styled-components/native';
+import styled from 'styled-components/native';
 
 const CustomDrawer = props => {
   const [isShow, setShow] = useState(false);

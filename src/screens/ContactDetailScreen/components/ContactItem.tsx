@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import styled from 'styled-components/native';
 import {Linking} from 'react-native';
 import Modal from 'react-native-modal';
@@ -14,6 +14,12 @@ interface ContactItemProps {
 export const ContactItem = (props: ContactItemProps) => {
   const {label1, label2, icon, active, keyName} = props;
   const [modalVisible, setModalVisible] = useState(false);
+
+  const onLinking = useCallback(() => {
+    if (keyName.length === 1) {
+      Linking.openURL(label1 + keyName[0]);
+    } else setModalVisible(true);
+  }, []);
 
   return (
     <ContactItemContainer>
@@ -45,14 +51,7 @@ export const ContactItem = (props: ContactItemProps) => {
         </CenteredView>
       </Modal>
 
-      <ContactIcon
-        onPress={() => {
-          if (keyName.length === 1) {
-            Linking.openURL(label1 + keyName[0]);
-          } else setModalVisible(true);
-        }}
-        isActive={active}
-        disabled={!active}>
+      <ContactIcon onPress={onLinking} isActive={active} disabled={!active}>
         <ContactIconImage isActive={active} source={icon} />
       </ContactIcon>
       <ContactText isActive={active}>{label2}</ContactText>

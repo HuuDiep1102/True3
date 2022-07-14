@@ -1,5 +1,5 @@
 /////ContactDetail
-import React, { useCallback, useEffect, useState } from "react";
+import React, {useCallback, useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import {
   PHONE_ICON,
@@ -15,6 +15,7 @@ import {ContactItem} from './components/ContactItem';
 
 import {removeContactAction} from '../../redux/contact/contactStore';
 import Modal from 'react-native-modal';
+import {AvatarPicker} from '../CreateContact/components/AvatarPicker';
 
 export const ContactDetailScreen = () => {
   const navigation = useNavigation<any>();
@@ -59,7 +60,7 @@ export const ContactDetailScreen = () => {
   }, []);
 
   const onCreateContact = useCallback(() => {
-    navigation.navigate('CreateContactScreen', {item})
+    navigation.navigate('CreateContactScreen', {item});
   }, []);
 
   return (
@@ -69,8 +70,7 @@ export const ContactDetailScreen = () => {
         <DrawButton onPress={onBack}>
           <HeaderImage source={ARROW_ICON} />
         </DrawButton>
-        <CreateContactButton
-          onPress={onCreateContact}>
+        <CreateContactButton onPress={onCreateContact}>
           <HeaderText>Sửa</HeaderText>
         </CreateContactButton>
       </HeaderContainerUpdate>
@@ -267,7 +267,7 @@ const ContactIconContainer = styled.View`
 `;
 
 const InfoContainer = styled.View`
-  margin-top: 20px;
+  margin-top: 10px;
   height: 50px;
   justify-content: space-evenly;
   align-items: center;

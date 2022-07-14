@@ -1,9 +1,8 @@
 import React, {useState, useCallback, useEffect} from 'react';
 import * as ImagePicker from 'react-native-image-picker';
-
-import {ImagePickerModal} from './ImagePickerModal';
 import {ImagePickerAvatar} from './ImageAvatarPicker';
 import styled from 'styled-components/native';
+import {ImagePickerResponse} from 'react-native-image-picker';
 
 interface AvatarPickerProps {
   setParams;
@@ -12,25 +11,17 @@ interface AvatarPickerProps {
 
 export const AvatarPicker = (props: AvatarPickerProps) => {
   const {setParams, imageUri} = props;
-  const [pickerResponse, setPickerResponse] = useState(null);
-  const [visible, setVisible] = useState(false);
+  const [pickerResponse, setPickerResponse] = useState<ImagePickerResponse>();
 
-  const onImageLibraryPress = useCallback(() => {
-    const options = {
+  const onImageLibraryPress = useCallback(async () => {
+    const options: any = {
       selectionLimit: 1,
       mediaType: 'photo',
       includeBase64: false,
     };
-    ImagePicker.launchImageLibrary(options, setPickerResponse);
-  }, []);
-
-  const onCameraPress = useCallback(() => {
-    const options = {
-      saveToPhotos: true,
-      mediaType: 'photo',
-      includeBase64: false,
-    };
-    ImagePicker.launchCamera(options, setPickerResponse);
+    await ImagePicker.launchImageLibrary(options, response =>
+      setPickerResponse(response),
+    );
   }, []);
 
   let uri = pickerResponse?.assets && pickerResponse.assets[0].uri;
@@ -47,12 +38,6 @@ export const AvatarPicker = (props: AvatarPickerProps) => {
       <ImagePickerAvatar
         uri={uri ? uri : imageUri}
         onPress={onImageLibraryPress}
-      />
-      <ImagePickerModal
-        isVisible={visible}
-        onClose={() => setVisible(false)}
-        onImageLibraryPress={onImageLibraryPress}
-        onCameraPress={onCameraPress}
       />
     </Screen>
   );

@@ -32,13 +32,13 @@ const Cell = (props: CustomerCellProps) => {
     setParams,
     keyboardType,
     keyName,
-    setEmailValidError,
-    setPhoneNumberValidError,
+    // setEmailValidError,
+    // setPhoneNumberValidError,
     autoFocus,
     label,
   } = props;
 
-  const onValueChange = useCallback((value: string) => {
+  const onValueChange = useCallback((keyName: string, value: string) => {
     // handleValidEmail(value);
     // handleValidPhoneNumber(value);
     setParams(prev => {
@@ -91,7 +91,7 @@ const Cell = (props: CustomerCellProps) => {
         }}
         placeholder={label}
         value={data[index]}
-        onChangeText={onValueChange}
+        onValueChange={onValueChange}
         placeholderTextColor={'#BDBDBD'}
         keyboardType={keyboardType}
         autoFocus={autoFocus}

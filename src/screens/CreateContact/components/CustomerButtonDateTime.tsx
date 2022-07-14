@@ -15,9 +15,6 @@ interface CustomerButtonDateTimeProps {
 export const CustomerButtonDateTime = (props: CustomerButtonDateTimeProps) => {
   const {label, setParams, data} = props;
 
-  const [array, setArray] = useState<string[]>([]);
-
-  const [selectedDate, setSelectedDate] = useState();
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
   const addNewValue = useCallback(() => {
@@ -29,19 +26,11 @@ export const CustomerButtonDateTime = (props: CustomerButtonDateTimeProps) => {
     setDatePickerVisibility(true);
   }, []);
 
-  // const addNewValue = useCallback(() => {
-  //   setParams(prev => {
-  //     let _arr = [...prev[keyName]];
-  //     _arr.push('');
-  //     return {...prev, [keyName]: _arr};
-  //   });
-  // }, [array]);
-
   const updateValue = useCallback(() => {
     setDatePickerVisibility(true);
   }, []);
 
-  const hideDatePicker = useCallback((index: number) => {
+  const hideDatePicker = useCallback(() => {
     setParams(prev => {
       return {...prev, birthday: prev.birthday[0] === '' ? [] : prev.birthday};
     });
@@ -49,10 +38,8 @@ export const CustomerButtonDateTime = (props: CustomerButtonDateTimeProps) => {
   }, []);
 
   const handleConfirm = useCallback((date, index) => {
-    //setSelectedDate(date);
     setParams(prev => {
       let _data = [...data];
-      // _data.push('');
 
       _data[index] = moment(date).format('DD/MM/YYYY');
       return {...prev, birthday: _data};
