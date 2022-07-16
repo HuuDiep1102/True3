@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useEffect} from 'react';
+import React, {useState, useCallback, useEffect, memo} from 'react';
 import * as ImagePicker from 'react-native-image-picker';
 import {ImagePickerAvatar} from './ImageAvatarPicker';
 import styled from 'styled-components/native';
@@ -9,7 +9,7 @@ interface AvatarPickerProps {
   imageUri: string;
 }
 
-export const AvatarPicker = (props: AvatarPickerProps) => {
+export const AvatarPicker = memo((props: AvatarPickerProps) => {
   const {setParams, imageUri} = props;
   const [pickerResponse, setPickerResponse] = useState<ImagePickerResponse>();
 
@@ -41,7 +41,7 @@ export const AvatarPicker = (props: AvatarPickerProps) => {
       />
     </Screen>
   );
-};
+});
 
 const Screen = styled.View`
   background-color: #f2f2fc;

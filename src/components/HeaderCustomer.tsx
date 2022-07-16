@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo} from 'react';
 import styled from 'styled-components/native';
 import {CAMERA_ICON, MENU_ICON} from '../assets';
 import {Colors} from '../theme/Color';
@@ -9,7 +9,7 @@ import {getStatusBarHeight} from 'react-native-status-bar-height';
 interface HeaderCustomerProps {
   label: string;
 }
-export const HeaderCustomer = (props: HeaderCustomerProps) => {
+export const HeaderCustomer = memo((props: HeaderCustomerProps) => {
   const navigation = useNavigation<any>();
   const {label} = props;
 
@@ -25,7 +25,7 @@ export const HeaderCustomer = (props: HeaderCustomerProps) => {
       </CreateContactButton>
     </HeaderContainer>
   );
-};
+});
 
 const HeaderContainer = styled.View`
   flex-direction: row;

@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
+import React, {memo, useState} from 'react';
 import {DrawerContentScrollView} from '@react-navigation/drawer';
 
 import {ASSIGNMENT_ICON, AVATAR2, ADD_ICON, DROP_ICON} from '../assets';
 
 import styled from 'styled-components/native';
 
-const CustomDrawer = props => {
+export const CustomDrawer = memo(props => {
   const [isShow, setShow] = useState(false);
   const [isDrop, setDrop] = useState(false);
 
@@ -54,7 +54,7 @@ const CustomDrawer = props => {
       </DrawerContentScrollView>
     </DrawerContainer>
   );
-};
+});
 
 interface CustomerItemProps {
   label: string;

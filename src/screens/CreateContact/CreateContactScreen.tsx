@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {memo, useCallback, useEffect, useState} from 'react';
 
 import styled from 'styled-components/native';
 import {CustomerButtonList} from './components/CustomerButtonList';
@@ -14,8 +14,9 @@ import {
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {updateContactAction} from '../../redux/contact/contactStore';
 import {slugify} from '../../ultis/string';
+import {css} from 'styled-components';
 
-export const CreateContactScreen = () => {
+export const CreateContactScreen = memo(() => {
   const [isActive, setActive] = useState(false);
   const navigation = useNavigation<any>();
 
@@ -104,7 +105,7 @@ export const CreateContactScreen = () => {
         {/*Su dung HeaderComponent kho tuong tac du lieu*/}
         <HeaderContainer>
           {/*Su kho tuong tac du lieu*/}
-          <DrawButton onPress={navigation.goBack} disabled={isActive}>
+          <DrawButton onPress={navigation.goBack}>
             <HeaderText1 isActive={isActive}>Huỷ</HeaderText1>
           </DrawButton>
           <CreateContactButton onPress={onUpdate} disabled={!isActive}>
@@ -176,7 +177,7 @@ export const CreateContactScreen = () => {
       </Container>
     </KeyboardAvoidingView>
   );
-};
+});
 
 const Container = styled.View`
   background-color: white;
@@ -202,6 +203,14 @@ const InputInfoContainer = styled.View`
 const HeaderContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
+  ${Platform.select({
+    ios: css`
+      padding-top: 15px;
+    `,
+    android: css`
+      padding-top: 0;
+    `,
+  })};
 `;
 
 const HeaderText1 = styled.Text<{isActive: boolean}>`
@@ -211,7 +220,6 @@ const HeaderText1 = styled.Text<{isActive: boolean}>`
 `;
 
 const HeaderText2 = styled.Text<{isActive: boolean}>`
-  font-family: 'Roboto-Regular';
   font-size: 18px;
   font-weight: 400;
   color: ${p => (p.isActive ? '#f2a54a' : '#828282')};

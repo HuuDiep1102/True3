@@ -1,7 +1,8 @@
 import {PLUS_ICON, REMOVE_ICON} from '../../../assets';
-import React, {useState, useCallback} from 'react';
+import React, {useState, useCallback, memo} from 'react';
 import styled from 'styled-components/native';
 import {CustomerInput} from './CustomerInput';
+import {StyleSheet} from 'react-native';
 
 interface CustomerButtonListProps {
   label: string;
@@ -18,8 +19,6 @@ interface CustomerCellProps {
   setParams: (prev: any) => void;
   keyboardType;
   keyName: string;
-  // setEmailValidError: Function;
-  // setPhoneNumberValidError: Function;
   autoFocus: boolean;
   label: string;
 }
@@ -32,15 +31,11 @@ const Cell = (props: CustomerCellProps) => {
     setParams,
     keyboardType,
     keyName,
-    // setEmailValidError,
-    // setPhoneNumberValidError,
     autoFocus,
     label,
   } = props;
 
   const onValueChange = useCallback((keyName: string, value: string) => {
-    // handleValidEmail(value);
-    // handleValidPhoneNumber(value);
     setParams(prev => {
       let _arr = [...prev[keyName]];
       _arr[index] = value;
@@ -51,44 +46,17 @@ const Cell = (props: CustomerCellProps) => {
     });
   }, []);
 
-  // const handleValidEmail = val => {
-  //   let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
-  //
-  //   if (keyName !== 'email') return;
-  //
-  //   if (!reg.test(val)) {
-  //     setEmailValidError('Email nhập không đúng định dạng');
-  //   } else if (reg.test(val)) {
-  //     setEmailValidError('');
-  //   }
-  // };
-  //
-  // const handleValidPhoneNumber = val => {
-  //   let reg =
-  //     /^((\+)33|0)[1-9](\d{2}){4}$|(^1800\d{4}$)|(^1\d{1|2|3|4|5|6}$)\b/;
-  //   if (keyName !== 'phoneNumber') return;
-  //
-  //   if (!reg.test(val)) {
-  //     setPhoneNumberValidError('Số điện thoại không đúng định dạng');
-  //   } else if (reg.test(val)) {
-  //     setPhoneNumberValidError('');
-  //   }
-  // };
+  const onRemoveItem = useCallback(() => {
+    onRemove(index);
+  }, []);
+
   return (
     <InputContainerView>
-      <InputContainer
-        onPress={() => {
-          onRemove(index);
-        }}>
+      <InputContainer onPress={onRemoveItem}>
         <PlusIcon source={REMOVE_ICON} />
       </InputContainer>
       <CustomerInput
-        style={{
-          width: '93%',
-          color: '#2f80ed',
-          fontWeight: '400',
-          fontSize: 15,
-        }}
+        style={styles.customInput}
         placeholder={label}
         value={data[index]}
         onValueChange={onValueChange}
@@ -101,7 +69,7 @@ const Cell = (props: CustomerCellProps) => {
   );
 };
 
-export const CustomerButtonList = (props: CustomerButtonListProps) => {
+export const CustomerButtonList = memo((props: CustomerButtonListProps) => {
   const {label, setParams, data, keyName, keyboardType} = props;
   const [array, setArray] = useState<string[]>([]);
 
@@ -124,9 +92,6 @@ export const CustomerButtonList = (props: CustomerButtonListProps) => {
     [data],
   );
 
-  const [emailValidError, setEmailValidError] = useState('');
-  const [phoneNumberValidError, setPhoneNumberValidError] = useState('');
-
   return (
     <Container>
       {/*Bao loi Object underfined thi them dau hoi cham*/}
@@ -142,8 +107,6 @@ export const CustomerButtonList = (props: CustomerButtonListProps) => {
             keyName={keyName}
             keyboardType={keyboardType}
             label={label}
-            // setEmailValidError={setEmailValidError}
-            // setPhoneNumberValidError={setPhoneNumberValidError}
           />
         );
       })}
@@ -151,13 +114,9 @@ export const CustomerButtonList = (props: CustomerButtonListProps) => {
         <PlusIcon source={PLUS_ICON} />
         <ButtonContactText>{label}</ButtonContactText>
       </ButtonContactContainer>
-      {/*{phoneNumberValidError ? (*/}
-      {/*  <ValidText>{phoneNumberValidError}</ValidText>*/}
-      {/*) : null}*/}
-      {/*{emailValidError ? <ValidText>{emailValidError}</ValidText> : null}*/}
     </Container>
   );
-};
+});
 
 const Container = styled.View`
   background-color: white;
@@ -166,19 +125,12 @@ const Container = styled.View`
   margin-top: 24px;
 `;
 
-const ValidText = styled.Text`
-  font-size: 15px;
-  color: red;
-  padding-top: 5px;
-`;
-
 const PlusIcon = styled.Image`
   height: 24px;
   width: 24px;
 `;
 
 const ButtonContactText = styled.Text`
-  font-family: Roboto-Regular;
   font-size: 15px;
   font-weight: 400;
   color: #333333;
@@ -212,3 +164,12 @@ const InputContainerView = styled.View`
   border-bottom-width: 0.5px;
   border-bottom-color: #e0e0e0;
 `;
+
+const styles = StyleSheet.create({
+  customInput: {
+    width: '93%',
+    color: '#2f80ed',
+    fontWeight: '400',
+    fontSize: 15,
+  },
+});

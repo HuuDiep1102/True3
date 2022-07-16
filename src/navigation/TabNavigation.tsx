@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo} from 'react';
 import {Platform} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {HistoryScreen} from '../screens/HistoryScreen';
@@ -13,7 +13,7 @@ import styled from 'styled-components/native';
 
 const Tab = createBottomTabNavigator();
 
-export const TabNavigation = () => {
+export const TabNavigation = memo(() => {
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
@@ -46,7 +46,7 @@ export const TabNavigation = () => {
       <Tab.Screen name="Gần đây" component={HistoryScreen} />
     </Tab.Navigator>
   );
-};
+});
 
 const Icon = styled.Image`
   width: 24px;

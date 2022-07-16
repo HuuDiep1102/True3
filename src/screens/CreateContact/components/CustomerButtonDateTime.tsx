@@ -1,7 +1,7 @@
 ///CustomerButtonDateTime
 
 import {PLUS_ICON, REMOVE_ICON} from '../../../assets';
-import React, {useState, useCallback, useEffect} from 'react';
+import React, {useState, useCallback, useEffect, memo} from 'react';
 import styled from 'styled-components/native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
@@ -12,86 +12,92 @@ interface CustomerButtonDateTimeProps {
   data: string[];
 }
 
-export const CustomerButtonDateTime = (props: CustomerButtonDateTimeProps) => {
-  const {label, setParams, data} = props;
+export const CustomerButtonDateTime = memo(
+  (props: CustomerButtonDateTimeProps) => {
+    const {label, setParams, data} = props;
 
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
-  const addNewValue = useCallback(() => {
-    setParams(prev => {
-      let _data = [...data];
-      _data.push('');
-      return {...prev, birthday: _data};
-    });
-    setDatePickerVisibility(true);
-  }, []);
-
-  const updateValue = useCallback(() => {
-    setDatePickerVisibility(true);
-  }, []);
-
-  const hideDatePicker = useCallback(() => {
-    setParams(prev => {
-      return {...prev, birthday: prev.birthday[0] === '' ? [] : prev.birthday};
-    });
-    setDatePickerVisibility(false);
-  }, []);
-
-  const handleConfirm = useCallback((date, index) => {
-    setParams(prev => {
-      let _data = [...data];
-
-      _data[index] = moment(date).format('DD/MM/YYYY');
-      return {...prev, birthday: _data};
-    });
-    hideDatePicker();
-  }, []);
-
-  const onRemove = useCallback(
-    (index: number) => {
+    const onAddNewValue = useCallback(() => {
       setParams(prev => {
-        const oldArray = [...data];
-        const newArray = oldArray.filter((_item, _index) => _index !== index);
-        return {...prev, birthday: newArray};
+        let _data = [...data];
+        _data.push('');
+        return {...prev, birthday: _data};
       });
-    },
-    [data],
-  );
+      setDatePickerVisibility(true);
+    }, []);
 
-  return (
-    <Container>
-      {data?.map((item, index) => {
-        return (
-          <InputContainerView key={index}>
-            <InputContainer
-              onPress={() => {
-                onRemove(0);
-              }}>
-              <PlusIcon source={REMOVE_ICON} />
-            </InputContainer>
-            <DateTimeView>
-              <DateTimeButton onPress={updateValue}>
-                <DateTimeText>{item}</DateTimeText>
-              </DateTimeButton>
-              <DateTimePickerModal
-                isVisible={isDatePickerVisible}
-                mode="date"
-                onConfirm={date => {
-                  handleConfirm(date, index);
-                }}
-                onCancel={hideDatePicker}
-              />
-            </DateTimeView>
-          </InputContainerView>
-        );
-      })}
-      <ButtonContactContainer onPress={addNewValue}>
-        <PlusIcon source={PLUS_ICON} />
-        <ButtonContactText>{label}</ButtonContactText>
-      </ButtonContactContainer>
-    </Container>
-  );
-};
+    const onUpdateValue = useCallback(() => {
+      setDatePickerVisibility(true);
+    }, []);
+
+    const hideDatePicker = useCallback(() => {
+      setParams(prev => {
+        return {
+          ...prev,
+          birthday: prev.birthday[0] === '' ? [] : prev.birthday,
+        };
+      });
+      setDatePickerVisibility(false);
+    }, []);
+
+    const handleConfirm = useCallback((date, index) => {
+      setParams(prev => {
+        let _data = [...data];
+
+        _data[index] = moment(date).format('DD/MM/YYYY');
+        return {...prev, birthday: _data};
+      });
+      hideDatePicker();
+    }, []);
+
+    const onRemove = useCallback(
+      (index: number) => {
+        setParams(prev => {
+          const oldArray = [...data];
+          const newArray = oldArray.filter((_item, _index) => _index !== index);
+          return {...prev, birthday: newArray};
+        });
+      },
+      [data],
+    );
+
+    const onRemoveItem = useCallback(() => {
+      onRemove(0);
+    }, []);
+
+    return (
+      <Container>
+        {data?.map((item, index) => {
+          return (
+            <InputContainerView key={index}>
+              <InputContainer onPress={onRemoveItem}>
+                <PlusIcon source={REMOVE_ICON} />
+              </InputContainer>
+              <DateTimeView>
+                <DateTimeButton onPress={onUpdateValue}>
+                  <DateTimeText>{item}</DateTimeText>
+                </DateTimeButton>
+                <DateTimePickerModal
+                  isVisible={isDatePickerVisible}
+                  mode="date"
+                  onConfirm={date => {
+                    handleConfirm(date, index);
+                  }}
+                  onCancel={hideDatePicker}
+                />
+              </DateTimeView>
+            </InputContainerView>
+          );
+        })}
+        <ButtonContactContainer onPress={onAddNewValue}>
+          <PlusIcon source={PLUS_ICON} />
+          <ButtonContactText>{label}</ButtonContactText>
+        </ButtonContactContainer>
+      </Container>
+    );
+  },
+);
 
 const Container = styled.View`
   background-color: white;
@@ -122,7 +128,6 @@ const DateTimeText = styled.Text`
 `;
 
 const ButtonContactText = styled.Text`
-  font-family: Roboto-Regular;
   font-size: 15px;
   font-weight: 400;
   color: #333333;

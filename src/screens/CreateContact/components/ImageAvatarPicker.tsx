@@ -3,21 +3,14 @@ import React from 'react';
 import styled from 'styled-components/native';
 
 import {CAMERA_INPUT_ICON, AVATAR_DEFAULT_ICON} from '../../../assets';
-import {ImageBackground} from 'react-native';
+import {ImageBackground, StyleSheet} from 'react-native';
 
 export function ImagePickerAvatar({uri, onPress}) {
   return (
     <Container>
       <ImageBackground
-        style={{
-          height: 100,
-          width: 100,
-          backgroundColor: '#f2f2f2',
-          borderRadius: 50,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-        imageStyle={{borderRadius: 50}}
+        style={styles.imageBackground}
+        imageStyle={styles.imageStyle}
         source={{uri}}>
         <AvatarImage source={AVATAR_DEFAULT_ICON} />
         <AddButton onPress={onPress}>
@@ -34,15 +27,6 @@ const Container = styled.View`
   align-items: center;
   background-color: white;
 `;
-
-// const Avatar = styled.ImageBackground`
-//   height: 100px;
-//   width: 100px;
-//   background-color: #f2f2f2;
-//   border-radius: 50px;
-//   justify-content: center;
-//   align-items: center;
-// `;
 
 const AvatarImage = styled.Image`
   height: 80px;
@@ -65,3 +49,18 @@ const AddButtonIcon = styled.Image`
   height: 13px;
   width: 15px;
 `;
+
+const styles = StyleSheet.create({
+  imageBackground: {
+    height: 100,
+    width: 100,
+    backgroundColor: '#f2f2f2',
+    borderRadius: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  imageStyle: {
+    borderRadius: 50,
+  },
+});

@@ -1,18 +1,20 @@
 import {AlphabetList} from 'react-native-section-alphabet-list';
-import React, {useCallback} from 'react';
+import React, {memo, useCallback} from 'react';
 import styled, {css} from 'styled-components/native';
 import {useNavigation} from '@react-navigation/native';
-import {Image, Platform} from 'react-native';
-import {AVATAR_DEFAULT_ICON} from '../../assets';
+import {Image, Platform, StyleSheet} from 'react-native';
+import {AVATAR_DEFAULT_ICON} from '../../../assets';
 
 interface AlphabetListProps {
-  data;
+  contacts: {
+    key: string;
+    id: string;
+  }[];
 }
+const imageDefault = Image.resolveAssetSource(AVATAR_DEFAULT_ICON).uri;
 
 const CustomItem = item => {
   const navigation = useNavigation<any>();
-
-  const imageDefault = Image.resolveAssetSource(AVATAR_DEFAULT_ICON).uri;
 
   const onDetails = useCallback(() => {
     navigation.navigate('ContactDetailScreen', {item});
@@ -58,19 +60,13 @@ const CustomSectionHeader = (section: any) => {
   );
 };
 
-export const CustomAlphabetList = (props: AlphabetListProps) => {
-  const {data} = props;
+export const CustomAlphabetList = memo((props: AlphabetListProps) => {
+  const {contacts} = props;
   return (
     <AlphabetList
-      style={{flex: 1}}
-      data={data}
-      indexLetterStyle={{
-        color: '#F2A54A',
-        fontWeight: '400',
-        fontSize: 13,
-        lineHeight: 22,
-        letterSpacing: 0.12,
-      }}
+      style={styles.alphabet}
+      data={contacts}
+      indexLetterStyle={styles.letterStyle}
       indexLetterContainerStyle={{
         marginBottom: 0,
         width: 20,
@@ -88,7 +84,7 @@ export const CustomAlphabetList = (props: AlphabetListProps) => {
       renderCustomSectionHeader={CustomSectionHeader}
     />
   );
-};
+});
 
 const ListItemContainer = styled.TouchableOpacity`
   flex-direction: row;
@@ -141,7 +137,6 @@ const ListItemNameLabel = styled.Text`
   font-size: 16px;
   color: #333333;
   font-style: normal;
-  font-family: Roboto-Regular;
 `;
 
 const ListItemPhoneContainer = styled.Text``;
@@ -201,3 +196,16 @@ const customIndex = [
   'y',
   'z',
 ];
+
+const styles = StyleSheet.create({
+  letterStyle: {
+    color: '#F2A54A',
+    fontWeight: '400',
+    fontSize: 13,
+    lineHeight: 22,
+    letterSpacing: 0.12,
+  },
+  alphabet: {
+    flex: 1,
+  },
+});

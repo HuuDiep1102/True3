@@ -11,41 +11,40 @@
 /*
 Note: Do useContact ra 1 list de nem vao section list
  */
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {memo, useMemo, useState} from 'react';
 import styled, {css} from 'styled-components/native';
 
 import {SEARCH_ICON} from '../../assets';
 import {HeaderCustomer} from '../../components/HeaderCustomer';
 import {useContacts} from '../../redux/contact/contactStore';
-import {CustomAlphabetList} from './AlphabetList';
+import {CustomAlphabetList} from './components/AlphabetList';
 import {slugify} from '../../ultis/string';
 
-export const ContactScreen = () => {
+export const ContactScreen = memo(() => {
   const listContact = useContacts();
 
-  const [value, setValue] = useState('');
+  const [searchText, setSearchText] = useState('');
 
-  const onChangeText = useCallback(text => {
-    setValue(text);
-  }, []);
-
-  const data = useMemo(() => {
-    if (value === '') return listContact.map(item => ({...item, key: item.id}));
+  const contacts = useMemo(() => {
+    if (searchText === '')
+      return listContact.map(item => ({...item, key: item.id}));
 
     let _data: any = [];
     for (let i = 0; i < listContact.length; i++) {
       const contact = listContact[i];
       if (
-        (contact?.normalizerForSearch || contact.value).includes(slugify(value))
+        (contact?.normalizerForSearch || contact.value).includes(
+          slugify(searchText),
+        )
       ) {
         _data.push({...contact, key: contact.id});
       }
     }
 
     return _data;
-  }, [value, listContact]);
+  }, [searchText, listContact]);
 
-  console.log('data', data);
+  console.log('data', contacts);
 
   return (
     <Container>
@@ -54,8 +53,8 @@ export const ContactScreen = () => {
         <Search source={SEARCH_ICON} />
         <InputSearch
           placeholder="Tìm kiếm danh bạ"
-          value={value}
-          onChangeText={onChangeText}
+          value={searchText}
+          onChangeText={setSearchText}
           placeholderTextColor={'#BDBDBD'}
         />
       </SearchbarContainer>
@@ -66,11 +65,11 @@ export const ContactScreen = () => {
             <NotificationText>The list is empty</NotificationText>
           </NotificationView>
         ) : null}
-        <CustomAlphabetList data={data} />
+        <CustomAlphabetList contacts={contacts} />
       </ListContainer>
     </Container>
   );
-};
+});
 
 const Container = styled.View`
   flex: 1;

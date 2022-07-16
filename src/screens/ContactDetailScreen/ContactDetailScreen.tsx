@@ -1,23 +1,30 @@
 /////ContactDetail
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {memo, useCallback, useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import {
-  PHONE_ICON,
-  MESSAGE_ICON,
-  FACETIME_ICON,
-  MAIL_ICON,
   ARROW_ICON,
   AVATAR_DEFAULT_ICON,
+  FACETIME_ICON,
+  MAIL_ICON,
+  MESSAGE_ICON,
+  PHONE_ICON,
 } from '../../assets';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {Alert, FlatList, Linking, Image} from 'react-native';
+import {
+  Alert,
+  FlatList,
+  Image,
+  Linking,
+  Platform,
+  StyleSheet,
+} from 'react-native';
 import {ContactItem} from './components/ContactItem';
 
 import {removeContactAction} from '../../redux/contact/contactStore';
 import Modal from 'react-native-modal';
-import {AvatarPicker} from '../CreateContact/components/AvatarPicker';
+import {css} from 'styled-components';
 
-export const ContactDetailScreen = () => {
+export const ContactDetailScreen = memo(() => {
   const navigation = useNavigation<any>();
   const [isActivePhoneNumber, setActivePhoneNumber] = useState(false);
   const [isActiveEmail, setActiveEmail] = useState(false);
@@ -63,6 +70,26 @@ export const ContactDetailScreen = () => {
     navigation.navigate('CreateContactScreen', {item});
   }, []);
 
+  const onSendMessage = useCallback(() => {
+    if (item.phoneNumber && item.phoneNumber.length > 0) {
+      setModalVisible(true);
+      return;
+    }
+    setModalVisible(false);
+  }, [item]);
+
+  const onLinkingTel = useCallback(item => {
+    Linking.openURL(`tel:${item}`);
+  }, []);
+
+  const onLinkingMess = useCallback(item => {
+    Linking.openURL(`sms:${item}`);
+  }, []);
+
+  const onLinkingMail = useCallback(item => {
+    Linking.openURL(`mailto:${item}`);
+  }, []);
+
   return (
     <Container>
       <HeaderView />
@@ -86,11 +113,7 @@ export const ContactDetailScreen = () => {
                 {item.phoneNumber && item.phoneNumber.length > 0 ? (
                   item.phoneNumber.map((item, index) => {
                     return (
-                      <InputContactButton
-                        key={index}
-                        onPress={() => {
-                          Linking.openURL(`tel:${item}`);
-                        }}>
+                      <InputContactButton key={index} onPress={onLinkingTel}>
                         <InputContact>{item}</InputContact>
                       </InputContactButton>
                     );
@@ -106,11 +129,7 @@ export const ContactDetailScreen = () => {
                 {item.email && item.email.length > 0 ? (
                   item.email.map((item, index) => {
                     return (
-                      <InputContactButton
-                        key={index}
-                        onPress={() => {
-                          Linking.openURL(`mailto:${item}`);
-                        }}>
+                      <InputContactButton key={index} onPress={onLinkingMail}>
                         <InputContact>{item}</InputContact>
                       </InputContactButton>
                     );
@@ -127,7 +146,7 @@ export const ContactDetailScreen = () => {
               </InputContactContainer>
               <WrapButton>
                 <Modal
-                  style={{justifyContent: 'flex-end'}}
+                  style={styles.modal}
                   isVisible={modalVisible}
                   hasBackdrop={true}
                   statusBarTranslucent={true}
@@ -141,9 +160,7 @@ export const ContactDetailScreen = () => {
                           return (
                             <InputContactButton
                               key={index}
-                              onPress={() => {
-                                Linking.openURL(`sms:` + item);
-                              }}>
+                              onPress={onLinkingMess}>
                               <ContactIconImageModal source={MESSAGE_ICON} />
                               <InputContact>{item}</InputContact>
                             </InputContactButton>
@@ -153,14 +170,7 @@ export const ContactDetailScreen = () => {
                     </ModalView>
                   </CenteredView>
                 </Modal>
-                <BtnMessage
-                  onPress={() => {
-                    {
-                      item.phoneNumber && item.phoneNumber.length > 0
-                        ? setModalVisible(true)
-                        : setModalVisible(false);
-                    }
-                  }}>
+                <BtnMessage onPress={onSendMessage}>
                   <BtnMessageText>Gửi tin nhắn</BtnMessageText>
                 </BtnMessage>
 
@@ -225,7 +235,7 @@ export const ContactDetailScreen = () => {
       />
     </Container>
   );
-};
+});
 
 const Container = styled.View`
   background-color: white;
@@ -302,7 +312,6 @@ const InputContact = styled.Text`
   color: #2f80ed;
   font-size: 17px;
   font-weight: 400;
-  font-family: Roboto-Regular;
   padding-bottom: 8px;
 `;
 
@@ -310,7 +319,6 @@ const InputContactNote = styled.TextInput`
   color: #2f80ed;
   font-size: 17px;
   font-weight: 400;
-  font-family: Roboto-Regular;
   padding-bottom: 8px;
 `;
 
@@ -366,20 +374,25 @@ const BtnMessageText = styled.Text`
   font-weight: 400;
   color: #333333;
   font-size: 15px;
-  font-family: Roboto-Regular;
 `;
 
 const BtnRemoveText = styled(BtnMessageText)`
   font-weight: 400;
   color: #ff4a4a;
   font-size: 15px;
-  font-family: Roboto-Regular;
 `;
 
 const HeaderContainerUpdate = styled.View`
   flex-direction: row;
   justify-content: space-between;
-  padding-top: 40px;
+  ${Platform.select({
+    ios: css`
+      padding-top: 50px;
+    `,
+    android: css`
+      padding-top: 40px;
+    `,
+  })};
 `;
 
 const HeaderText = styled.Text`
@@ -417,3 +430,9 @@ const ModalView = styled.View`
   padding-top: 10px;
   padding-left: 20px;
 `;
+
+const styles = StyleSheet.create({
+  modal: {
+    justifyContent: 'flex-end',
+  },
+});

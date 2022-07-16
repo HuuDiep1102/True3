@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo} from 'react';
 import styled, {css} from 'styled-components/native';
 import {WARNING_LOGO} from '../assets';
 import {COMMUNICATE_ICON} from '../assets';
@@ -23,7 +23,7 @@ const Item = ({title, phoneNumber}) => (
   </ItemStyle>
 );
 
-export const HistoryScreen = () => {
+export const HistoryScreen = memo(() => {
   const renderItem = ({item}) => {
     return <Item title={item.title} phoneNumber={item.phoneNumber} />;
   };
@@ -38,7 +38,7 @@ export const HistoryScreen = () => {
       />
     </Container>
   );
-};
+});
 
 const Container = styled.View`
   flex: 1;
@@ -61,7 +61,6 @@ const LogIcon = styled.Image`
 
 const ItemStyle = styled.View`
   height: 64px;
-  margin-bottom: 8px;
   flex-direction: row;
   padding-right: 160px;
 `;
@@ -90,7 +89,6 @@ const Title = styled.Text`
   })};
   font-size: 16px;
   color: #333333;
-  font-family: Roboto-Regular;
 `;
 
 const Time = styled.Text`
@@ -115,7 +113,6 @@ const PhoneNumber = styled.Text`
   font-size: 14px;
   font-weight: 400;
   color: #828282;
-  font-family: Roboto-Regular;
 `;
 
 const data = [

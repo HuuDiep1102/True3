@@ -1,6 +1,6 @@
-import React, {useCallback, useState} from 'react';
+import React, {memo, useCallback, useState} from 'react';
 import styled from 'styled-components/native';
-import {Linking} from 'react-native';
+import {Linking, StyleSheet} from 'react-native';
 import Modal from 'react-native-modal';
 
 interface ContactItemProps {
@@ -11,7 +11,7 @@ interface ContactItemProps {
   keyName: any;
 }
 
-export const ContactItem = (props: ContactItemProps) => {
+export const ContactItem = memo((props: ContactItemProps) => {
   const {label1, label2, icon, active, keyName} = props;
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -21,26 +21,28 @@ export const ContactItem = (props: ContactItemProps) => {
     } else setModalVisible(true);
   }, []);
 
+  const onLinkingItem = useCallback(item => {
+    Linking.openURL(label1 + item);
+  }, []);
+
+  const onBackdrop = useCallback(() => {
+    setModalVisible(false);
+  }, []);
+
   return (
     <ContactItemContainer>
       <Modal
-        style={{justifyContent: 'flex-end'}}
+        style={styles.modal}
         isVisible={modalVisible}
         hasBackdrop={true}
         statusBarTranslucent={true}
-        onBackdropPress={() => {
-          setModalVisible(false);
-        }}>
+        onBackdropPress={onBackdrop}>
         <CenteredView>
           <ModalView>
             <InputContactContainer>
               {keyName.map((item, index) => {
                 return (
-                  <InputContactButton
-                    key={index}
-                    onPress={() => {
-                      Linking.openURL(label1 + item);
-                    }}>
+                  <InputContactButton key={index} onPress={onLinkingItem}>
                     <ContactIconImageModal source={icon} />
                     <InputContact>{item}</InputContact>
                   </InputContactButton>
@@ -57,7 +59,7 @@ export const ContactItem = (props: ContactItemProps) => {
       <ContactText isActive={active}>{label2}</ContactText>
     </ContactItemContainer>
   );
-};
+});
 
 const InputContactContainer = styled.View`
   background-color: white;
@@ -67,7 +69,6 @@ const InputContactContainer = styled.View`
 const InputContact = styled.Text`
   font-size: 17px;
   font-weight: 400;
-  font-family: Roboto-Regular;
   padding-bottom: 8px;
   color: black;
   border-radius: 10px;
@@ -129,6 +130,11 @@ const ContactText = styled.Text<{
   font-size: 11px;
   align-self: center;
   padding: 10px;
-  color: #f2a54a;
   color: ${p => (p.isActive ? '#f2a54a' : '#bdbdbd')};
 `;
+
+const styles = StyleSheet.create({
+  modal: {
+    justifyContent: 'flex-end',
+  },
+});

@@ -13,6 +13,17 @@ const Roots = createNativeStackNavigator();
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 
+const DrawerNavigation = () => {
+  return (
+    <Drawer.Navigator
+      drawerContent={props => <CustomDrawer {...props} />}
+      initialRouteName="TabNavigation"
+      screenOptions={{headerShown: false, drawerType: 'front'}}>
+      <Drawer.Screen name="TabNavigation" component={TabNavigation} />
+    </Drawer.Navigator>
+  );
+};
+
 const MainNavigation = () => {
   return (
     <Stack.Navigator
@@ -31,18 +42,7 @@ const MainNavigation = () => {
   );
 };
 
-const DrawerNavigation = () => {
-  return (
-    <Drawer.Navigator
-      drawerContent={props => <CustomDrawer {...props} />}
-      initialRouteName="TabNavigation"
-      screenOptions={{headerShown: false, drawerType: 'front'}}>
-      <Drawer.Screen name="TabNavigation" component={TabNavigation} />
-    </Drawer.Navigator>
-  );
-};
-
-export const RootNavigation = () => {
+export const RootNavigation = memo(() => {
   return (
     <NavigationContainer>
       <Roots.Navigator
@@ -53,4 +53,4 @@ export const RootNavigation = () => {
       </Roots.Navigator>
     </NavigationContainer>
   );
-};
+});

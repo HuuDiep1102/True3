@@ -1,12 +1,13 @@
 import * as React from 'react';
-import {TextInput, TextInputProps} from 'react-native';
+import {StyleSheet, TextInput, TextInputProps} from 'react-native';
+import {memo} from 'react';
 
 interface CustomInputProps extends TextInputProps {
   keyName: string;
   onValueChange: (keyName: string, value: string) => void;
 }
 
-export const CustomerInput = React.memo((props: CustomInputProps) => {
+export const CustomerInput = memo((props: CustomInputProps) => {
   const {keyName, onValueChange, ...remainingProps} = props;
 
   const onChangeText = (value: string) => {
@@ -15,13 +16,17 @@ export const CustomerInput = React.memo((props: CustomInputProps) => {
 
   return (
     <TextInput
-      style={{
-        width: '100%',
-        height: 44,
-        color: '#111',
-      }}
+      style={styles.input}
       onChangeText={onChangeText}
       {...remainingProps}
     />
   );
+});
+
+const styles = StyleSheet.create({
+  input: {
+    width: '100%',
+    height: 44,
+    color: '#111',
+  },
 });

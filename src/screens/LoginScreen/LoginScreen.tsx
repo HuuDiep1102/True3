@@ -8,12 +8,12 @@
  * @format
  */
 
-import React from 'react';
+import React, {memo} from 'react';
 import styled from 'styled-components/native';
 import {IC_BANNER_LOGO, LOADING_LOGO, LOGO} from '../../assets';
 import {useNavigation} from '@react-navigation/native';
 
-export const LoginScreen = () => {
+export const LoginScreen = memo(() => {
   const navigation = useNavigation<any>();
 
   return (
@@ -44,7 +44,7 @@ export const LoginScreen = () => {
       </Section3>
     </Container>
   );
-};
+});
 
 const Container = styled.View`
   flex: 1;
@@ -131,7 +131,6 @@ const BtnLoginText = styled.Text`
   color: #ffffff;
   font-weight: 500;
   font-size: 15px;
-  font-family: Roboto-Regular;
 `;
 
 const BtnRegister = styled(BtnLogin)`
