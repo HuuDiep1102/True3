@@ -10,7 +10,7 @@
 
 import React, {memo} from 'react';
 import styled from 'styled-components/native';
-import {IC_BANNER_LOGO, LOADING_LOGO, LOGO} from '../../assets';
+import {IC_BANNER_LOGO, LOADING_LOGO, LOGO} from '@/assets';
 import {useNavigation} from '@react-navigation/native';
 
 export const LoginScreen = memo(() => {

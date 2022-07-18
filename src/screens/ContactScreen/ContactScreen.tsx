@@ -12,39 +12,40 @@
 Note: Do useContact ra 1 list de nem vao section list
  */
 import React, {memo, useMemo, useState} from 'react';
-import styled, {css} from 'styled-components/native';
+import styled from 'styled-components/native';
 
-import {SEARCH_ICON} from '../../assets';
-import {HeaderCustomer} from '../../components/HeaderCustomer';
-import {useContacts} from '../../redux/contact/contactStore';
-import {CustomAlphabetList} from './components/AlphabetList';
-import {slugify} from '../../ultis/string';
+import {SEARCH_ICON} from '@/assets';
+import {HeaderCustomer} from '@/components/HeaderCustomer';
+import {useContactIdList} from '@/store/contact/contactStore';
+import {CustomAlphabetList} from '@/screens/ContactScreen/components/AlphabetList';
+import {slugify} from '@/ultis/string';
+import {ContactIdListProps} from '@/store/contact/types';
 
 export const ContactScreen = memo(() => {
-  const listContact = useContacts();
+  const contactIds: ContactIdListProps[] = useContactIdList();
 
   const [searchText, setSearchText] = useState('');
 
-  const contacts = useMemo(() => {
-    if (searchText === '')
-      return listContact.map(item => ({...item, key: item.id}));
+  const ids = useMemo(() => {
+    let _ids = contactIds;
 
-    let _data: any = [];
-    for (let i = 0; i < listContact.length; i++) {
-      const contact = listContact[i];
+    if (searchText === '') return _ids.map(contact => ({...contact}));
+
+    for (let i = 0; i < _ids.length; i++) {
+      const contact = _ids[i];
       if (
         (contact?.normalizerForSearch || contact.value).includes(
           slugify(searchText),
         )
       ) {
-        _data.push({...contact, key: contact.id});
+        _ids.push({...contact});
       }
     }
 
-    return _data;
-  }, [searchText, listContact]);
+    return _ids;
+  }, [searchText, contactIds]);
 
-  console.log('data', contacts);
+  console.log('data', ids);
 
   return (
     <Container>
@@ -60,12 +61,12 @@ export const ContactScreen = memo(() => {
       </SearchbarContainer>
 
       <ListContainer>
-        {!listContact.length ? (
+        {!contactIds.length ? (
           <NotificationView>
             <NotificationText>The list is empty</NotificationText>
           </NotificationView>
         ) : null}
-        <CustomAlphabetList contacts={contacts} />
+        <CustomAlphabetList ids={ids} />
       </ListContainer>
     </Container>
   );

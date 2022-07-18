@@ -2,8 +2,8 @@ import React from 'react';
 
 import styled from 'styled-components/native';
 
-import {CAMERA_INPUT_ICON, AVATAR_DEFAULT_ICON} from '../../../assets';
-import {ImageBackground, StyleSheet} from 'react-native';
+import {CAMERA_INPUT_ICON, AVATAR_DEFAULT_ICON} from '@/assets';
+import {Image, ImageBackground, StyleSheet} from 'react-native';
 
 export function ImagePickerAvatar({uri, onPress}) {
   return (

@@ -1,14 +1,9 @@
 import React, {memo} from 'react';
 import {Platform} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {HistoryScreen} from '../screens/HistoryScreen';
-import {ContactScreen} from '../screens/ContactScreen/ContactScreen';
-import {
-  PHONEBOOK_ACTIVE_ICON,
-  PHONEBOOK_INACTIVE_ICON,
-  WATCH_ACTIVE_ICON,
-  WATCH_INACTIVE_ICON,
-} from '../assets';
+import {HistoryScreen} from '@/screens/HistoryScreen';
+import {ContactScreen} from '@/screens/ContactScreen/ContactScreen';
+import {PHONEBOOK_ICON, WATCH_ICON} from '@/assets';
 import styled from 'styled-components/native';
 
 const Tab = createBottomTabNavigator();
@@ -17,18 +12,20 @@ export const TabNavigation = memo(() => {
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
-        tabBarIcon: ({focused, color, size}) => {
+        tabBarIcon: ({focused}) => {
           let iconName;
-
           if (route.name === 'Danh bạ') {
-            iconName = focused
-              ? PHONEBOOK_ACTIVE_ICON
-              : PHONEBOOK_INACTIVE_ICON;
+            iconName = PHONEBOOK_ICON;
           } else if (route.name === 'Gần đây') {
-            iconName = focused ? WATCH_ACTIVE_ICON : WATCH_INACTIVE_ICON;
+            iconName = WATCH_ICON;
           }
 
-          return <Icon source={iconName} />;
+          return (
+            <Icon
+              source={iconName}
+              tintColor={focused ? '#ffffff' : '#FFDAAE'}
+            />
+          );
         },
         tabBarActiveTintColor: '#ffffff',
         tabBarInactiveTintColor: '#FFDAAE',
@@ -48,7 +45,8 @@ export const TabNavigation = memo(() => {
   );
 });
 
-const Icon = styled.Image`
+const Icon = styled.Image<{tintColor: string}>`
   width: 24px;
   height: 24px;
+  tint-color: ${p => p.tintColor};
 `;

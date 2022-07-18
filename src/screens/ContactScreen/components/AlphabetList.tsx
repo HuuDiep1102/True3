@@ -3,21 +3,27 @@ import React, {memo, useCallback} from 'react';
 import styled, {css} from 'styled-components/native';
 import {useNavigation} from '@react-navigation/native';
 import {Image, Platform, StyleSheet} from 'react-native';
-import {AVATAR_DEFAULT_ICON} from '../../../assets';
+import {AVATAR_DEFAULT_ICON} from '@/assets';
+import {ContactIdListProps, RawContact} from '@/store/contact/types';
+import {useContactById} from '@/store/contact/contactStore';
 
 interface AlphabetListProps {
-  contacts: {
-    key: string;
-    id: string;
-  }[];
+  // contacts: {
+  //   key: string;
+  //   id: string;
+  // }[];
+
+  ids: ContactIdListProps[];
 }
 const imageDefault = Image.resolveAssetSource(AVATAR_DEFAULT_ICON).uri;
 
-const CustomItem = item => {
+const CustomItem = (id: ContactIdListProps) => {
   const navigation = useNavigation<any>();
 
+  const contact: RawContact = useContactById(id.key);
+
   const onDetails = useCallback(() => {
-    navigation.navigate('ContactDetailScreen', {item});
+    navigation.navigate('ContactDetailScreen', {id: id.key});
   }, []);
 
   return (
@@ -25,7 +31,7 @@ const CustomItem = item => {
       <AvatarContainer>
         <Avatar
           source={{
-            uri: item.avatar ? item.avatar : imageDefault,
+            uri: contact.avatar ? contact.avatar : imageDefault,
           }}
         />
       </AvatarContainer>
@@ -33,13 +39,13 @@ const CustomItem = item => {
         {/*Alphabet list luon yeu cau mot truong la value nen co the tu tuy chinh
         value la lastName*/}
         <ListItemNameLabel>
-          {item.value} {item.firstName}
+          {contact.value} {contact.firstName}
         </ListItemNameLabel>
         <ListItemPhoneContainer numberOfLines={1}>
-          {item.phoneNumber && item.phoneNumber.length > 0 ? (
-            item.phoneNumber.map((item, index) => {
+          {contact.phoneNumber && contact.phoneNumber.length > 0 ? (
+            contact.phoneNumber.map((contact, index) => {
               return (
-                <ListItemPhoneLabel key={index}>{item}, </ListItemPhoneLabel>
+                <ListItemPhoneLabel key={index}>{contact}, </ListItemPhoneLabel>
               );
             })
           ) : (
@@ -61,11 +67,11 @@ const CustomSectionHeader = (section: any) => {
 };
 
 export const CustomAlphabetList = memo((props: AlphabetListProps) => {
-  const {contacts} = props;
+  const {ids} = props;
   return (
     <AlphabetList
       style={styles.alphabet}
-      data={contacts}
+      data={ids}
       indexLetterStyle={styles.letterStyle}
       indexLetterContainerStyle={{
         marginBottom: 0,

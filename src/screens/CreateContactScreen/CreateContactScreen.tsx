@@ -1,20 +1,22 @@
 import React, {memo, useCallback, useEffect, useState} from 'react';
 
 import styled from 'styled-components/native';
-import {CustomerButtonList} from './components/CustomerButtonList';
-import {CustomerButtonDateTime} from './components/CustomerButtonDateTime';
-import {CustomerInput} from './components/CustomerInput';
-import {AvatarPicker} from './components/AvatarPicker';
+import {CustomerButtonList} from '@/screens/CreateContactScreen/components/CustomerButtonList';
+import {CustomerButtonDateTime} from '@/screens/CreateContactScreen/components/CustomerButtonDateTime';
+import {CustomerInput} from '@/screens/CreateContactScreen/components/CustomerInput';
+import {AvatarPicker} from '@/screens/CreateContactScreen/components/AvatarPicker';
 import {
   InteractionManager,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
+  StyleSheet,
 } from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {updateContactAction} from '../../redux/contact/contactStore';
-import {slugify} from '../../ultis/string';
+import {updateContactAction} from '@/store/contact/contactStore';
+import {slugify} from '@/ultis/string';
 import {css} from 'styled-components';
+import {RawContact} from '@/store/contact/types';
 
 export const CreateContactScreen = memo(() => {
   const [isActive, setActive] = useState(false);
@@ -22,19 +24,11 @@ export const CreateContactScreen = memo(() => {
 
   const route = useRoute<any>();
 
-  const item: any = route?.params?.item;
+  const contact: any = route?.params?.contact;
 
-  const [params, setParams] = useState<{
-    id: string;
-    value: string;
-    avatar: string;
-    firstName: string;
-    company: string;
-    phoneNumber: string[];
-    email: string[];
-    address: string[];
-    birthday: string[];
-  }>({
+  const id = route?.params?.id;
+
+  const [params, setParams] = useState<RawContact>({
     id: `${new Date().getTime().toString()}`,
     avatar: '',
     firstName: '',
@@ -47,12 +41,12 @@ export const CreateContactScreen = memo(() => {
   });
 
   useEffect(() => {
-    if (item) {
-      setParams(item);
+    if (contact) {
+      setParams(contact);
       return;
     }
     Keyboard.dismiss;
-  }, [item]);
+  }, [contact]);
 
   useEffect(() => {
     if (params.firstName || params.value || params.company) setActive(true);
@@ -72,7 +66,7 @@ export const CreateContactScreen = memo(() => {
         params.firstName,
       )} ${slugify(params.value)}`,
     };
-    updateContactAction(newParams);
+    updateContactAction(newParams, id ?? newParams.id);
     InteractionManager.runAfterInteractions(() => {
       setTimeout(() => {
         navigation.reset({
@@ -84,10 +78,17 @@ export const CreateContactScreen = memo(() => {
           ],
         });
         navigation.navigate('ContactDetailScreen', {
-          item: newParams,
+          contact: newParams,
         });
       }, 300);
     });
+
+    // InteractionManager.runAfterInteractions(() => {
+    //   setTimeout(() => {
+    //     reset();
+    //     navigateToContactDetailScreen({id: id ?? newItem.id});
+    //   }, 500);
+    // });
   }, [params]);
 
   const onValueChange = useCallback((keyName: string, value: string) => {
@@ -100,7 +101,7 @@ export const CreateContactScreen = memo(() => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{flex: 1}}>
+      style={styles.keyboard}>
       <Container>
         {/*Su dung HeaderComponent kho tuong tac du lieu*/}
         <HeaderContainer>
@@ -114,7 +115,7 @@ export const CreateContactScreen = memo(() => {
         </HeaderContainer>
 
         <FormContainer>
-          <AvatarPicker setParams={setParams} imageUri={item?.avatar} />
+          <AvatarPicker setParams={setParams} imageUri={contact?.avatar} />
           <InputContainer>
             <InputInfoContainer>
               <CustomerInput
@@ -232,3 +233,8 @@ const DrawButton = styled.TouchableOpacity`
 const CreateContactButton = styled.TouchableOpacity`
   padding-right: 16px;
 `;
+const styles = StyleSheet.create({
+  keyboard: {
+    flex: 1,
+  },
+});

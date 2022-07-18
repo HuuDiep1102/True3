@@ -1,7 +1,7 @@
 import React, {memo} from 'react';
 import styled from 'styled-components/native';
-import {CAMERA_ICON, MENU_ICON} from '../assets';
-import {Colors} from '../theme/Color';
+import {CAMERA_ICON, MENU_ICON} from '@/assets';
+import {Colors} from '@/theme/Color';
 import {useNavigation} from '@react-navigation/native';
 import 'react-native-gesture-handler';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
@@ -50,7 +50,7 @@ const CreateContactButton = styled.TouchableOpacity`
   padding-right: 13px;
 `;
 
-const HeaderImage = styled.ImageBackground`
+const HeaderImage = styled.Image`
   width: 24px;
   height: 24px;
 `;

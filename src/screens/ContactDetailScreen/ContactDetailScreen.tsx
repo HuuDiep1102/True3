@@ -8,7 +8,7 @@ import {
   MAIL_ICON,
   MESSAGE_ICON,
   PHONE_ICON,
-} from '../../assets';
+} from '@/assets';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {
   Alert,
@@ -18,41 +18,59 @@ import {
   Platform,
   StyleSheet,
 } from 'react-native';
-import {ContactItem} from './components/ContactItem';
+import {ContactItem} from '@/screens/ContactDetailScreen/components/ContactItem';
 
-import {removeContactAction} from '../../redux/contact/contactStore';
+import {
+  removeContactAction,
+  useContactById,
+} from '@/store/contact/contactStore';
 import Modal from 'react-native-modal';
 import {css} from 'styled-components';
+import {RawContact} from '@/store/contact/types';
+
+const imageDefault = Image.resolveAssetSource(AVATAR_DEFAULT_ICON).uri;
 
 export const ContactDetailScreen = memo(() => {
   const navigation = useNavigation<any>();
+
   const [isActivePhoneNumber, setActivePhoneNumber] = useState(false);
+
   const [isActiveEmail, setActiveEmail] = useState(false);
-
-  const route = useRoute<any>();
-
-  const imageDefault = Image.resolveAssetSource(AVATAR_DEFAULT_ICON).uri;
 
   const [modalVisible, setModalVisible] = useState(false);
 
-  const item: any = route?.params?.item;
+  const [contactId, setContactId] = useState('0');
+
+  const route = useRoute<any>();
+
+  const params: RawContact = route?.params?.params;
 
   useEffect(() => {
-    if (item.phoneNumber.length > 0) setActivePhoneNumber(true);
+    if (params?.id) {
+      setContactId(params?.id);
+    } else {
+      setContactId('0');
+    }
+  }, [params?.id]);
+
+  const contact: RawContact = useContactById(contactId);
+
+  useEffect(() => {
+    if (contact.phoneNumber.length > 0) setActivePhoneNumber(true);
     else setActivePhoneNumber(false);
-  }, [item]);
+  }, [contact]);
 
   useEffect(() => {
-    if (item.email.length > 0) setActiveEmail(true);
+    if (contact.email.length > 0) setActiveEmail(true);
     else setActiveEmail(false);
-  }, [item]);
+  }, [contact]);
 
-  const showConfirmDialog = () => {
+  const onRemoveContact = () => {
     return Alert.alert('Nhắc nhở', 'Bạn có chắc chắn muốn xoá liên hệ?', [
       {
         text: 'Yes',
         onPress: () => {
-          removeContactAction(item);
+          removeContactAction(contactId);
           navigation.navigate('TabNavigation');
         },
       },
@@ -67,27 +85,27 @@ export const ContactDetailScreen = memo(() => {
   }, []);
 
   const onCreateContact = useCallback(() => {
-    navigation.navigate('CreateContactScreen', {item});
-  }, []);
+    navigation.navigate('CreateContactScreen', {contact, id: contactId});
+  }, [contact, contactId]);
 
   const onSendMessage = useCallback(() => {
-    if (item.phoneNumber && item.phoneNumber.length > 0) {
+    if (contact.phoneNumber && contact.phoneNumber.length > 0) {
       setModalVisible(true);
       return;
     }
     setModalVisible(false);
-  }, [item]);
+  }, [contact]);
 
-  const onLinkingTel = useCallback(item => {
-    Linking.openURL(`tel:${item}`);
+  const onLinkingTel = useCallback(contact => {
+    Linking.openURL(`tel:${contact}`);
   }, []);
 
-  const onLinkingMess = useCallback(item => {
-    Linking.openURL(`sms:${item}`);
+  const onLinkingMess = useCallback(contact => {
+    Linking.openURL(`sms:${contact}`);
   }, []);
 
-  const onLinkingMail = useCallback(item => {
-    Linking.openURL(`mailto:${item}`);
+  const onLinkingMail = useCallback(contact => {
+    Linking.openURL(`mailto:${contact}`);
   }, []);
 
   return (
@@ -110,11 +128,11 @@ export const ContactDetailScreen = memo(() => {
                 <InputTitleText>Điện thoại</InputTitleText>
               </InputTitleContainer>
               <InputContactContainer>
-                {item.phoneNumber && item.phoneNumber.length > 0 ? (
-                  item.phoneNumber.map((item, index) => {
+                {contact.phoneNumber && contact.phoneNumber.length > 0 ? (
+                  contact.phoneNumber.map((contact, index) => {
                     return (
                       <InputContactButton key={index} onPress={onLinkingTel}>
-                        <InputContact>{item}</InputContact>
+                        <InputContact>{contact}</InputContact>
                       </InputContactButton>
                     );
                   })
@@ -126,11 +144,11 @@ export const ContactDetailScreen = memo(() => {
                 <InputTitleText>Email</InputTitleText>
               </InputTitleContainer>
               <InputContactContainer>
-                {item.email && item.email.length > 0 ? (
-                  item.email.map((item, index) => {
+                {contact.email && contact.email.length > 0 ? (
+                  contact.email.map((contact, index) => {
                     return (
                       <InputContactButton key={index} onPress={onLinkingMail}>
-                        <InputContact>{item}</InputContact>
+                        <InputContact>{contact}</InputContact>
                       </InputContactButton>
                     );
                   })
@@ -156,13 +174,13 @@ export const ContactDetailScreen = memo(() => {
                   <CenteredView>
                     <ModalView>
                       <InputContactContainerMessage>
-                        {item.phoneNumber.map((item, index) => {
+                        {contact.phoneNumber.map((contact, index) => {
                           return (
                             <InputContactButton
                               key={index}
                               onPress={onLinkingMess}>
                               <ContactIconImageModal source={MESSAGE_ICON} />
-                              <InputContact>{item}</InputContact>
+                              <InputContact>{contact}</InputContact>
                             </InputContactButton>
                           );
                         })}
@@ -174,7 +192,7 @@ export const ContactDetailScreen = memo(() => {
                   <BtnMessageText>Gửi tin nhắn</BtnMessageText>
                 </BtnMessage>
 
-                <BtnRemove onPress={() => showConfirmDialog()}>
+                <BtnRemove onPress={onRemoveContact}>
                   <BtnRemoveText>Xoá người gọi</BtnRemoveText>
                 </BtnRemove>
               </WrapButton>
@@ -187,14 +205,14 @@ export const ContactDetailScreen = memo(() => {
               <AvatarContainer>
                 <LogIcon
                   source={{
-                    uri: item.avatar ? item.avatar : imageDefault,
+                    uri: contact.avatar ? contact.avatar : imageDefault,
                   }}
                 />
               </AvatarContainer>
 
               <InfoContainer>
                 <InfoName>
-                  {item.value} {item.firstName}
+                  {contact.value} {contact.firstName}
                 </InfoName>
                 <InfoJob>UI/UX Design</InfoJob>
               </InfoContainer>
@@ -205,28 +223,28 @@ export const ContactDetailScreen = memo(() => {
                   label2={'Nhấn gọi điện'}
                   icon={PHONE_ICON}
                   active={isActivePhoneNumber}
-                  keyName={item.phoneNumber}
+                  keyName={contact.phoneNumber}
                 />
                 <ContactItem
                   label1={`sms:`}
                   label2={'Nhắn tin'}
                   icon={MESSAGE_ICON}
                   active={isActivePhoneNumber}
-                  keyName={item.phoneNumber}
+                  keyName={contact.phoneNumber}
                 />
                 <ContactItem
                   label1={'tel:'}
                   label2={'Facetime'}
                   icon={FACETIME_ICON}
                   active={isActivePhoneNumber}
-                  keyName={item.phoneNumber}
+                  keyName={contact.phoneNumber}
                 />
                 <ContactItem
                   label1={'mailto:'}
                   label2={'Gửi mail'}
                   icon={MAIL_ICON}
                   active={isActiveEmail}
-                  keyName={item.email}
+                  keyName={contact.email}
                 />
               </ContactIconContainer>
             </HeaderContainer>

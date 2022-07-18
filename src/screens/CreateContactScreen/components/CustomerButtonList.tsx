@@ -1,4 +1,4 @@
-import {PLUS_ICON, REMOVE_ICON} from '../../../assets';
+import {PLUS_ICON, REMOVE_ICON} from '@/assets';
 import React, {useState, useCallback, memo} from 'react';
 import styled from 'styled-components/native';
 import {CustomerInput} from './CustomerInput';
@@ -23,7 +23,7 @@ interface CustomerCellProps {
   label: string;
 }
 
-const Cell = (props: CustomerCellProps) => {
+const Cell = memo((props: CustomerCellProps) => {
   const {
     onRemove,
     index,
@@ -48,7 +48,7 @@ const Cell = (props: CustomerCellProps) => {
 
   const onRemoveItem = useCallback(() => {
     onRemove(index);
-  }, []);
+  }, [onRemove]);
 
   return (
     <InputContainerView>
@@ -67,7 +67,7 @@ const Cell = (props: CustomerCellProps) => {
       />
     </InputContainerView>
   );
-};
+});
 
 export const CustomerButtonList = memo((props: CustomerButtonListProps) => {
   const {label, setParams, data, keyName, keyboardType} = props;
@@ -85,7 +85,9 @@ export const CustomerButtonList = memo((props: CustomerButtonListProps) => {
     (index: number) => {
       setParams(prev => {
         const oldArray = [...data];
-        const newArray = oldArray.filter((_item, _index) => _index !== index);
+        const newArray = oldArray.filter(
+          (_contact, _index) => _index !== index,
+        );
         return {...prev, [keyName]: newArray};
       });
     },
@@ -95,11 +97,11 @@ export const CustomerButtonList = memo((props: CustomerButtonListProps) => {
   return (
     <Container>
       {/*Bao loi Object underfined thi them dau hoi cham*/}
-      {data?.map((item, index) => {
+      {data?.map((contact, index) => {
         return (
           <Cell
             key={index}
-            autoFocus={item === ''}
+            autoFocus={contact === ''}
             onRemove={onRemove}
             index={index}
             data={data}

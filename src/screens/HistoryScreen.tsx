@@ -1,9 +1,9 @@
 import React, {memo} from 'react';
 import styled, {css} from 'styled-components/native';
-import {WARNING_LOGO} from '../assets';
-import {COMMUNICATE_ICON} from '../assets';
+import {WARNING_LOGO} from '@/assets';
+import {COMMUNICATE_ICON} from '@/assets';
 
-import {HeaderCustomer} from '../components/HeaderCustomer';
+import {HeaderCustomer} from '@/components/HeaderCustomer';
 import {Platform} from 'react-native';
 
 const Item = ({title, phoneNumber}) => (

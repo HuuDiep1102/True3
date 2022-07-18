@@ -23,9 +23,7 @@ export const DROP_ICON = require('./icons/play.png');
 export const CAMERA_INPUT_ICON = require('./icons/camera_input_icon.png');
 export const AVATAR_DEFAULT_ICON = require('./icons/avatar_defaul_icon.png');
 
-export const PHONEBOOK_ACTIVE_ICON = require('./icons/icon_phonebook_active.png');
-export const PHONEBOOK_INACTIVE_ICON = require('./icons/phonebook_inactive_icon.png');
-export const WATCH_ACTIVE_ICON = require('./icons/watch_active_icon.png');
-export const WATCH_INACTIVE_ICON = require('./icons/watch_inactive_icon.png');
+export const PHONEBOOK_ICON = require('./icons/icon_phonebook_active.png');
+export const WATCH_ICON = require('./icons/watch_active_icon.png');
 
 export const BACKGROUND_IMAGE = require('./images/Rectangle.png');

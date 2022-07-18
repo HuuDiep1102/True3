@@ -1,7 +1,7 @@
 ///CustomerButtonDateTime
 
-import {PLUS_ICON, REMOVE_ICON} from '../../../assets';
-import React, {useState, useCallback, useEffect, memo} from 'react';
+import {PLUS_ICON, REMOVE_ICON} from '@/assets';
+import React, {useState, useCallback, memo} from 'react';
 import styled from 'styled-components/native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
@@ -55,7 +55,7 @@ export const CustomerButtonDateTime = memo(
       (index: number) => {
         setParams(prev => {
           const oldArray = [...data];
-          const newArray = oldArray.filter((_item, _index) => _index !== index);
+          const newArray = oldArray.filter((_contact, _index) => _index !== index);
           return {...prev, birthday: newArray};
         });
       },
@@ -68,7 +68,7 @@ export const CustomerButtonDateTime = memo(
 
     return (
       <Container>
-        {data?.map((item, index) => {
+        {data?.map((contact, index) => {
           return (
             <InputContainerView key={index}>
               <InputContainer onPress={onRemoveItem}>
@@ -76,7 +76,7 @@ export const CustomerButtonDateTime = memo(
               </InputContainer>
               <DateTimeView>
                 <DateTimeButton onPress={onUpdateValue}>
-                  <DateTimeText>{item}</DateTimeText>
+                  <DateTimeText>{contact}</DateTimeText>
                 </DateTimeButton>
                 <DateTimePickerModal
                   isVisible={isDatePickerVisible}

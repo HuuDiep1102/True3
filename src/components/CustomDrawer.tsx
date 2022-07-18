@@ -1,7 +1,7 @@
 import React, {memo, useState} from 'react';
 import {DrawerContentScrollView} from '@react-navigation/drawer';
 
-import {ASSIGNMENT_ICON, AVATAR2, ADD_ICON, DROP_ICON} from '../assets';
+import {ASSIGNMENT_ICON, AVATAR2, ADD_ICON, DROP_ICON} from '@/assets';
 
 import styled from 'styled-components/native';
 
@@ -59,7 +59,7 @@ export const CustomDrawer = memo(props => {
 interface CustomerItemProps {
   label: string;
 }
-export const CustomerItem = (props: CustomerItemProps) => {
+const CustomerItem = (props: CustomerItemProps) => {
   const {label} = props;
 
   return (
