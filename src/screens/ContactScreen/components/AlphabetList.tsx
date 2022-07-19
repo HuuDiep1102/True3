@@ -13,7 +13,7 @@ interface AlphabetListProps {
   //   id: string;
   // }[];
 
-  ids: ContactIdListProps[];
+  contactList: ContactIdListProps[];
 }
 const imageDefault = Image.resolveAssetSource(AVATAR_DEFAULT_ICON).uri;
 
@@ -31,7 +31,7 @@ const CustomItem = (id: ContactIdListProps) => {
       <AvatarContainer>
         <Avatar
           source={{
-            uri: contact.avatar ? contact.avatar : imageDefault,
+            uri: contact?.avatar ? contact.avatar : imageDefault,
           }}
         />
       </AvatarContainer>
@@ -39,11 +39,11 @@ const CustomItem = (id: ContactIdListProps) => {
         {/*Alphabet list luon yeu cau mot truong la value nen co the tu tuy chinh
         value la lastName*/}
         <ListItemNameLabel>
-          {contact.value} {contact.firstName}
+          {contact?.value} {contact?.firstName}
         </ListItemNameLabel>
         <ListItemPhoneContainer numberOfLines={1}>
-          {contact.phoneNumber && contact.phoneNumber.length > 0 ? (
-            contact.phoneNumber.map((contact, index) => {
+          {contact?.phoneNumber && contact?.phoneNumber.length > 0 ? (
+            contact?.phoneNumber.map((contact, index) => {
               return (
                 <ListItemPhoneLabel key={index}>{contact}, </ListItemPhoneLabel>
               );
@@ -67,11 +67,11 @@ const CustomSectionHeader = (section: any) => {
 };
 
 export const CustomAlphabetList = memo((props: AlphabetListProps) => {
-  const {ids} = props;
+  const {contactList} = props;
   return (
     <AlphabetList
       style={styles.alphabet}
-      data={ids}
+      data={contactList}
       indexLetterStyle={styles.letterStyle}
       indexLetterContainerStyle={{
         marginBottom: 0,

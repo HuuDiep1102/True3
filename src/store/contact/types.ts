@@ -20,12 +20,8 @@ export interface ContactDetailScreenProps {
   id?: string;
 }
 
-export interface CreateContactScreenProps extends ContactDetailScreenProps {
-  item?: RawContact;
-}
-
 export interface ContactIdListProps {
-  normalizerForSearch: string;
+  // normalizerForSearch: string;
   key: string;
   value: string;
 }

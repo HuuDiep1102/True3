@@ -2,38 +2,26 @@ import {createSlice, PayloadAction, Store} from '@reduxjs/toolkit';
 import {RawContact} from './types';
 import {useSelector} from 'react-redux';
 import {store} from '../persist';
+import {MESSAGE_ICON} from '@/assets';
 
 // Tao ra mot mang rong voi kieu phan tu la RawContact
 const initContact = {
   byId: {
-    lCUTs2: {
-      avatar: null,
-      phoneNumberList: ['0931924', '09331348424', '0931924313', '09313244'],
-      value: 'Lillie-Mai Allen',
-      firstName: 'Allen',
-      lastName: 'Lillie-Mai',
-      company: '',
-      birthday: '',
-      emailList: ['cdabc@gmail.com'],
-      addressList: [],
-      id: 'lCUTs2',
-    },
-    TXdL0c: {
-      avatar: null,
-      phoneNumberList: ['0931924'],
-      value: 'Emmanuel Goldstein',
-      firstName: '',
-      lastName: '',
-      company: '',
-      birthday: '',
-      emailList: [],
-      addressList: [],
-      id: 'TXdL0c',
+    19282828282: {
+      id: '19282828282',
+      avatar: '',
+      phoneNumber: ['0931924433', '093838383'],
+      value: 'Nguyễn Tiến',
+      firstName: 'Nam',
+      company: 'Base',
+      birthday: ['11/2/22'],
+      email: ['email@gmal.com', 'email2@gmail.com'],
+      address: ['So 2 ngo 198'],
     },
   },
 
   query: {
-    all: ['lCUTs2', 'TXdL0c'],
+    all: ['19282828282'],
   },
 };
 export const contactReducer = createSlice({
@@ -111,20 +99,19 @@ let _store: Store | undefined;
 //     })),
 //   );
 // };
+export const setStore = (store: Store) => {
+  //Gan store de truyen xuong duoi
+  _store = store;
+};
 
 export const useContactIdList = (value?: string) => {
-  // connect vao store de lay ra danh sach
-  const a = useSelector(
-    (state: any) => {
-      console.log(state);
-      return;
-    },
-    // state.contacts.query.all.map((key: string) => ({
-    //   key,
-    //   value: state.contacts.byId[key].value,
-    // })),
+  return useSelector((state: any) =>
+    state.contacts.query.all.map((key: string) => ({
+      normalizerForSearch: state.contacts.byId[key].normalizerForSearch,
+      key,
+      value: state.contacts.byId[key].value,
+    })),
   );
-  return [];
 };
 
 export const useContactById = (id: string) => {

@@ -1,4 +1,4 @@
-#Thu Jul 14 15:36:38 ICT 2022
+#Sat Jul 16 09:24:07 ICT 2022
 base.0=/Users/imacbase/TrueApp/android/app/build/intermediates/dex/release/mergeDexRelease/classes.dex
 renamed.0=classes.dex
 path.0=classes.dex

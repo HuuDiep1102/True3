@@ -22,6 +22,8 @@ export const CreateContactScreen = memo(() => {
   const [isActive, setActive] = useState(false);
   const navigation = useNavigation<any>();
 
+  //contact route lay data tu ben Detail
+
   const route = useRoute<any>();
 
   const contact: any = route?.params?.contact;
@@ -32,12 +34,12 @@ export const CreateContactScreen = memo(() => {
     id: `${new Date().getTime().toString()}`,
     avatar: '',
     firstName: '',
+    value: '',
     company: '',
     phoneNumber: [],
     email: [],
     address: [],
     birthday: [],
-    value: '',
   });
 
   useEffect(() => {
@@ -78,7 +80,7 @@ export const CreateContactScreen = memo(() => {
           ],
         });
         navigation.navigate('ContactDetailScreen', {
-          contact: newParams,
+          id: id ?? newParams.id,
         });
       }, 300);
     });
@@ -89,7 +91,7 @@ export const CreateContactScreen = memo(() => {
     //     navigateToContactDetailScreen({id: id ?? newItem.id});
     //   }, 500);
     // });
-  }, [params]);
+  }, [params, updateContactAction]);
 
   const onValueChange = useCallback((keyName: string, value: string) => {
     setParams(state => ({

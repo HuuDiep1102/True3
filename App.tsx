@@ -1,15 +1,13 @@
 import React from 'react';
 
-import {RootNavigation} from './src/navigation/RootNavigation';
+import {RootNavigation} from '@/navigation/RootNavigation';
 import 'react-native-gesture-handler';
 import 'react-native-reanimated';
 import {StatusBar} from 'react-native';
 import {Provider} from 'react-redux';
-import {PersistGate} from 'redux-persist/integration/react';;
+import {PersistGate} from 'redux-persist/integration/react';
 
-import {store, persistor} from './src/redux/persist';
-// console.disableYellowBox = true;
-//tat warning
+import {store, persistor} from '@/store/persist';
 
 export default function App() {
   return (

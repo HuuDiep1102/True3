@@ -17,6 +17,7 @@ import {
   Linking,
   Platform,
   StyleSheet,
+  View,
 } from 'react-native';
 import {ContactItem} from '@/screens/ContactDetailScreen/components/ContactItem';
 
@@ -39,38 +40,28 @@ export const ContactDetailScreen = memo(() => {
 
   const [modalVisible, setModalVisible] = useState(false);
 
-  const [contactId, setContactId] = useState('0');
-
   const route = useRoute<any>();
 
-  const params: RawContact = route?.params?.params;
+  const params: RawContact = route?.params;
+
+  const contact: RawContact = useContactById(params?.id);
 
   useEffect(() => {
-    if (params?.id) {
-      setContactId(params?.id);
-    } else {
-      setContactId('0');
-    }
-  }, [params?.id]);
-
-  const contact: RawContact = useContactById(contactId);
-
-  useEffect(() => {
-    if (contact.phoneNumber.length > 0) setActivePhoneNumber(true);
+    if (contact?.phoneNumber.length > 0) setActivePhoneNumber(true);
     else setActivePhoneNumber(false);
   }, [contact]);
 
   useEffect(() => {
-    if (contact.email.length > 0) setActiveEmail(true);
+    if (contact?.email.length > 0) setActiveEmail(true);
     else setActiveEmail(false);
   }, [contact]);
 
-  const onRemoveContact = () => {
+  const onRemoveContact = useCallback(() => {
     return Alert.alert('Nhắc nhở', 'Bạn có chắc chắn muốn xoá liên hệ?', [
       {
         text: 'Yes',
         onPress: () => {
-          removeContactAction(contactId);
+          removeContactAction(contact.id);
           navigation.navigate('TabNavigation');
         },
       },
@@ -78,35 +69,45 @@ export const ContactDetailScreen = memo(() => {
         text: 'No',
       },
     ]);
-  };
+  }, [removeContactAction, navigation]);
 
   const onBack = useCallback(() => {
     navigation.navigate('TabNavigation');
   }, []);
 
   const onCreateContact = useCallback(() => {
-    navigation.navigate('CreateContactScreen', {contact, id: contactId});
-  }, [contact, contactId]);
+    navigation.navigate('CreateContactScreen', {contact, id: contact.id});
+  }, [contact]);
 
   const onSendMessage = useCallback(() => {
-    if (contact.phoneNumber && contact.phoneNumber.length > 0) {
+    if (contact?.phoneNumber && contact?.phoneNumber.length > 1) {
       setModalVisible(true);
       return;
-    }
+    } else Linking.openURL(`sms:${contact}`);
     setModalVisible(false);
   }, [contact]);
 
-  const onLinkingTel = useCallback(contact => {
-    Linking.openURL(`tel:${contact}`);
-  }, []);
+  const onLinkingTel = useCallback(
+    async contact => {
+      await Linking.openURL(`tel:${contact}`);
+    },
+    [contact],
+  );
 
-  const onLinkingMess = useCallback(contact => {
-    Linking.openURL(`sms:${contact}`);
-  }, []);
+  const onLinkingMess = useCallback(
+    async contact => {
+      await Linking.openURL(`sms:${contact}`);
+    },
+    [contact],
+  );
 
-  const onLinkingMail = useCallback(contact => {
-    Linking.openURL(`mailto:${contact}`);
-  }, []);
+  const onLinkingMail = useCallback(
+    async contact => {
+      await Linking.openURL(`mailto:${contact}`);
+    },
+    [contact],
+  );
+  console.log('contactDetail', contact);
 
   return (
     <Container>
@@ -128,10 +129,12 @@ export const ContactDetailScreen = memo(() => {
                 <InputTitleText>Điện thoại</InputTitleText>
               </InputTitleContainer>
               <InputContactContainer>
-                {contact.phoneNumber && contact.phoneNumber.length > 0 ? (
-                  contact.phoneNumber.map((contact, index) => {
+                {contact?.phoneNumber && contact?.phoneNumber.length > 0 ? (
+                  contact?.phoneNumber.map((contact, index) => {
                     return (
-                      <InputContactButton key={index} onPress={onLinkingTel}>
+                      <InputContactButton
+                        key={index}
+                        onPress={() => onLinkingTel(contact)}>
                         <InputContact>{contact}</InputContact>
                       </InputContactButton>
                     );
@@ -144,10 +147,12 @@ export const ContactDetailScreen = memo(() => {
                 <InputTitleText>Email</InputTitleText>
               </InputTitleContainer>
               <InputContactContainer>
-                {contact.email && contact.email.length > 0 ? (
-                  contact.email.map((contact, index) => {
+                {contact?.email && contact?.email.length > 0 ? (
+                  contact?.email.map((contact, index) => {
                     return (
-                      <InputContactButton key={index} onPress={onLinkingMail}>
+                      <InputContactButton
+                        key={index}
+                        onPress={() => onLinkingMail(contact)}>
                         <InputContact>{contact}</InputContact>
                       </InputContactButton>
                     );
@@ -174,11 +179,11 @@ export const ContactDetailScreen = memo(() => {
                   <CenteredView>
                     <ModalView>
                       <InputContactContainerMessage>
-                        {contact.phoneNumber.map((contact, index) => {
+                        {contact?.phoneNumber.map((contact, index) => {
                           return (
                             <InputContactButton
                               key={index}
-                              onPress={onLinkingMess}>
+                              onPress={() => onLinkingMess(contact)}>
                               <ContactIconImageModal source={MESSAGE_ICON} />
                               <InputContact>{contact}</InputContact>
                             </InputContactButton>
@@ -205,14 +210,14 @@ export const ContactDetailScreen = memo(() => {
               <AvatarContainer>
                 <LogIcon
                   source={{
-                    uri: contact.avatar ? contact.avatar : imageDefault,
+                    uri: contact?.avatar ? contact?.avatar : imageDefault,
                   }}
                 />
               </AvatarContainer>
 
               <InfoContainer>
                 <InfoName>
-                  {contact.value} {contact.firstName}
+                  {contact?.value} {contact?.firstName}
                 </InfoName>
                 <InfoJob>UI/UX Design</InfoJob>
               </InfoContainer>
@@ -223,28 +228,28 @@ export const ContactDetailScreen = memo(() => {
                   label2={'Nhấn gọi điện'}
                   icon={PHONE_ICON}
                   active={isActivePhoneNumber}
-                  keyName={contact.phoneNumber}
+                  keyName={contact?.phoneNumber}
                 />
                 <ContactItem
                   label1={`sms:`}
                   label2={'Nhắn tin'}
                   icon={MESSAGE_ICON}
                   active={isActivePhoneNumber}
-                  keyName={contact.phoneNumber}
+                  keyName={contact?.phoneNumber}
                 />
                 <ContactItem
                   label1={'tel:'}
                   label2={'Facetime'}
                   icon={FACETIME_ICON}
                   active={isActivePhoneNumber}
-                  keyName={contact.phoneNumber}
+                  keyName={contact?.phoneNumber}
                 />
                 <ContactItem
                   label1={'mailto:'}
                   label2={'Gửi mail'}
                   icon={MAIL_ICON}
                   active={isActiveEmail}
-                  keyName={contact.email}
+                  keyName={contact?.email}
                 />
               </ContactIconContainer>
             </HeaderContainer>

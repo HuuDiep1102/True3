@@ -16,13 +16,13 @@ export const ContactItem = memo((props: ContactItemProps) => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const onLinking = useCallback(() => {
-    if (keyName.length === 1) {
+    if (keyName?.length === 1) {
       Linking.openURL(label1 + keyName[0]);
     } else setModalVisible(true);
   }, []);
 
-  const onLinkingItem = useCallback(contact => {
-    Linking.openURL(label1 + contact);
+  const onLinkingItem = useCallback(async contact => {
+    await Linking.openURL(label1 + contact);
   }, []);
 
   const onBackdrop = useCallback(() => {
@@ -40,9 +40,11 @@ export const ContactItem = memo((props: ContactItemProps) => {
         <CenteredView>
           <ModalView>
             <InputContactContainer>
-              {keyName.map((contact, index) => {
+              {keyName?.map((contact, index) => {
                 return (
-                  <InputContactButton key={index} onPress={onLinkingItem}>
+                  <InputContactButton
+                    key={index}
+                    onPress={() => onLinkingItem(contact)}>
                     <ContactIconImageModal source={icon} />
                     <InputContact>{contact}</InputContact>
                   </InputContactButton>

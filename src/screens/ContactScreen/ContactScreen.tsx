@@ -19,33 +19,33 @@ import {HeaderCustomer} from '@/components/HeaderCustomer';
 import {useContactIdList} from '@/store/contact/contactStore';
 import {CustomAlphabetList} from '@/screens/ContactScreen/components/AlphabetList';
 import {slugify} from '@/ultis/string';
-import {ContactIdListProps} from '@/store/contact/types';
+import {ContactIdListProps, RawContact} from '@/store/contact/types';
 
 export const ContactScreen = memo(() => {
-  const contactIds: ContactIdListProps[] = useContactIdList();
+  const contactIds = useContactIdList();
 
   const [searchText, setSearchText] = useState('');
 
-  const ids = useMemo(() => {
-    let _ids = contactIds;
+  const contactList = useMemo(() => {
+    if (searchText === '') return contactIds.map(contact => ({...contact}));
 
-    if (searchText === '') return _ids.map(contact => ({...contact}));
+    let _contactList: any = [];
 
-    for (let i = 0; i < _ids.length; i++) {
-      const contact = _ids[i];
+    for (let i = 0; i < contactIds.length; i++) {
+      const contact: RawContact = contactIds[i];
       if (
         (contact?.normalizerForSearch || contact.value).includes(
           slugify(searchText),
         )
       ) {
-        _ids.push({...contact});
+        _contactList.push({...contact});
       }
     }
 
-    return _ids;
+    return _contactList;
   }, [searchText, contactIds]);
 
-  console.log('data', ids);
+  console.log('_contactList', contactList);
 
   return (
     <Container>
@@ -66,7 +66,7 @@ export const ContactScreen = memo(() => {
             <NotificationText>The list is empty</NotificationText>
           </NotificationView>
         ) : null}
-        <CustomAlphabetList ids={ids} />
+        <CustomAlphabetList contactList={contactList} />
       </ListContainer>
     </Container>
   );
